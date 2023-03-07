@@ -15,10 +15,17 @@ import './Home.css';
 
 const Home: React.FC = () => {
 
+  // Setup navigation system on this page so we can call other pages
+  // Powered by nav system in App.tsx
   const nav = useIonRouter();
 
   return (
     <IonPage id="home-page">
+      {
+        /*
+          Page Header Code
+        */
+      }
       <IonHeader>
         <IonToolbar>
           <IonTitle>
@@ -36,6 +43,17 @@ const Home: React.FC = () => {
           </IonToolbar>
         </IonHeader>
 
+        {
+          /*
+            Page Content Code
+          */
+        }
+
+        {
+          /*
+            DEV button that takes you to the chess board mockup
+          */
+        }
         <IonCard onClick={() => {
           nav.push('/chessBoardMockup');
         }}>

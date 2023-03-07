@@ -1,19 +1,14 @@
 import { useState } from 'react';
 import {
-  IonAvatar,
   IonCard,
   IonCol,
   IonContent,
-  IonGrid,
   IonHeader,
-  IonIcon,
-  IonImg,
   IonItem,
   IonLabel,
   IonPage,
   IonRow,
   IonText,
-  IonThumbnail,
   IonTitle,
   IonToolbar,
   useIonRouter,
@@ -22,10 +17,17 @@ import './ChessBoard.css';
 
 const ChessBoardMockup: React.FC = () => {
 
+  // Setup navigation system on this page so we can call other pages
+  // Powered by nav system in App.tsx
   const nav = useIonRouter();
 
   return (
     <IonPage id="chess-board-mockup-page">
+      {
+        /*
+          Page Header Code
+        */
+      }
       <IonHeader>
         <IonToolbar>
           <IonTitle>
@@ -43,6 +45,17 @@ const ChessBoardMockup: React.FC = () => {
           </IonToolbar>
         </IonHeader>
 
+        {
+          /*
+            Page Content Code
+          */
+        }
+
+        {
+          /*
+            DEV button that takes you to the home page
+          */
+        }
         <IonCard onClick={() => {
           nav.push('/Home');
         }}>
@@ -55,6 +68,11 @@ const ChessBoardMockup: React.FC = () => {
           </IonItem>
         </IonCard>
 
+        {
+          /*
+            Chess Board Mockup
+          */
+        }
         <IonCard>
           <IonRow>
             <IonCol className="blue-square">
@@ -82,9 +100,11 @@ const ChessBoardMockup: React.FC = () => {
               <img className='chess-piece' src="/assets/images/ChessPieces/test.png"></img>
             </IonCol>
           </IonRow>
-
-
-
+          {
+            /*
+              Board Row Divider For Convenience
+            */
+          }
           <IonRow>
             <IonCol className="white-square">
               <img className='chess-piece' src="/assets/images/ChessPieces/test.png"></img>
@@ -111,9 +131,11 @@ const ChessBoardMockup: React.FC = () => {
               <img className='chess-piece' src="/assets/images/ChessPieces/test.png"></img>
             </IonCol>
           </IonRow>
-
-
-
+          {
+            /*
+              Board Row Divider For Convenience
+            */
+          }
           <IonRow>
             <IonCol className="blue-square">
               <img className='chess-piece' src="/assets/images/ChessPieces/test.png"></img>
@@ -140,9 +162,11 @@ const ChessBoardMockup: React.FC = () => {
               <img className='chess-piece' src="/assets/images/ChessPieces/test.png"></img>
             </IonCol>
           </IonRow>
-
-
-
+          {
+            /*
+              Board Row Divider For Convenience
+            */
+          }
           <IonRow>
             <IonCol className="white-square">
               <img className='chess-piece' src="/assets/images/ChessPieces/test.png"></img>
@@ -169,9 +193,11 @@ const ChessBoardMockup: React.FC = () => {
               <img className='chess-piece' src="/assets/images/ChessPieces/test.png"></img>
             </IonCol>
           </IonRow>
-
-
-
+          {
+            /*
+              Board Row Divider For Convenience
+            */
+          }
           <IonRow>
             <IonCol className="blue-square">
               <img className='chess-piece' src="/assets/images/ChessPieces/test.png"></img>
@@ -198,9 +224,11 @@ const ChessBoardMockup: React.FC = () => {
               <img className='chess-piece' src="/assets/images/ChessPieces/test.png"></img>
             </IonCol>
           </IonRow>
-
-
-
+          {
+            /*
+              Board Row Divider For Convenience
+            */
+          }
           <IonRow>
             <IonCol className="white-square">
               <img className='chess-piece' src="/assets/images/ChessPieces/test.png"></img>
@@ -227,9 +255,11 @@ const ChessBoardMockup: React.FC = () => {
               <img className='chess-piece' src="/assets/images/ChessPieces/test.png"></img>
             </IonCol>
           </IonRow>
-
-
-
+          {
+            /*
+              Board Row Divider For Convenience
+            */
+          }
           <IonRow>
             <IonCol className="blue-square">
               <img className='chess-piece' src="/assets/images/ChessPieces/test.png"></img>
@@ -256,9 +286,11 @@ const ChessBoardMockup: React.FC = () => {
               <img className='chess-piece' src="/assets/images/ChessPieces/test.png"></img>
             </IonCol>
           </IonRow>
-
-
-
+          {
+            /*
+              Board Row Divider For Convenience
+            */
+          }
           <IonRow>
             <IonCol className="white-square">
               <img className='chess-piece' src="/assets/images/ChessPieces/test.png"></img>

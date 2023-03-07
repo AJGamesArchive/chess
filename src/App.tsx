@@ -2,6 +2,7 @@ import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
+// Importing all app pages so they be put into the nav system
 import Home from './pages/Home';
 import ChessBoardMockup from './pages/Mockups/ChessBoard';
 
@@ -24,8 +25,10 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+// App nav system setup function
 setupIonicReact();
 
+// App nav system JSX code
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
