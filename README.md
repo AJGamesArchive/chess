@@ -11,6 +11,7 @@
 ## Remember!
 - Sync Your Local Repo With The Main Repo **Before You Start Coding Anything Every Time You Go To Do Something.**
 - When Your Finished For The Day, Commit Your Changes And Sync Them To The Main Repo **Even If** The Code Is Not Finished Or Fully Working
+- **If** The Project Dependencies Have Changed Since You Last Edited Code, You Will Need To Run `npm install` Again Before Working
 
 ## Ignore For Now
 - Install Firebase Tools `npm install -g firebase-tools`

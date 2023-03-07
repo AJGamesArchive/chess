@@ -1,57 +1,53 @@
-import MessageListItem from '../components/MessageListItem';
 import { useState } from 'react';
-import { Message, getMessages } from '../data/messages';
 import {
+  IonCard,
   IonContent,
   IonHeader,
-  IonList,
+  IonItem,
+  IonLabel,
   IonPage,
-  IonRefresher,
-  IonRefresherContent,
+  IonText,
   IonTitle,
   IonToolbar,
-  useIonViewWillEnter
+  useIonRouter,
 } from '@ionic/react';
 import './Home.css';
 
 const Home: React.FC = () => {
 
-  const [messages, setMessages] = useState<Message[]>([]);
-
-  useIonViewWillEnter(() => {
-    const msgs = getMessages();
-    setMessages(msgs);
-  });
-
-  const refresh = (e: CustomEvent) => {
-    setTimeout(() => {
-      e.detail.complete();
-    }, 3000);
-  };
+  const nav = useIonRouter();
 
   return (
     <IonPage id="home-page">
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Inbox</IonTitle>
+          <IonTitle>
+            Home
+          </IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonRefresher slot="fixed" onIonRefresh={refresh}>
-          <IonRefresherContent></IonRefresherContent>
-        </IonRefresher>
 
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">
-              Inbox
+              Home
             </IonTitle>
           </IonToolbar>
         </IonHeader>
 
-        <IonList>
-          {messages.map(m => <MessageListItem key={m.id} message={m} />)}
-        </IonList>
+        <IonCard onClick={() => {
+          nav.push('/chessBoardMockup');
+        }}>
+          <IonItem color="primary">
+            <IonLabel className="dev-button">
+              <IonText className="dev-button-text">
+                DEV Button To Chess Board Mockup
+              </IonText>
+            </IonLabel>
+          </IonItem>
+        </IonCard>
+
       </IonContent>
     </IonPage>
   );
