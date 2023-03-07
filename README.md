@@ -1,10 +1,16 @@
 # Information
 ## Setup
 - Install [NodeJS](https://nodejs.org/dist/v18.14.1/node-v18.14.1-x64.msi)
+- Open VS Code To The Folder You Want The Repo To Be Saved TO On Your Machine
+- Open A Terminal In VS Code `CTRL+SHIFT+@`
 - Clone The Repository `git clone https://github.com/AJGamesArchive/chess.git`
 - Install Ionic `npm i -g @ionic/cli`
 - Set Execution Policy **If** Needed `Set-ExecutionPolicy RemoteSigned -Scope CurrentUser`
 - Run `npm install`
+
+## Remember!
+- Sync Your Local Repo With The Main Repo **Before You Start Coding Anything Every Time You Go To Do Something.**
+- When Your Finished For The Day, Commit Your Changes And Sync Them To The Main Repo **Even If** The Code Is Not Finished Or Fully Working
 
 ## Ignore For Now
 - Install Firebase Tools `npm install -g firebase-tools`
