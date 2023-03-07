@@ -13,12 +13,15 @@
 - When Your Finished For The Day, Commit Your Changes And Sync Them To The Main Repo **Even If** The Code Is Not Finished Or Fully Working
 - **If** The Project Dependencies Have Changed Since You Last Edited Code, You Will Need To Run `npm install` Again Before Working
 
+## Run A DEV Build
+- `ionic serve` - Runs Web Dev Server
+- `npm run start` - Runs Web Dev Server **If** `Ionic Serve` Doesn't Work
+
 ## Ignore For Now
 - Install Firebase Tools `npm install -g firebase-tools`
 - Install Firebase Modules `npm install firebase`
 
 ## Ionic Commands
-- `ionic serve` - Runs Web Dev Server
 - `ionic build` - Compile A Production Build
 - `ionic cap add android` - Create the Android Components Within the Project & Compile a Production Build
 - `ionic cap sync android` - Update the Android Components Within the Project & Compile a Production Build
