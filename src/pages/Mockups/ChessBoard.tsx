@@ -26,28 +26,29 @@ const ChessBoardMockup: React.FC = () => {
   // Variables like these are likely how we would move chess pieces around the board
   var testPiece: string = "/assets/images/ChessPieces/test.png";
   var testPieceBlank: string = "/assets/images/ChessPieces/blankSquare.png";
+  var testPawn: string = "/assets/images/ChessPieces/pawn.png";
   
   // Declaring backend ID based variables for each square on the chess board
   // These variables are how we place a piece of the chess board
   // There will be one variable for each chess piece and one variable for a blank square
   // The piece variables can then be assigned to a square to make the pieces move
-  const [sqrA1, setSqrA1] = useState<string>(testPiece);
-  const [sqrA2, setSqrA2] = useState<string>(testPiece);
-  const [sqrA3, setSqrA3] = useState<string>(testPiece);
-  const [sqrA4, setSqrA4] = useState<string>(testPiece);
-  const [sqrA5, setSqrA5] = useState<string>(testPiece);
-  const [sqrA6, setSqrA6] = useState<string>(testPiece);
-  const [sqrA7, setSqrA7] = useState<string>(testPiece);
-  const [sqrA8, setSqrA8] = useState<string>(testPiece);
+  var [sqrA1, setSqrA1] = useState<string>(testPiece);
+  var [sqrA2, setSqrA2] = useState<string>(testPiece);
+  var [sqrA3, setSqrA3] = useState<string>(testPiece);
+  var [sqrA4, setSqrA4] = useState<string>(testPiece);
+  var [sqrA5, setSqrA5] = useState<string>(testPiece);
+  var [sqrA6, setSqrA6] = useState<string>(testPiece);
+  var [sqrA7, setSqrA7] = useState<string>(testPiece);
+  var [sqrA8, setSqrA8] = useState<string>(testPiece);
   
-  const [sqrB1, setSqrB1] = useState<string>(testPiece);
-  const [sqrB2, setSqrB2] = useState<string>(testPiece);
-  const [sqrB3, setSqrB3] = useState<string>(testPiece);
-  const [sqrB4, setSqrB4] = useState<string>(testPiece);
-  const [sqrB5, setSqrB5] = useState<string>(testPiece);
-  const [sqrB6, setSqrB6] = useState<string>(testPiece);
-  const [sqrB7, setSqrB7] = useState<string>(testPiece);
-  const [sqrB8, setSqrB8] = useState<string>(testPiece);
+  const [sqrB1, setSqrB1] = useState<string>(testPawn);
+  const [sqrB2, setSqrB2] = useState<string>(testPawn);
+  const [sqrB3, setSqrB3] = useState<string>(testPawn);
+  const [sqrB4, setSqrB4] = useState<string>(testPawn);
+  const [sqrB5, setSqrB5] = useState<string>(testPawn);
+  const [sqrB6, setSqrB6] = useState<string>(testPawn);
+  const [sqrB7, setSqrB7] = useState<string>(testPawn);
+  const [sqrB8, setSqrB8] = useState<string>(testPawn);
 
   const [sqrC1, setSqrC1] = useState<string>(testPieceBlank);
   const [sqrC2, setSqrC2] = useState<string>(testPieceBlank);
@@ -85,14 +86,14 @@ const ChessBoardMockup: React.FC = () => {
   const [sqrF7, setSqrF7] = useState<string>(testPieceBlank);
   const [sqrF8, setSqrF8] = useState<string>(testPieceBlank);
 
-  const [sqrG1, setSqrG1] = useState<string>(testPiece);
-  const [sqrG2, setSqrG2] = useState<string>(testPiece);
-  const [sqrG3, setSqrG3] = useState<string>(testPiece);
-  const [sqrG4, setSqrG4] = useState<string>(testPiece);
-  const [sqrG5, setSqrG5] = useState<string>(testPiece);
-  const [sqrG6, setSqrG6] = useState<string>(testPiece);
-  const [sqrG7, setSqrG7] = useState<string>(testPiece);
-  const [sqrG8, setSqrG8] = useState<string>(testPiece);
+  const [sqrG1, setSqrG1] = useState<string>(testPawn);
+  const [sqrG2, setSqrG2] = useState<string>(testPawn);
+  const [sqrG3, setSqrG3] = useState<string>(testPawn);
+  const [sqrG4, setSqrG4] = useState<string>(testPawn);
+  const [sqrG5, setSqrG5] = useState<string>(testPawn);
+  const [sqrG6, setSqrG6] = useState<string>(testPawn);
+  const [sqrG7, setSqrG7] = useState<string>(testPawn);
+  const [sqrG8, setSqrG8] = useState<string>(testPawn);
 
   const [sqrH1, setSqrH1] = useState<string>(testPiece);
   const [sqrH2, setSqrH2] = useState<string>(testPiece);
@@ -102,6 +103,57 @@ const ChessBoardMockup: React.FC = () => {
   const [sqrH6, setSqrH6] = useState<string>(testPiece);
   const [sqrH7, setSqrH7] = useState<string>(testPiece);
   const [sqrH8, setSqrH8] = useState<string>(testPiece);
+
+  var [savePiece, setSavePiece] = useState<string>("")
+
+  function movePiece(placePiece: boolean, square: string, piece: string) {
+    console.log(placePiece); //! Remove later
+    if (square === "A1") {
+      if (placePiece === true) {setSqrA1(piece)}
+      if (placePiece === false) {setSqrA1(testPieceBlank)}
+    }
+    if (square === "A2") {
+      if (placePiece === true) {setSqrA2(piece)}
+      if (placePiece === false) {setSqrA2(testPieceBlank)}
+    }
+    if (square === "A3") {
+      if (placePiece === true) {setSqrA3(piece)}
+      if (placePiece === false) {setSqrA3(testPieceBlank)}
+    }
+    if (square === "A4") {
+      if (placePiece === true) {setSqrA4(piece)}
+      if (placePiece === false) {setSqrA4(testPieceBlank)}
+    }
+    if (square === "A5") {
+      if (placePiece === true) {setSqrA5(piece)}
+      if (placePiece === false) {setSqrA5(testPieceBlank)}
+    }
+    if (square === "A6") {
+      if (placePiece === true) {setSqrA6(piece)}
+      if (placePiece === false) {setSqrA6(testPieceBlank)}
+    }
+    if (square === "A7") {
+      if (placePiece === true) {setSqrA7(piece)}
+      if (placePiece === false) {setSqrA7(testPieceBlank)}
+    }
+    if (square === "A8") {
+      if (placePiece === true) {setSqrA8(piece)}
+      if (placePiece === false) {setSqrA8(testPieceBlank)}
+    }
+  }
+
+  function selectSquare(state: string, square: string) {
+    console.log("State = " + state); //! Remove later
+    if (state === testPiece || state === testPawn) {
+      movePiece(false, square, state);
+      setSavePiece(state);
+      savePiece = state;
+      console.log(savePiece); //! Remove later
+    } else {
+      console.log("Save = " + savePiece); //! Remove later
+      movePiece(true, square, savePiece);
+    }
+  }
 
   // JSX GUI code
   return (
@@ -158,28 +210,45 @@ const ChessBoardMockup: React.FC = () => {
         }
         <IonCard>
           <IonRow>
-            <IonCol className="blue-square" onClick={() => {console.log("A1")}}>
+            <IonCol className="blue-square" onClick={() => {
+              console.log("sqrA1 = " + sqrA1) //! Remove later
+              selectSquare(sqrA1,"A1");
+            }}>
               <img className='chess-piece' src={sqrA1}></img>
             </IonCol>
-            <IonCol className='white-square' onClick={() => {console.log("A2")}}>
+            <IonCol className='white-square' onClick={() => {
+              selectSquare(sqrA2,"A2");
+            }}>
               <img className='chess-piece' src={sqrA2}></img>
             </IonCol>
-            <IonCol className="blue-square" onClick={() => {console.log("A3")}}>
+            <IonCol className="blue-square" onClick={() => {
+              selectSquare(sqrA3,"A3");
+            }}>
               <img className='chess-piece' src={sqrA3}></img>
             </IonCol>
-            <IonCol className='white-square' onClick={() => {console.log("A4")}}>
+            <IonCol className='white-square' onClick={() => {
+              selectSquare(sqrA4,"A4");
+            }}>
               <img className='chess-piece' src={sqrA4}></img>
             </IonCol>
-            <IonCol className="blue-square" onClick={() => {console.log("A5")}}>
+            <IonCol className="blue-square" onClick={() => {
+              selectSquare(sqrA5,"A5");
+            }}>
               <img className='chess-piece' src={sqrA5}></img>
             </IonCol>
-            <IonCol className='white-square' onClick={() => {console.log("A6")}}>
+            <IonCol className='white-square' onClick={() => {
+              selectSquare(sqrA6,"A6");
+            }}>
               <img className='chess-piece' src={sqrA6}></img>
             </IonCol>
-            <IonCol className="blue-square" onClick={() => {console.log("A7")}}>
+            <IonCol className="blue-square" onClick={() => {
+              selectSquare(sqrA7,"A7");
+            }}>
               <img className='chess-piece' src={sqrA7}></img>
             </IonCol>
-            <IonCol className='white-square' onClick={() => {console.log("A8")}}>
+            <IonCol className='white-square' onClick={() => {
+              selectSquare(sqrA8,"A8");
+            }}>
               <img className='chess-piece' src={sqrA8}></img>
             </IonCol>
           </IonRow>
