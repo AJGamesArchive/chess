@@ -16,6 +16,7 @@
 ## Run A DEV Build
 - `ionic serve` - Runs Web Dev Server
 - `npm run start` - Runs Web Dev Server **If** `Ionic Serve` Doesn't Work
+- `CTRL+SHIFT+I` - Opens Chrome DEV Tools in your browser to allow you to see the console and view the app in mobile mode.
 
 ## Ignore For Now
 - Install Firebase Tools `npm install -g firebase-tools`
