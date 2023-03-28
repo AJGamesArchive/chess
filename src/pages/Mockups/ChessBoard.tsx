@@ -27,7 +27,9 @@ const ChessBoardMockup: React.FC = () => {
   var testPiece: string = "/assets/images/ChessPieces/test.png";
   var testPieceBlank: string = "/assets/images/ChessPieces/blankSquare.png";
   var testPawn: string = "/assets/images/ChessPieces/pawn.png";
-  
+
+  var [piecePick, setpiecePick] = useState<number>(0)
+
   // Declaring backend ID based variables for each square on the chess board
   // These variables are how we place a piece of the chess board
   // There will be one variable for each chess piece and one variable for a blank square
@@ -379,16 +381,32 @@ const ChessBoardMockup: React.FC = () => {
   // Function that checks what square was selected and works out whether a piece should be placed or removed and on what squares
   function selectSquare(state: string, square: string) {
     console.log("State = " + state); //! Remove later
-    if (state === testPiece || state === testPawn) { //? Remember to add new pieces into this OR statment, eventually swap it out for an array???
+    if (state === testPiece && piecePick === 0 || state === testPawn && piecePick === 0 )  { //? Remember to add new pieces into this OR statment, eventually swap it out for an array???
+      setpiecePick(1)
+      console.log(piecePick)
       movePiece(false, square, state);
       setSavePiece(state);
       savePiece = state;
       console.log(savePiece); //! Remove later
-    } else {
+    } else if (state === testPieceBlank && piecePick === 1 ){
       console.log("Save = " + savePiece); //! Remove later
       movePiece(true, square, savePiece);
+      setpiecePick(0)
     }
   }
+
+//functioon for the pawn piece 
+ function pawn(square: string)
+ {
+  if (square == "B1" || square == "B2" || square == "B3" || square == "B4" || square == "B5" || square == "B6" || square == "B7" || square == "B8")
+  {
+
+  }
+
+ }
+
+
+
 
   // JSX GUI code
   return (
