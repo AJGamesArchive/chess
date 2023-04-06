@@ -21,6 +21,7 @@
     "@types/react-router-dom": "^5.1.7",
     "chess.js": "^1.0.0-beta.4",
     "chessboardjsx": "^2.4.7",
+    "chessjs": "^0.0.1",
     "history": "^4.9.0",
     "howler": "^2.2.3",
     "ionicons": "^6.0.3",
