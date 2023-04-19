@@ -15,15 +15,8 @@ import {
   useIonRouter,
 } from '@ionic/react';
 import './ChessBoard.css';
-import ChessBoard from '../../components/ChessBoardMockup';
 
 const ChessBoardMockup: React.FC = () => {
-
-  // ChessBoardJSX library testing stuff
-  const [position, setPosition] = useState("start");
-  const handleDrop = (sourceSquare: string, targetSquare: string) => {
-    // Write code that handles the piece movement here
-  }
 
   // Setup navigation system on this page so we can call other pages
   // Powered by nav system in App.tsx
@@ -403,14 +396,14 @@ const ChessBoardMockup: React.FC = () => {
   }
 
 //functioon for the pawn piece 
- function pawn(square: string)
- {
-  if (square == "B1" || square == "B2" || square == "B3" || square == "B4" || square == "B5" || square == "B6" || square == "B7" || square == "B8")
+  function pawn(square: string)
   {
+    if (square === "B1" || square === "B2" || square === "B3" || square === "B4" || square === "B5" || square === "B6" || square === "B7" || square === "B8")
+    {
+
+    }
 
   }
-
- }
 
 
 
@@ -727,15 +720,6 @@ const ChessBoardMockup: React.FC = () => {
               <img className='chess-piece' src={sqrH8}></img>
             </IonCol>
           </IonRow>
-        </IonCard>
-
-        {
-          /*
-            ChessBoardJSXlibrary Chess board mockup
-          */
-        }
-        <IonCard>
-          <ChessBoard position={position} onDrop={handleDrop} width={380}></ChessBoard>
         </IonCard>
         
       </IonContent>
