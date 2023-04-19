@@ -4,6 +4,7 @@ import { IonReactRouter } from '@ionic/react-router';
 
 // Importing all app pages so they be put into the nav system
 import Home from './pages/Home';
+import MainMenu from './pages/MainMenu';
 import ChessBoardMockup from './pages/Mockups/ChessBoard';
 
 /* Core CSS required for Ionic components to work properly */
@@ -38,6 +39,9 @@ const App: React.FC = () => (
         </Route>
         <Route path="/home" exact={true}>
           <Home />
+        </Route>
+        <Route path="/mainMenu/:username" exact={true}>
+          <MainMenu />
         </Route>
         <Route path="/chessBoardMockup" exact={true}>
           <ChessBoardMockup />

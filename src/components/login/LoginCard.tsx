@@ -3,6 +3,8 @@ import { arrowBack, logIn } from 'ionicons/icons';
 import React from 'react';
 import './LoginCard.css';
 
+//TODO Add comments to this component at some point
+
 interface LoginProps {
   hidden: boolean;
   setHidden: (value: boolean) => void;

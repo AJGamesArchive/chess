@@ -3,6 +3,8 @@ import { addCircle, arrowBack } from 'ionicons/icons';
 import React from 'react';
 import './CreateAccountCard.css';
 
+//TODO Add comments to this component at some point
+
 interface CreateAccountProps {
   hidden: boolean;
   setHidden: (value: boolean) => void;

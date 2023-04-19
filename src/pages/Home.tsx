@@ -15,7 +15,7 @@ import {
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { hammer, logIn, addCircle } from 'ionicons/icons';
+import { logIn, addCircle, home } from 'ionicons/icons';
 import './Home.css';
 
 // Importing page components
@@ -98,10 +98,10 @@ const Home: React.FC = () => {
           <IonTitle className="home-header">
             Welcome!
           </IonTitle>
-          <IonButton slot="end" fill="clear" color="primary" onClick={() => {
-            nav.push(`/chessBoardMockup`);
+          <IonButton slot="end" fill="clear" color="danger" onClick={() => {
+            nav.push(`/mainMenu/DEV`);
           }}>
-            <IonIcon icon={hammer}></IonIcon>
+            <IonIcon icon={home}></IonIcon>
           </IonButton>
         </IonToolbar>
       </IonHeader>

@@ -1,10 +1,12 @@
 // Importing GUI components
 import { useState } from 'react';
 import {
+  IonButton,
   IonCard,
   IonCol,
   IonContent,
   IonHeader,
+  IonIcon,
   IonItem,
   IonLabel,
   IonPage,
@@ -15,6 +17,7 @@ import {
   useIonRouter,
 } from '@ionic/react';
 import './ChessBoard.css';
+import { hammer } from 'ionicons/icons';
 
 const ChessBoardMockup: React.FC = () => {
 
@@ -421,6 +424,11 @@ const ChessBoardMockup: React.FC = () => {
           <IonTitle>
             Chess Board Mockup
           </IonTitle>
+          <IonButton slot="end" fill="clear" color="danger" onClick={() => {
+            nav.push(`/mainMenu/DEV`);
+          }}>
+            <IonIcon icon={hammer}></IonIcon>
+          </IonButton>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -438,23 +446,6 @@ const ChessBoardMockup: React.FC = () => {
             Page Content Code
           */
         }
-
-        {
-          /*
-            DEV button that takes you to the home page
-          */
-        }
-        <IonCard onClick={() => {
-          nav.push('/Home');
-        }}>
-          <IonItem color="primary">
-            <IonLabel className="dev-button">
-              <IonText className="dev-button-text">
-                DEV Button To Home Page
-              </IonText>
-            </IonLabel>
-          </IonItem>
-        </IonCard>
 
         {
           /*
