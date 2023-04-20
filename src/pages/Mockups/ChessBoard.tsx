@@ -7,17 +7,14 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
-  IonItem,
-  IonLabel,
   IonPage,
   IonRow,
-  IonText,
   IonTitle,
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
 import './ChessBoard.css';
-import { hammer } from 'ionicons/icons';
+import { construct } from 'ionicons/icons';
 
 const ChessBoardMockup: React.FC = () => {
 
@@ -427,7 +424,7 @@ const ChessBoardMockup: React.FC = () => {
           <IonButton slot="end" fill="clear" color="danger" onClick={() => {
             nav.push(`/mainMenu/DEV`);
           }}>
-            <IonIcon icon={hammer}></IonIcon>
+            <IonIcon icon={construct}></IonIcon>
           </IonButton>
         </IonToolbar>
       </IonHeader>

@@ -1,5 +1,4 @@
 // Importing required library's
-import { useState } from 'react';
 import {
   IonButton,
   IonCard,
@@ -10,13 +9,14 @@ import {
   IonIcon,
   IonImg,
   IonItem,
+  IonLabel,
   IonPage,
   IonText,
   IonTitle,
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { logOut, hammer } from 'ionicons/icons';
+import { logOut, construct, trophy, man, gameController } from 'ionicons/icons';
 import './MainMenu.css';
 import { useParams } from 'react-router';
 
@@ -49,7 +49,7 @@ const MainMenu: React.FC = () => {
           <IonButton slot="end" fill="clear" color="danger" onClick={() => {
             nav.push(`/chessBoardMockup`);
           }}>
-            <IonIcon icon={hammer}></IonIcon>
+            <IonIcon icon={construct}></IonIcon>
           </IonButton>
           <IonButton slot="end" fill="clear" color="warning" href="/Home">
             <IonIcon icon={logOut}></IonIcon>
@@ -75,16 +75,17 @@ const MainMenu: React.FC = () => {
 
         <IonCard>
           <IonImg src="/assets/images/PageBanners/MenuPVPBanner.png"/>
-          <IonItem lines="full">
+          <IonItem button detail={false} lines="full" onClick={() => {
+            //TODO Insert code to go to PVP chessboard here
+            console.log("PVP Play");
+          }}>
             <IonCardTitle className="main-menu-card-header" color="dark">
               Play Against Player
             </IonCardTitle>
-            <IonButton slot="end" fill="outline" color="primary" onClick={() => {
-              //TODO Insert code to go to PVP chessboard here
-              console.log("PVP Play");
-            }}>
+            <IonLabel slot="end" color="primary">
               Play
-            </IonButton>
+            </IonLabel>
+            <IonIcon icon={man} slot="end" color="primary"></IonIcon>
           </IonItem>
           <IonCardContent>
             <IonText color="dark">
@@ -95,16 +96,38 @@ const MainMenu: React.FC = () => {
 
         <IonCard>
           <IonImg src="/assets/images/PageBanners/MenuPVEBanner.png"/>
-          <IonItem lines="full">
+          <IonItem button detail={false} lines="full" onClick={() => {
+            //TODO Insert code to go to PVE chessboard here
+            console.log("PVE Play");
+          }}>
             <IonCardTitle className="main-menu-card-header" color="dark">
               Play Against Computer
             </IonCardTitle>
-            <IonButton slot="end" fill="outline" color="primary" onClick={() => {
-              //TODO Insert code to go to PVP chessboard here
-              console.log("PVE Play");
-            }}>
+            <IonLabel slot="end" color="primary">
               Play
-            </IonButton>
+            </IonLabel>
+            <IonIcon icon={gameController} slot="end" color="primary"></IonIcon>
+          </IonItem>
+          <IonCardContent>
+            <IonText color="dark">
+              Write game mode description here.
+            </IonText>
+          </IonCardContent>
+        </IonCard>
+
+        <IonCard>
+          <IonImg src="/assets/images/PageBanners/MenuSettingsBanner.png"/>
+          <IonItem button detail={false} lines="full" onClick={() => {
+            //TODO Insert code to go to account settings page here
+            console.log("Go To Account Settings");
+          }}>
+            <IonCardTitle className="main-menu-card-header" color="dark">
+              Account Records
+            </IonCardTitle>
+            <IonLabel slot="end" color="primary">
+              View
+            </IonLabel>
+            <IonIcon icon={trophy} slot="end" color="primary"></IonIcon>
           </IonItem>
           <IonCardContent>
             <IonText color="dark">
