@@ -1,15 +1,9 @@
 // Importing required library's
 import {
   IonButton,
-  IonCard,
-  IonCardContent,
-  IonCardTitle,
   IonContent,
   IonHeader,
   IonIcon,
-  IonImg,
-  IonItem,
-  IonLabel,
   IonPage,
   IonText,
   IonTitle,
@@ -23,6 +17,9 @@ import { useParams } from 'react-router';
 // Importing the global paramaters needed for the app to function
 import { GlobalParams } from '../interfaces/GlobalParams';
 
+// Importing the needed components for the pages GUI
+import OptionCard from '../components/menu/OptionCard';
+
 const MainMenu: React.FC = () => {
 
   // Setup navigation system on this page so we can call other pages
@@ -32,7 +29,28 @@ const MainMenu: React.FC = () => {
   // Setting up the global paramaters needed for the app to function
   const params = useParams<GlobalParams>();
 
-  // JSX code for generating the login page GUI
+  // Function to control what page in the app each option card will send you to
+  function navController(connectionID: number) {
+    if (connectionID === 1) {
+      //TODO Insert code to go to PVP chessboard here
+      console.log("PVP Play");
+      return;
+    }
+    if (connectionID === 2) {
+      //TODO Insert code to go to PVE chessboard here
+      console.log("PVE Play");
+      return;
+    }
+    if (connectionID === 3) {
+      //TODO Insert code to go to account settings page here
+      console.log("Go To Account Settings");
+      return;
+    }
+    console.log("Main Menu Navigation Controller: Something Went Wrong!");
+    return;
+  }
+
+  // JSX code for generating the main menu page GUI
   return (
     <IonPage id="home-page">
       {
@@ -69,72 +87,39 @@ const MainMenu: React.FC = () => {
         {
           /*
             Page Content Code
-            TODO Add more comments to this page content later
+            The 'OptionCard' is a custom UI component that takes in the details of the option the user has and renders are card on the screen
           */
         }
 
-        <IonCard>
-          <IonImg src="/assets/images/PageBanners/MenuPVPBanner.png"/>
-          <IonItem button detail={false} lines="full" onClick={() => {
-            //TODO Insert code to go to PVP chessboard here
-            console.log("PVP Play");
-          }}>
-            <IonCardTitle className="main-menu-card-header" color="dark">
-              Play Against Player
-            </IonCardTitle>
-            <IonLabel slot="end" color="primary">
-              Play
-            </IonLabel>
-            <IonIcon icon={man} slot="end" color="primary"></IonIcon>
-          </IonItem>
-          <IonCardContent>
-            <IonText color="dark">
-              Write game mode description here.
-            </IonText>
-          </IonCardContent>
-        </IonCard>
+        <OptionCard
+          banner="/assets/images/PageBanners/MenuPVPBanner.png"
+          connectionID={1}
+          nav={navController}
+          title="Play Against Player"
+          buttonName="Play"
+          icon={man}
+          description="Write game mode description here."
+        />
 
-        <IonCard>
-          <IonImg src="/assets/images/PageBanners/MenuPVEBanner.png"/>
-          <IonItem button detail={false} lines="full" onClick={() => {
-            //TODO Insert code to go to PVE chessboard here
-            console.log("PVE Play");
-          }}>
-            <IonCardTitle className="main-menu-card-header" color="dark">
-              Play Against Computer
-            </IonCardTitle>
-            <IonLabel slot="end" color="primary">
-              Play
-            </IonLabel>
-            <IonIcon icon={gameController} slot="end" color="primary"></IonIcon>
-          </IonItem>
-          <IonCardContent>
-            <IonText color="dark">
-              Write game mode description here.
-            </IonText>
-          </IonCardContent>
-        </IonCard>
+        <OptionCard
+          banner="/assets/images/PageBanners/MenuPVEBanner.png"
+          connectionID={2}
+          nav={navController}
+          title="Play Against AI"
+          buttonName='Play'
+          icon={gameController}
+          description="Write game mode description here."
+        />
 
-        <IonCard>
-          <IonImg src="/assets/images/PageBanners/MenuSettingsBanner.png"/>
-          <IonItem button detail={false} lines="full" onClick={() => {
-            //TODO Insert code to go to account settings page here
-            console.log("Go To Account Settings");
-          }}>
-            <IonCardTitle className="main-menu-card-header" color="dark">
-              Account Records
-            </IonCardTitle>
-            <IonLabel slot="end" color="primary">
-              View
-            </IonLabel>
-            <IonIcon icon={trophy} slot="end" color="primary"></IonIcon>
-          </IonItem>
-          <IonCardContent>
-            <IonText color="dark">
-              Write game mode description here.
-            </IonText>
-          </IonCardContent>
-        </IonCard>
+        <OptionCard
+          banner="/assets/images/PageBanners/MenuSettingsBanner.png"
+          connectionID={3}
+          nav={navController}
+          title="Account Records"
+          buttonName='View'
+          icon={trophy}
+          description="Write game mode description here."
+        />
 
       </IonContent>
     </IonPage>

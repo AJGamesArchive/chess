@@ -11,12 +11,12 @@ import {
   useIonRouter,
 } from '@ionic/react';
 import { logOut } from 'ionicons/icons';
+import { useParams } from 'react-router';
 import './Game.css';
 
 // Importing required paramaters
 import { GlobalParams } from '../../interfaces/GlobalParams';
 import { ChessGameParams } from '../../interfaces/ChessGameParams';
-import { useParams } from 'react-router';
 
 // Importing page components
 
@@ -128,7 +128,7 @@ const ChessGame: React.FC = () => {
             <IonTitle className="game-header">
               Something Went Wrong
             </IonTitle>
-            <IonButton slot="end" fill="clear" color="danger" href="/Home">
+            <IonButton slot="end" fill="clear" color="warning" href="/Home">
               <IonIcon icon={logOut}></IonIcon>
             </IonButton>
           </IonToolbar>
