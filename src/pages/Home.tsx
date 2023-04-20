@@ -84,6 +84,28 @@ const Home: React.FC = () => {
   const [hiddenLogin, setHiddenLogin] = useState<boolean>(true);
   const [hiddenCreateAccount, setHiddenCreateAccount] = useState<boolean>(true);
 
+  // Function to control whether or not you've successfully logged in and are able to proceed to the main menu
+  function loginController(username: string, password: string, mode: number) {
+    if (mode === 1) {
+      if (Login(username, password)) {
+        nav.push(`/mainMenu/${username}`);
+        return;
+      }
+      //TODO Add something to give the user feedback if the login was unsuccessful
+      return;
+    }
+    if (mode === 2) {
+      //? Might need to change system so that it checks if the username is unique before going to the account creation function?
+      if (CreateAccount(username, password)) {
+        //TODO Insert code for what happens when an account is successfully created
+        return;
+      }
+      //TODO Add something to give the user feedback if the account creation was unsuccessful
+      return;
+    }
+    return;
+  }
+
   // JSX code for generating the login page GUI
   return (
     <IonPage id="home-page">
@@ -176,7 +198,7 @@ const Home: React.FC = () => {
           password={password}
           setPassword={setPassword}
           passwordTextColor={passwordTextColor}
-          onLogin={Login}
+          onLogin={loginController}
         />
 
         {
@@ -197,7 +219,7 @@ const Home: React.FC = () => {
           confirmPassword={confirmPassword}
           setConfirmPassword={setConfirmPassword}
           cfmPasswordTxtClr={cfmPasswordTxtClr}
-          onCreateAccount={CreateAccount}
+          onCreateAccount={loginController}
         />
 
       </IonContent>

@@ -19,7 +19,7 @@ interface CreateAccountProps {
   confirmPassword: string;
   setConfirmPassword: (value: string) => void;
   cfmPasswordTxtClr: string
-  onCreateAccount: (username: string, password: string) => void;
+  onCreateAccount: (username: string, password: string, mode: number) => void;
 }
 
 const CreateAccountCard: React.FC<CreateAccountProps> = ({ hidden, setHidden, setHiddenOptions, createUsername, setCreateUsername, crtUsernameTxtClr, createPassword, setCreatePassword, crtPasswordTxtClr, confirmPassword, setConfirmPassword, cfmPasswordTxtClr, onCreateAccount }) => {
@@ -79,7 +79,7 @@ const CreateAccountCard: React.FC<CreateAccountProps> = ({ hidden, setHidden, se
         />
       </IonItem>
       <IonItem button detail={false} lines="none" onClick={() => {
-        onCreateAccount(createUsername, createPassword);
+        onCreateAccount(createUsername, createPassword, 2);
       }}>
         <IonLabel slot="end" color="primary">
           Create Account

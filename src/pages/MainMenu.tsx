@@ -42,8 +42,7 @@ const MainMenu: React.FC = () => {
       return;
     }
     if (connectionID === 3) {
-      //TODO Insert code to go to account settings page here
-      console.log("Go To Account Settings");
+      nav.push(`/records/${params.username}`);
       return;
     }
     console.log("Main Menu Navigation Controller: Something Went Wrong!");

@@ -6,6 +6,8 @@ import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 import MainMenu from './pages/MainMenu';
 import ChessGame from './pages/ChessGame/Game';
+import Records from './pages/Records';
+
 import ChessBoardMockup from './pages/Mockups/ChessBoard';
 
 /* Core CSS required for Ionic components to work properly */
@@ -44,7 +46,10 @@ const App: React.FC = () => (
         <Route path="/mainMenu/:username" exact={true}>
           <MainMenu />
         </Route>
-        <Route path="/ChessGame/Game/:username/:mode/:opponent" exact={true}>
+        <Route path="/records/:username" exact={true}>
+          <Records />
+        </Route>
+        <Route path="/game/:username/:mode/:opponent" exact={true}>
           <ChessGame />
         </Route>
         <Route path="/chessBoardMockup" exact={true}>
