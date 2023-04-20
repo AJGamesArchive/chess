@@ -10,7 +10,7 @@ import {
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { logOut } from 'ionicons/icons';
+import { logOut, hammer } from 'ionicons/icons';
 import { useParams } from 'react-router';
 import './Game.css';
 
@@ -22,7 +22,7 @@ import { ChessGameParams } from '../../interfaces/ChessGameParams';
 
 
 // Importing page functions
-
+import { CreateBoard } from '../../functions/chessboard/CreateBoard';
 
 const ChessGame: React.FC = () => {
 
@@ -33,6 +33,9 @@ const ChessGame: React.FC = () => {
   // Fetching imported paramaters
   const params = useParams<GlobalParams>();
   const game = useParams<ChessGameParams>();
+
+  // Creates initial state of chess game and stores it in a 2D array
+  var chessboard: any[][] = CreateBoard("#FFFFFF", "#42b883");
 
   // IF statement to render page GUI differently depending on what game mode is selected
   if (game.mode === "PVP") {
@@ -50,6 +53,11 @@ const ChessGame: React.FC = () => {
             <IonTitle className="game-header">
               Chess: <IonText color="primary">{params.username}</IonText> VS <IonText color="primary">{game.opponent}</IonText>!
             </IonTitle>
+            <IonButton slot="end" fill="clear" color="danger" onClick={() => {
+              console.log(chessboard);
+            }}>
+              <IonIcon icon={hammer}></IonIcon>
+            </IonButton>
             <IonButton slot="end" fill="clear" color="danger" href="/Home">
               <IonIcon icon={logOut}></IonIcon>
             </IonButton>

@@ -34,6 +34,7 @@ const MainMenu: React.FC = () => {
     if (connectionID === 1) {
       //TODO Insert code to go to PVP chessboard here
       console.log("PVP Play");
+      nav.push(`/game/${params.username}/PVP/Someone`);
       return;
     }
     if (connectionID === 2) {
