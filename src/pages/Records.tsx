@@ -16,16 +16,17 @@ import {
 import { home, arrowBack } from 'ionicons/icons';
 import './Records.css';
 import { useParams } from 'react-router';
+import { useState } from 'react';
 
 // Importing the global paramaters needed for the app to function
 import { GlobalParams } from '../interfaces/GlobalParams';
 
 // Importing the needed components for the pages GUI
 import AccountVerifyCard from '../components/records/AccountVerifyCard';
+import GameRecord from '../components/records/GameRecord';
 
 // Importing the required function for this page
 import { Login } from '../functions/login/Login';
-import { useState } from 'react';
 
 const Records: React.FC = () => {
 
@@ -48,6 +49,9 @@ const Records: React.FC = () => {
   } else {
     passwordTextColor = "success";
   }
+
+  //! TRINITY
+  var title: string = "Title";
 
   // React variables to control the visibility of the certain UI components
   const [hiddenPassVerifier, setHiddenPassVerifier] = useState<boolean>(false);
@@ -128,6 +132,18 @@ const Records: React.FC = () => {
             </IonButton>
           </IonItem>
         </IonCard>
+
+        {
+          /*
+            ! TRINITY
+          */
+        }
+
+        <GameRecord
+          hiddenRecords={hiddenRecords}
+          setHiddenRecords={setHiddenRecords}
+          title={title}
+        />
 
       </IonContent>
     </IonPage>

@@ -7,27 +7,19 @@ export function pawnPiece(sourceSquare: any, targetSquare: any): boolean{
   {
     if ((targetSquare.piece.type !== "Blank" && ( targetSquare.col === (sourceSquare.col + 1) || targetSquare.col === (sourceSquare.col - 1 ))&& (targetSquare.row === sourceSquare.row + 1)))
     {
-      // setChessboard(updateBoard(sourceSquare, targetSquare, chessboard));
-      // setIsSourceSelected(false);
       return true;
     }
     else if ((targetSquare.row > sourceSquare.row && targetSquare.row < (sourceSquare.row + 3)) && (targetSquare.col === sourceSquare.col) && (targetSquare.piece.type === "Blank"))
     {
-      // setChessboard(updateBoard(sourceSquare, targetSquare, chessboard));
-      // setIsSourceSelected(false);
       return true;
     }
   }
   if ((targetSquare.piece.type !== "Blank" && ( targetSquare.col === (sourceSquare.col + 1) || targetSquare.col === (sourceSquare.col - 1 ))&& (targetSquare.row === sourceSquare.row + 1)))
   {
-    // setChessboard(updateBoard(sourceSquare, targetSquare, chessboard));
-    // setIsSourceSelected(false);
     return true;
   }
   else if ((targetSquare.row > sourceSquare.row && targetSquare.row < (sourceSquare.row + 2)) && (targetSquare.col === sourceSquare.col) && (targetSquare.piece.type === "Blank"))
   {
-    // setChessboard(updateBoard(sourceSquare, targetSquare, chessboard));
-    // setIsSourceSelected(false);
     return true;
   }
   }
@@ -38,30 +30,23 @@ export function pawnPiece(sourceSquare: any, targetSquare: any): boolean{
     {
       if ((targetSquare.piece.type !== "Blank" && ( targetSquare.col === (sourceSquare.col + 1) || targetSquare.col === (sourceSquare.col - 1) )&& (targetSquare.row === sourceSquare.row - 1)))
       {
-      // setChessboard(updateBoard(sourceSquare, targetSquare, chessboard));
-      // setIsSourceSelected(false);
       return true;
       }
     else if ((targetSquare.row < sourceSquare.row && targetSquare.row > (sourceSquare.row - 3)) && (targetSquare.col === sourceSquare.col) && (targetSquare.piece.type === "Blank"))
      {
-      // setChessboard(updateBoard(sourceSquare, targetSquare, chessboard));
-      // setIsSourceSelected(false);
       return true;
      }
     }
     if ((targetSquare.piece.type !== "Blank" && ( targetSquare.col === (sourceSquare.col + 1) || targetSquare.col === (sourceSquare.col - 1) )&& (targetSquare.row === sourceSquare.row - 1)))
     {
-    // setChessboard(updateBoard(sourceSquare, targetSquare, chessboard));
-    // setIsSourceSelected(false);
     return true;
     }
     else if ((targetSquare.row < sourceSquare.row && targetSquare.row > (sourceSquare.row - 2)) && (targetSquare.col === sourceSquare.col) && (targetSquare.piece.type === "Blank"))
     {
-    // setChessboard(updateBoard(sourceSquare, targetSquare, chessboard));
-    // setIsSourceSelected(false);
     return true;
     }
   }
   
+  //TODO Currently you can take piece of your own color, that needs fixing
   return false;
 }
