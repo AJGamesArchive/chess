@@ -19,7 +19,7 @@ import { GlobalParams } from '../../interfaces/GlobalParams';
 import { ChessGameParams } from '../../interfaces/ChessGameParams';
 
 // Importing page components
-
+import ChessBoard from '../../components/chessboard/Board';
 
 // Importing page functions
 import { CreateBoard } from '../../functions/chessboard/CreateBoard';
@@ -35,7 +35,7 @@ const ChessGame: React.FC = () => {
   const game = useParams<ChessGameParams>();
 
   // Creates initial state of chess game and stores it in a 2D array
-  var chessboard: any[][] = CreateBoard("#FFFFFF", "#42b883");
+  var chessboard: any[][] = CreateBoard("white", "green");
 
   // IF statement to render page GUI differently depending on what game mode is selected
   if (game.mode === "PVP") {
@@ -78,6 +78,10 @@ const ChessGame: React.FC = () => {
               Page Content Code
             */
           }
+
+          <ChessBoard
+            board={chessboard}
+          />
 
         </IonContent>
       </IonPage>
