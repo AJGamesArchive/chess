@@ -1,4 +1,4 @@
-.square-green {
+/* .square-green {
     color: #42b883;
     background-color: #42b883;
 }
@@ -6,4 +6,9 @@
 .square-white {
     color: #FFFFFF;
     background-color: #FFFFFF;
+} */
+
+.square-piece {
+    height: 40px;
+    width: 40px;
 }

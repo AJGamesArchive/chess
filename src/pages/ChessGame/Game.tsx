@@ -35,7 +35,7 @@ const ChessGame: React.FC = () => {
   const game = useParams<ChessGameParams>();
 
   // Creates initial state of chess game and stores it in a 2D array
-  var chessboard: any[][] = CreateBoard("white", "green");
+  var chessboard: any[][] = CreateBoard("#FFFFFF", "#42b883");
 
   // IF statement to render page GUI differently depending on what game mode is selected
   if (game.mode === "PVP") {

@@ -15,15 +15,12 @@ interface MenuOptionProps {
 const ChessBoard: React.FC<MenuOptionProps> = ({ board }) => {
   // JSX code for...
   return (
-    <IonGrid>
+    <IonGrid fixed={true}>
       {board.map((row, rowIndex) => (
         <IonRow key={rowIndex}>
           {row.map((square, colIndex) => (
-            <IonCol key={`${rowIndex}-${colIndex}`} size="3">
+            <IonCol style={{backgroundColor: `${square.color}`}} key={`${rowIndex}-${colIndex}`}>
               <Square
-                row={rowIndex}
-                col={colIndex}
-                color={square.color}
                 piece={square.piece}
               />
             </IonCol>

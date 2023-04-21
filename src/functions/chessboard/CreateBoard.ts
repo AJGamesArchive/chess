@@ -25,7 +25,7 @@ function getPiece(char: string) {
     case "p":
       return {type: "Pawn", color: "black"};
     default:
-      return null;
+      return {type: "Blank", color: "any"};
   };
 };
 
@@ -41,7 +41,7 @@ export function CreateBoard(lightSquareClr: string, darkSquareClr: string): any[
     "        ",
     "        ",
     "pppppppp",
-    "rnbqkbne"
+    "rnbqkbnr"
   ];
 
   const chessBoard = new Array(Rows);
