@@ -24,5 +24,6 @@
         "Firestore",
         "ionicons",
         "paramaters"
-    ]
+    ],
+    "FSharp.suggestGitignore": false
 }
