@@ -40,6 +40,7 @@ const MainMenu: React.FC = () => {
     if (connectionID === 2) {
       //TODO Insert code to go to PVE chessboard here
       console.log("PVE Play");
+      nav.push(`/game/${params.username}/PVE/None`);
       return;
     }
     if (connectionID === 3) {

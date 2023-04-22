@@ -42,8 +42,18 @@ const ChessGame: React.FC = () => {
   const params = useParams<GlobalParams>();
   const game = useParams<ChessGameParams>();
 
+  // Working out the color of the dark squares on the chessboard based on the selected game mode
+  var darkSquareColor: string;
+  if (game.mode === "PVP") {
+    darkSquareColor = "#50c8ff";
+  } else if (game.mode === "PVE") {
+    darkSquareColor = "#42b883";
+  } else {
+    darkSquareColor = "#ff7072";
+  }
+
   // React variable creates initial state of chess game and stores it in a 2D array
-  const [chessboard, setChessboard] = useState(CreateBoard("#FFFFFF", "#42b883"));
+  const [chessboard, setChessboard] = useState(CreateBoard("#FFFFFF", darkSquareColor));
 
   useEffect(() => {
     setChessboard(chessboard);
@@ -56,7 +66,7 @@ const ChessGame: React.FC = () => {
   const [isSourceSelect, setIsSourceSelected] = useState<boolean>(false);
 
   // Declaring variables to; store the color used to highlight squares, and store the base color of the square being highlighted
-  const [highlighter, setHighlighter] = useState<string>("#eeff00");
+  const [highlighter] = useState<string>("#eeff00");
   const [preHighlight, setPreHighlight] = useState<string>("");
 
   // Declaring variables to store source and target squares selected on the board for each move
@@ -210,6 +220,11 @@ const ChessGame: React.FC = () => {
             <IonTitle className="game-header">
               Chess: <IonText color="primary">{params.username}</IonText> VS <IonText color="primary">Computer</IonText>!
             </IonTitle>
+            <IonButton slot="end" fill="clear" color="danger" onClick={() => {
+              console.log(chessboard);
+            }}>
+              <IonIcon icon={hammer}></IonIcon>
+            </IonButton>
             <IonButton slot="end" fill="clear" color="danger" href="/Home">
               <IonIcon icon={logOut}></IonIcon>
             </IonButton>
