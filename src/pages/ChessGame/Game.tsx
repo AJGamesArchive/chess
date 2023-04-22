@@ -110,28 +110,29 @@ const ChessGame: React.FC = () => {
       }
       // Guard statement to check if the selected square does not have a piece, will return is square is not empty
       // if (square.piece.type !== "Blank") {return;} //? May not be needed??? This validation is handled by the individual piece functions?
+      // Finds what piece is being moved and calls corresponding function
       if (sourceSquare.piece.type === "Pawn") {
-        // Check if the selected move is valid, will return if move is not valid
+        // Guard statement to check if the selected move is valid, will return if move is not valid
         if (!pawnPiece(sourceSquare, square)) {return;}
       }
       if (sourceSquare.piece.type === "Rook") {
-        // Check if the selected move is valid, will return if move is not valid
+        // Guard statement to check if the selected move is valid, will return if move is not valid
         if (!rookPiece(sourceSquare, square)) {return;}
       }
       if (sourceSquare.piece.type === "Knight") {
-        // Check if the selected move is valid, will return if move is not valid
+        // Guard statement to check if the selected move is valid, will return if move is not valid
         if (!knightPiece(sourceSquare, square)) {return;}
       }
       if (sourceSquare.piece.type === "Bishop") {
-        // Check if the selected move is valid, will return if move is not valid
+        // Guard statement to check if the selected move is valid, will return if move is not valid
         if (!bishopPiece(sourceSquare, square)) {return;}
       }
       if (sourceSquare.piece.type === "Queen") {
-        // Check if the selected move is valid, will return if move is not valid
+        // Guard statement to check if the selected move is valid, will return if move is not valid
         if (!queenPiece(sourceSquare, square)) {return;}
       }
       if (sourceSquare.piece.type === "King") {
-        // Check if the selected move is valid, will return if move is not valid
+        // Guard statement to check if the selected move is valid, will return if move is not valid
         if (!kingPiece(sourceSquare, square)) {return;}
       }
       // Move the piece from the source square to the target square
@@ -152,7 +153,7 @@ const ChessGame: React.FC = () => {
       return;
     }
     console.log("Something Went Wrong!"); //! Remove this later
-    return;
+    return; //! And remove this if it cannot be triggered
   }
 
   // IF statement to render page GUI differently depending on what game mode is selected
@@ -255,7 +256,7 @@ const ChessGame: React.FC = () => {
       </IonPage>
     );
   } else {
-    // JSX code for generating the chess game GUI for no selected mode
+    // JSX code for generating the chess game GUI for no selected mode //TODO Turn this into a 'what to do next' page that's called when a chess game finishes
     return (
       <IonPage id="game-page">
         {

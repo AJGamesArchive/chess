@@ -34,13 +34,13 @@ const MainMenu: React.FC = () => {
     if (connectionID === 1) {
       //TODO Insert code to go to PVP chessboard here
       console.log("PVP Play");
-      nav.push(`/game/${params.username}/PVP/Someone`);
+      nav.push(`/game/${params.username}/PVP/Someone/black}`);
       return;
     }
     if (connectionID === 2) {
       //TODO Insert code to go to PVE chessboard here
       console.log("PVE Play");
-      nav.push(`/game/${params.username}/PVE/None`);
+      nav.push(`/game/${params.username}/PVE/None/black`);
       return;
     }
     if (connectionID === 3) {

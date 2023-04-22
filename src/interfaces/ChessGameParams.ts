@@ -2,4 +2,5 @@
 export interface ChessGameParams {
   mode: string;
   opponent: string;
+  opponentColor: string;
 }

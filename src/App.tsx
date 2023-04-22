@@ -49,7 +49,7 @@ const App: React.FC = () => (
         <Route path="/records/:username" exact={true}>
           <Records />
         </Route>
-        <Route path="/game/:username/:mode/:opponent" exact={true}>
+        <Route path="/game/:username/:mode/:opponent/:opponentColor" exact={true}>
           <ChessGame />
         </Route>
         <Route path="/chessBoardMockup" exact={true}>
