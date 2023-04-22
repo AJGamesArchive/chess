@@ -1,7 +1,11 @@
 // function for checking if the selected piece destination is legal for the pawn
 export function pawnPiece(sourceSquare: any, targetSquare: any): boolean{
   //checks if its the pawns first move and if yes allows it to move up to two squares forward
-  if (sourceSquare.piece.color === "white")
+  if (sourceSquare.piece.color === targetSquare.piece.color)
+  {
+    return false;
+  }
+  else if (sourceSquare.piece.color === "white")
   {
     if (sourceSquare.row === 1)
   {
@@ -24,7 +28,11 @@ export function pawnPiece(sourceSquare: any, targetSquare: any): boolean{
   }
   }
 
-  if (sourceSquare.piece.color === "black")
+  if (sourceSquare.piece.color === targetSquare.piece.color)
+  {
+    return false;
+  }
+  else if (sourceSquare.piece.color === "black")
   {
     if (sourceSquare.row === 6)
     {

@@ -1,5 +1,9 @@
 export function rookPiece(sourceSquare: any, targetSquare: any): boolean {
-  if ((sourceSquare.row === targetSquare.row || sourceSquare.col === targetSquare.col ))
+  if (sourceSquare.piece.color === targetSquare.piece.color)
+  {
+    return false;
+  }
+  else if ((sourceSquare.row === targetSquare.row || sourceSquare.col === targetSquare.col ))
   {
     return true;
   }
