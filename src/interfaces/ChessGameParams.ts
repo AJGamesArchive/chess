@@ -4,3 +4,8 @@ export interface ChessGameParams {
   opponent: string;
   opponentColor: string;
 }
+
+// Declaring chess game setup paramaters
+export interface ChessGameSetupParams {
+  mode: string;
+}

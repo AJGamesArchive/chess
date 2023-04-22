@@ -11,8 +11,8 @@ import {
   useIonRouter,
 } from '@ionic/react';
 import { logOut, construct, trophy, man, gameController } from 'ionicons/icons';
-import './MainMenu.css';
 import { useParams } from 'react-router';
+import './MainMenu.css';
 
 // Importing the global paramaters needed for the app to function
 import { GlobalParams } from '../interfaces/GlobalParams';
@@ -32,15 +32,11 @@ const MainMenu: React.FC = () => {
   // Function to control what page in the app each option card will send you to
   function navController(connectionID: number) {
     if (connectionID === 1) {
-      //TODO Insert code to go to PVP chessboard here
-      console.log("PVP Play");
-      nav.push(`/game/${params.username}/PVP/Someone/black}`);
+      nav.push(`/setup/${params.username}/PVP`);
       return;
     }
     if (connectionID === 2) {
-      //TODO Insert code to go to PVE chessboard here
-      console.log("PVE Play");
-      nav.push(`/game/${params.username}/PVE/None/black`);
+      nav.push(`/setup/${params.username}/PVE`);
       return;
     }
     if (connectionID === 3) {

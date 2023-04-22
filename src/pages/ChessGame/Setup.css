@@ -1,0 +1,16 @@
+.setup-header {
+  font-weight: bold;
+  text-align: center;
+}
+
+.setup-card-header {
+  font-weight: bold;
+}
+
+.setup-button-card-blue {
+  border-left: 8px solid var(--ion-color-primary);
+}
+
+.setup-button-card-yellow {
+  border-left: 8px solid var(--ion-color-warning);
+}

@@ -1,12 +1,14 @@
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+import './App.css';
 
 // Importing all app pages so they be put into the nav system
 import Home from './pages/Home';
 import MainMenu from './pages/MainMenu';
 import ChessGame from './pages/ChessGame/Game';
 import Records from './pages/Records';
+import GameSetup from './pages/ChessGame/Setup';
 
 import ChessBoardMockup from './pages/Mockups/ChessBoard';
 
@@ -48,6 +50,9 @@ const App: React.FC = () => (
         </Route>
         <Route path="/records/:username" exact={true}>
           <Records />
+        </Route>
+        <Route path="/setup/:username/:mode" exact={true}>
+          <GameSetup />
         </Route>
         <Route path="/game/:username/:mode/:opponent/:opponentColor" exact={true}>
           <ChessGame />
