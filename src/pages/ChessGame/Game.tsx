@@ -24,6 +24,10 @@ import { ChessGameParams } from '../../interfaces/ChessGameParams';
 // Importing page components
 import ChessBoard from '../../components/chessboard/Board';
 
+// Importing page types
+import { CheckDetails } from '../../types/chessboard/CheckDetails';
+import { CheckSquare } from '../../types/chessboard/CheckDetails';
+
 // Importing page functions
 import { CreateBoard } from '../../functions/chessboard/CreateBoard';
 import { updateBoard } from '../../functions/chessboard/UpdateBoard';
@@ -38,6 +42,8 @@ import { kingPiece } from '../../functions/chessboard/King';
 
 import { isCastleing } from '../../functions/chessboard/Castleing';
 import { carryOutCastleing } from '../../functions/chessboard/Castleing';
+import { checkEvaluation } from '../../functions/chessboard/Check';
+import { checkHighlight } from '../../functions/chessboard/CheckHighlight';
 
 const ChessGame: React.FC = () => {
 
@@ -76,6 +82,15 @@ const ChessGame: React.FC = () => {
   const [highlighter] = useState<string>("#eeff00");
   const [checkHighlighter, setCheckHighlighter] = useState<string>("#fc8c03");
   const [checkMateHighlighter, setCheckMateHighlighter] = useState<string>("#eb3b3b");
+
+  // Declaring React variable to store the state of check at the end of each move
+  const [check, setCheck] = useState<CheckDetails>({
+    selfInCheck: false, 
+    opponentInCheck: false,
+    colorInCheck: "",
+    kingInCheckSquare: {row: -1, col: -1},
+    puttingInCheckSquare: []
+  });
 
   // Declaring variables to store source and target squares selected on the board for each move
   const [sourceSquare, setSourceSquare] = useState({row: NaN, col: NaN, piece: {type: "Blank", color: "any"}, color: ""});
@@ -116,40 +131,81 @@ const ChessGame: React.FC = () => {
         return;
       }
 
-      // Check if the player is castleing
+      // Check if the player is castleing;
       if (isCastleing(sourceSquare, square, chessboard)) {
         // Carry out the castleing move on the chess board
-        setChessboard(carryOutCastleing(turn, chessboard));
+        let newChessboard: any[][] = carryOutCastleing(turn, chessboard);
+        // Check if any one is in check and color squares accordingly
+        const checkDetails: CheckDetails = checkEvaluation(sourceSquare, square, newChessboard);
+        if (checkDetails.selfInCheck) {return;}
+        if (checkDetails.colorInCheck === check.colorInCheck) {return;}
+        if (checkDetails.opponentInCheck) {
+          // Checks if any squares are in the check highlighter and highlights them
+          if (check.opponentInCheck) {
+            newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, false);
+          };
+          // Highlight squares to show who is in check and where from
+          newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, true);
+        } else {
+          // Checks if any squares are in the check highlighter and highlights them
+          if (check.opponentInCheck) {
+            newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, false);
+          };
+        };
+        // Save the check state from this piece move
+        setCheck(checkDetails);
+        // Update chessboard GUI
+        setChessboard(newChessboard);
       } else {
         // Finds what piece is being moved and calls corresponding function
         if (sourceSquare.piece.type === "Pawn") {
           // Guard statement to check if the selected move is valid, will return if move is not valid
           if (!pawnPiece(sourceSquare, square)) {return;}
-        }
+        };
         if (sourceSquare.piece.type === "Rook") {
           // Guard statement to check if the selected move is valid, will return if move is not valid
           if (!rookPiece(sourceSquare, square)) {return;}
-        }
+        };
         if (sourceSquare.piece.type === "Knight") {
           // Guard statement to check if the selected move is valid, will return if move is not valid
           if (!knightPiece(sourceSquare, square)) {return;}
-        }
+        };
         if (sourceSquare.piece.type === "Bishop") {
           // Guard statement to check if the selected move is valid, will return if move is not valid
           if (!bishopPiece(sourceSquare, square)) {return;}
-        }
+        };
         if (sourceSquare.piece.type === "Queen") {
           // Guard statement to check if the selected move is valid, will return if move is not valid
           if (!queenPiece(sourceSquare, square)) {return;}
-        }
+        };
         if (sourceSquare.piece.type === "King") {
           // Guard statement to check if the selected move is valid, will return if move is not valid
           if (!kingPiece(sourceSquare, square)) {return;}
-        }
+        };
         // Move the piece from the source square to the target square
-        setChessboard(updateBoard(sourceSquare, square, chessboard));
-      }
-      
+        let newChessboard: any[][] = updateBoard(sourceSquare, square, chessboard);
+        // Check if any one is in check and color squares accordingly
+        const checkDetails: CheckDetails = checkEvaluation(sourceSquare, square, newChessboard);
+        if (checkDetails.selfInCheck) {return;}
+        if (checkDetails.colorInCheck === check.colorInCheck) {return;}
+        if (checkDetails.opponentInCheck) {
+          // Checks if any squares are in the check highlighter and highlights them
+          if (check.opponentInCheck) {
+            newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, false);
+          };
+          // Highlight squares to show who is in check and where from
+          newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, true);
+        } else {
+          // Checks if any squares are in the check highlighter and highlights them
+          if (check.opponentInCheck) {
+            newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, false);
+          };
+        };
+        // Save the check state from this piece move
+        setCheck(checkDetails);
+        // Update chessboard GUI
+        setChessboard(newChessboard);
+      };
       // Tell the system that there is no longer a source square selected
       setIsSourceSelected(false);
       // Updates main game array to un-highlight the selected source square
