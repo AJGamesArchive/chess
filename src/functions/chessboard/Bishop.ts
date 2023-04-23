@@ -1,4 +1,5 @@
 export function bishopPiece(sourceSquare: any, targetSquare: any): boolean {
+  
   if (sourceSquare.piece.color === targetSquare.piece.color)
   {
     return false;
