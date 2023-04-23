@@ -11,6 +11,7 @@ import {
   IonItem,
   IonLabel,
   IonPage,
+  IonText,
   IonTitle,
   IonToolbar,
   useIonRouter,
@@ -168,8 +169,9 @@ const Home: React.FC = () => {
             setHiddenLogin(false);
           }}>
             <IonLabel>
-              Login
+              Login to my Account
             </IonLabel>
+            <IonText slot="end" color="primary">Login</IonText>
             <IonIcon slot="end" color="primary" icon={logIn}></IonIcon>
           </IonItem>
           <IonItem button lines="none" detail={false} onClick={() => {
@@ -177,8 +179,9 @@ const Home: React.FC = () => {
             setHiddenCreateAccount(false);
           }}>
             <IonLabel>
-              Create an New Account
+              Create a New Account
             </IonLabel>
+            <IonText slot="end" color="primary">Create</IonText>
             <IonIcon slot="end" color="primary" icon={addCircle}></IonIcon>
           </IonItem>
         </IonCard>
