@@ -27,6 +27,7 @@ import ChessBoard from '../../components/chessboard/Board';
 // Importing page functions
 import { CreateBoard } from '../../functions/chessboard/CreateBoard';
 import { updateBoard } from '../../functions/chessboard/UpdateBoard';
+import { resetSquareColor } from '../../functions/chessboard/ResetSquareColor';
 import { pawnPiece } from '../../functions/chessboard/Pawn';
 import { rookPiece } from '../../functions/chessboard/Rook';
 import { knightPiece } from '../../functions/chessboard/Knight';
@@ -67,9 +68,10 @@ const ChessGame: React.FC = () => {
   // Declaring variable to keep track of whether or not a source square has been selected
   const [isSourceSelect, setIsSourceSelected] = useState<boolean>(false);
 
-  // Declaring variables to; store the color used to highlight squares, and store the base color of the square being highlighted
+  // Declaring variables to store the color used to highlight squares
   const [highlighter] = useState<string>("#eeff00");
-  const [preHighlight, setPreHighlight] = useState<string>("");
+  const [checkHighlighter, setCheckHighlighter] = useState<string>("#fc8c03");
+  const [checkMateHighlighter, setCheckMateHighlighter] = useState<string>("#eb3b3b");
 
   // Declaring variables to store source and target squares selected on the board for each move
   const [sourceSquare, setSourceSquare] = useState({row: NaN, col: NaN, piece: {type: "Blank", color: "any"}, color: ""});
@@ -93,7 +95,6 @@ const ChessGame: React.FC = () => {
       // Updates main game array to highlight the selected source square
       let newChessboard = Array.from(chessboard);
       let updateSquare = newChessboard[square.row][square.col];
-      setPreHighlight(updateSquare.color);
       updateSquare.color = highlighter;
       setChessboard(newChessboard);
       return;
@@ -106,12 +107,10 @@ const ChessGame: React.FC = () => {
         // Updates main game array to un-highlight the selected source square
         let newChessboard = Array.from(chessboard);
         let updateSquare = newChessboard[sourceSquare.row][sourceSquare.col];
-        updateSquare.color = preHighlight;
+        updateSquare.color = resetSquareColor("#FFFFFF", darkSquareColor, updateSquare);
         setChessboard(newChessboard);
         return;
       }
-      // Guard statement to check if the selected square does not have a piece, will return is square is not empty
-      // if (square.piece.type !== "Blank") {return;} //? May not be needed??? This validation is handled by the individual piece functions?
       // Finds what piece is being moved and calls corresponding function
       if (sourceSquare.piece.type === "Pawn") {
         // Guard statement to check if the selected move is valid, will return if move is not valid
@@ -144,7 +143,7 @@ const ChessGame: React.FC = () => {
       // Updates main game array to un-highlight the selected source square
       let newChessboard = Array.from(chessboard);
       let updateSquare = newChessboard[sourceSquare.row][sourceSquare.col];
-      updateSquare.color = preHighlight;
+      updateSquare.color = resetSquareColor("#FFFFFF", darkSquareColor, updateSquare);
       setChessboard(newChessboard);
       // Switch to the other players turn
       if (turn === "w") {
