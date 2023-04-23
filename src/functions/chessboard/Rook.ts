@@ -7,6 +7,7 @@ export function rookPiece(sourceSquare: any, targetSquare: any): boolean {
   {
     return true;
   }
+  
   // This function takes in the source square and target square for a move
   // This function needs to validate that this move is valid for this piece
   // Return true if move is valid
