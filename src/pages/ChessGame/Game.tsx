@@ -28,12 +28,16 @@ import ChessBoard from '../../components/chessboard/Board';
 import { CreateBoard } from '../../functions/chessboard/CreateBoard';
 import { updateBoard } from '../../functions/chessboard/UpdateBoard';
 import { resetSquareColor } from '../../functions/chessboard/ResetSquareColor';
+
 import { pawnPiece } from '../../functions/chessboard/Pawn';
 import { rookPiece } from '../../functions/chessboard/Rook';
 import { knightPiece } from '../../functions/chessboard/Knight';
 import { bishopPiece } from '../../functions/chessboard/Bishop';
 import { queenPiece } from '../../functions/chessboard/Queen';
 import { kingPiece } from '../../functions/chessboard/King';
+
+import { isCastleing } from '../../functions/chessboard/Castleing';
+import { carryOutCastleing } from '../../functions/chessboard/Castleing';
 
 const ChessGame: React.FC = () => {
 
@@ -111,33 +115,41 @@ const ChessGame: React.FC = () => {
         setChessboard(newChessboard);
         return;
       }
-      // Finds what piece is being moved and calls corresponding function
-      if (sourceSquare.piece.type === "Pawn") {
-        // Guard statement to check if the selected move is valid, will return if move is not valid
-        if (!pawnPiece(sourceSquare, square)) {return;}
+
+      // Check if the player is castleing
+      if (isCastleing(sourceSquare, square, chessboard)) {
+        // Carry out the castleing move on the chess board
+        setChessboard(carryOutCastleing(turn, chessboard));
+      } else {
+        // Finds what piece is being moved and calls corresponding function
+        if (sourceSquare.piece.type === "Pawn") {
+          // Guard statement to check if the selected move is valid, will return if move is not valid
+          if (!pawnPiece(sourceSquare, square)) {return;}
+        }
+        if (sourceSquare.piece.type === "Rook") {
+          // Guard statement to check if the selected move is valid, will return if move is not valid
+          if (!rookPiece(sourceSquare, square)) {return;}
+        }
+        if (sourceSquare.piece.type === "Knight") {
+          // Guard statement to check if the selected move is valid, will return if move is not valid
+          if (!knightPiece(sourceSquare, square)) {return;}
+        }
+        if (sourceSquare.piece.type === "Bishop") {
+          // Guard statement to check if the selected move is valid, will return if move is not valid
+          if (!bishopPiece(sourceSquare, square)) {return;}
+        }
+        if (sourceSquare.piece.type === "Queen") {
+          // Guard statement to check if the selected move is valid, will return if move is not valid
+          if (!queenPiece(sourceSquare, square)) {return;}
+        }
+        if (sourceSquare.piece.type === "King") {
+          // Guard statement to check if the selected move is valid, will return if move is not valid
+          if (!kingPiece(sourceSquare, square)) {return;}
+        }
+        // Move the piece from the source square to the target square
+        setChessboard(updateBoard(sourceSquare, square, chessboard));
       }
-      if (sourceSquare.piece.type === "Rook") {
-        // Guard statement to check if the selected move is valid, will return if move is not valid
-        if (!rookPiece(sourceSquare, square)) {return;}
-      }
-      if (sourceSquare.piece.type === "Knight") {
-        // Guard statement to check if the selected move is valid, will return if move is not valid
-        if (!knightPiece(sourceSquare, square)) {return;}
-      }
-      if (sourceSquare.piece.type === "Bishop") {
-        // Guard statement to check if the selected move is valid, will return if move is not valid
-        if (!bishopPiece(sourceSquare, square)) {return;}
-      }
-      if (sourceSquare.piece.type === "Queen") {
-        // Guard statement to check if the selected move is valid, will return if move is not valid
-        if (!queenPiece(sourceSquare, square)) {return;}
-      }
-      if (sourceSquare.piece.type === "King") {
-        // Guard statement to check if the selected move is valid, will return if move is not valid
-        if (!kingPiece(sourceSquare, square)) {return;}
-      }
-      // Move the piece from the source square to the target square
-      setChessboard(updateBoard(sourceSquare, square, chessboard));
+      
       // Tell the system that there is no longer a source square selected
       setIsSourceSelected(false);
       // Updates main game array to un-highlight the selected source square
