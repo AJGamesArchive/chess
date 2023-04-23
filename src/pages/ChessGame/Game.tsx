@@ -1,16 +1,18 @@
 // Importing required library's
 import {
   IonButton,
+  IonCard,
   IonContent,
   IonHeader,
   IonIcon,
+  IonItem,
   IonPage,
   IonText,
   IonTitle,
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { logOut, hammer } from 'ionicons/icons';
+import { logOut, hammer, refresh, home } from 'ionicons/icons';
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import './Game.css';
@@ -172,14 +174,6 @@ const ChessGame: React.FC = () => {
             <IonTitle className="game-header">
               Chess: <IonText color="primary">{params.username}</IonText> VS <IonText color="primary">{game.opponent}</IonText>!
             </IonTitle>
-            <IonButton slot="end" fill="clear" color="danger" onClick={() => {
-              console.log(chessboard);
-            }}>
-              <IonIcon icon={hammer}></IonIcon>
-            </IonButton>
-            <IonButton slot="end" fill="clear" color="danger" href="/Home">
-              <IonIcon icon={logOut}></IonIcon>
-            </IonButton>
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen>
@@ -203,6 +197,42 @@ const ChessGame: React.FC = () => {
             onSquareClick={onSquareClick}
           />
 
+          {
+            /*
+              ! Temporary buttons to aid with development
+            */
+          }
+
+          <IonCard>
+            <IonItem lines="full">
+              DEV Action Buttons
+            </IonItem>
+            <IonItem lines="full">
+              Print Current Game State/Array To Console
+              <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
+                console.log(chessboard);
+              }}>
+                <IonIcon icon={hammer}></IonIcon>
+              </IonButton>
+            </IonItem>
+            <IonItem lines="full">
+              Reload/Reset Game
+              <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
+                window.location.reload();
+              }}>
+                <IonIcon icon={refresh}></IonIcon>
+              </IonButton>
+            </IonItem>
+            <IonItem lines="none">
+              Go To Main Menu
+              <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
+                nav.push(`/mainMenu/${params.username}`);
+              }}>
+                <IonIcon icon={home}></IonIcon>
+              </IonButton>
+            </IonItem>
+          </IonCard>
+
         </IonContent>
       </IonPage>
     );
@@ -221,14 +251,6 @@ const ChessGame: React.FC = () => {
             <IonTitle className="game-header">
               Chess: <IonText color="primary">{params.username}</IonText> VS <IonText color="primary">Computer</IonText>!
             </IonTitle>
-            <IonButton slot="end" fill="clear" color="danger" onClick={() => {
-              console.log(chessboard);
-            }}>
-              <IonIcon icon={hammer}></IonIcon>
-            </IonButton>
-            <IonButton slot="end" fill="clear" color="danger" href="/Home">
-              <IonIcon icon={logOut}></IonIcon>
-            </IonButton>
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen>
@@ -251,6 +273,42 @@ const ChessGame: React.FC = () => {
             board={chessboard}
             onSquareClick={onSquareClick}
           />
+
+          {
+            /*
+              ! Temporary buttons to aid with development
+            */
+          }
+
+          <IonCard>
+            <IonItem lines="full">
+              DEV Action Buttons
+            </IonItem>
+            <IonItem lines="full">
+              Print Current Game State/Array To Console
+              <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
+                console.log(chessboard);
+              }}>
+                <IonIcon icon={hammer}></IonIcon>
+              </IonButton>
+            </IonItem>
+            <IonItem lines="full">
+              Reload/Reset Game
+              <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
+                window.location.reload();
+              }}>
+                <IonIcon icon={refresh}></IonIcon>
+              </IonButton>
+            </IonItem>
+            <IonItem lines="none">
+              Go To Main Menu
+              <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
+                nav.push(`/mainMenu/${params.username}`);
+              }}>
+                <IonIcon icon={home}></IonIcon>
+              </IonButton>
+            </IonItem>
+          </IonCard>
 
         </IonContent>
       </IonPage>

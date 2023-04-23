@@ -9,6 +9,7 @@ import {
   IonHeader,
   IonIcon,
   IonImg,
+  IonInput,
   IonItem,
   IonLabel,
   IonPage,
@@ -16,10 +17,11 @@ import {
   IonSelectOption,
   IonText,
   IonTitle,
+  IonToast,
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { arrowBack, book, gameController, person, radio } from 'ionicons/icons';
+import { arrowBack, gameController, person, radio, addCircle, search, warning } from 'ionicons/icons';
 import { useParams } from 'react-router';
 import { useState } from 'react';
 import './Setup.css';
@@ -30,9 +32,13 @@ import { ChessGameSetupParams } from '../../interfaces/ChessGameParams';
 
 // Importing page components
 import GameSettings from '../../components/setup/GameSetup';
+import ChooseOpponent from '../../components/setup/ChooseOpponent';
+import EnterOpp from '../../components/setup/EnterOpp';
+import ActionButtons from '../../components/setup/ActionButtons';
 
 // Importing page functions
 import { readyToStart } from '../../functions/setup/ReadyToStart';
+import { ValidOpponent } from '../../functions/setup/ValidOpponent';
 
 const GameSetup: React.FC = () => {
 
@@ -49,7 +55,6 @@ const GameSetup: React.FC = () => {
   var defaultPlayerTwo: string;
   var defaultPlayerTwoIcon: any;
   var defaultBoardColor: string;
-
   if (game.mode === "PVP") {
     defaultHiddenSettings = true;
     defaultPlayerTwo = "";
@@ -74,6 +79,48 @@ const GameSetup: React.FC = () => {
   // React variable to control when your allowed to start the game
   const [disableStart, setDisableStart] = useState<boolean>(true);
 
+  // React variables to control the visibility of PVP mode opponent finding cards
+  const [hiddenOpSelect, setHiddenOpSelect] = useState<boolean>(false);
+  const [hiddenHasAccount, setHiddenHasAccount] = useState<boolean>(true);
+  const [hiddenNoAccount, setHiddenNoAccount] = useState<boolean>(true);
+
+  // Variables to control the color of text input boxes
+  var playerTwoInputColor: string
+  if (playerTwo === "") {
+    playerTwoInputColor = "medium";
+  } else {
+    playerTwoInputColor = "success";
+  }
+
+  // React variables to display errors to the user if they enter an invalid username when setting up an opponent in PVP mode
+  const [errorGuestName, setErrorGuestName] = useState<boolean>(false);
+  const [errorInvalidUsername, setErrorInvalidUsername] = useState<boolean>(false);
+
+  // Function to handle setting up the players opponent
+  function setupOpponent(hasAccount: boolean) {
+    if (hasAccount) {
+      if (!ValidOpponent(playerTwo)) {setErrorInvalidUsername(true);return;}
+    } else {
+      if (playerTwo === "") {setErrorGuestName(true);return;}
+    }
+    setHiddenNoAccount(true);
+    setHiddenSettings(false);
+    return;
+  }
+
+  // Function that handles what happens when an action button is clicked
+  function actionButtonClick(buttonName: string) {
+    if (buttonName === "Start") {
+      nav.push(`/game/${params.username}/${game.mode}/${playerTwo}/${playerTwoColor}`);
+      return;
+    }
+    if (buttonName === "Cancel") {
+      nav.push(`/mainMenu/${params.username}`);
+      return;
+    }
+    return;
+  }
+
   // IF statement to render page GUI differently depending on what game mode is selected
   if (game.mode === "PVP") {
     // JSX code for generating the chess game setup GUI for PVP mode
@@ -90,11 +137,6 @@ const GameSetup: React.FC = () => {
             <IonTitle className="setup-header">
               Game Setup
             </IonTitle>
-            <IonButton slot="end" fill="clear" color="warning" onClick={() => {
-              nav.push(`/mainMenu/${params.username}`);
-            }}>
-              <IonIcon icon={arrowBack}></IonIcon>
-            </IonButton>
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen>
@@ -112,6 +154,120 @@ const GameSetup: React.FC = () => {
               Page Content Code
             */
           }
+
+          <ChooseOpponent
+            hidden={hiddenOpSelect}
+            setHidden={setHiddenOpSelect}
+            setHiddenHasAccount={setHiddenHasAccount}
+            setHiddenNoAccount={setHiddenNoAccount}
+            onBackButtonClick={actionButtonClick}
+          />
+          
+          <EnterOpp
+            hidden={hiddenHasAccount}
+            setHidden={setHiddenHasAccount}
+            setHiddenOpSelect={setHiddenOpSelect}
+            cardTitle={"Search for opponent:"}
+            playerName={playerTwo}
+            setPlayerName={setPlayerTwo}
+            inputPlaceHolder={"Enter your Opponents Username"}
+            inputColor={playerTwoInputColor}
+            buttonText={"Search"}
+            icon={search}
+            hasAccount={true}
+            onNameEnter={setupOpponent}
+          />
+
+          <EnterOpp
+            hidden={hiddenNoAccount}
+            setHidden={setHiddenNoAccount}
+            setHiddenOpSelect={setHiddenOpSelect}
+            cardTitle={"Enter opponents name:"}
+            playerName={playerTwo}
+            setPlayerName={setPlayerTwo}
+            inputPlaceHolder={"Enter a Guest Username"}
+            inputColor={playerTwoInputColor}
+            buttonText={"Confirm"}
+            icon={addCircle}
+            hasAccount={false}
+            onNameEnter={setupOpponent}
+          />
+
+          <GameSettings
+            hidden={hiddenSettings}
+            mode={game.mode}
+            playerOne={params.username}
+            playerTwo={playerTwo}
+            playerTwoIcon={playerTwoIcon}
+            setPlayerTwoColor={setPlayerTwoColor}
+            boardColor={boardColor}
+            setWhitePlayer={setWhitePlayer}
+            setBlackPlayer={setBlackPlayer}
+            whitePlayer={whitePlayer}
+            blackPlayer={blackPlayer}
+            readyToStart={readyToStart}
+            setDisableStart={setDisableStart}
+          />
+
+          <ActionButtons
+            canDisable={true}
+            disabled={disableStart}
+            canHide={true}
+            hidden={hiddenSettings}
+            buttonName="Start"
+            buttonText="Start Game"
+            buttonIcon={gameController}
+            buttonColor="blue"
+            buttonTextColor='primary'
+            onButtonClick={actionButtonClick}
+          />
+
+          <ActionButtons
+            canDisable={false}
+            disabled={disableStart}
+            canHide={true}
+            hidden={hiddenSettings}
+            buttonName="Cancel"
+            buttonText="Cancel"
+            buttonIcon={arrowBack}
+            buttonColor="yellow"
+            buttonTextColor='warning'
+            onButtonClick={actionButtonClick}
+          />
+
+          <IonToast
+            isOpen={errorGuestName}
+            onDidPresent={() => {}}
+            onDidDismiss={() => setErrorGuestName(false)}
+            message="You have not entered a username for your opponent. Please ensure you enter a username."
+            icon={warning}
+            color="medium"
+            position="middle"
+            buttons={[
+              {
+                text: "Ok",
+                role: "cancel",
+                handler: () => {}
+              }
+            ]}
+          />
+
+          <IonToast
+            isOpen={errorInvalidUsername}
+            onDidPresent={() => setPlayerTwo("")}
+            onDidDismiss={() => setErrorInvalidUsername(false)}
+            message="The user you searched for could not be found. Please enter a different username."
+            icon={warning}
+            color="danger"
+            position="middle"
+            buttons={[
+              {
+                text: "Ok",
+                role: "cancel",
+                handler: () => {}
+              }
+            ]}
+          />
 
         </IonContent>
       </IonPage>
@@ -165,27 +321,31 @@ const GameSetup: React.FC = () => {
             setDisableStart={setDisableStart}
           />
 
-          <IonCard disabled={disableStart} className="setup-button-card-blue">
-            <IonItem button detail={false} lines="none" onClick={() => {
-              nav.push(`/game/${params.username}/${game.mode}/${playerTwo}/${playerTwoColor}`);
-            }}>
-              <IonCardTitle slot="end" color="primary" className="setup-card-header">
-                Start Game
-              </IonCardTitle>
-              <IonIcon slot="end" color="primary" src={gameController}/>
-            </IonItem>
-          </IonCard>
+          <ActionButtons
+            canDisable={true}
+            disabled={disableStart}
+            canHide={false}
+            hidden={hiddenSettings}
+            buttonName="Start"
+            buttonText="Start Game"
+            buttonIcon={gameController}
+            buttonColor="blue"
+            buttonTextColor='primary'
+            onButtonClick={actionButtonClick}
+          />
 
-          <IonCard className="setup-button-card-yellow">
-            <IonItem button detail={false} lines="none" onClick={() => {
-              nav.push(`/mainMenu/${params.username}`);
-            }}>
-              <IonCardTitle slot="end" color="warning" className="setup-card-header">
-                Cancel
-              </IonCardTitle>
-              <IonIcon slot="end" color="warning" src={arrowBack}/>
-            </IonItem>
-          </IonCard>
+          <ActionButtons
+            canDisable={false}
+            disabled={disableStart}
+            canHide={false}
+            hidden={hiddenSettings}
+            buttonName="Cancel"
+            buttonText="Cancel"
+            buttonIcon={arrowBack}
+            buttonColor="yellow"
+            buttonTextColor='warning'
+            onButtonClick={actionButtonClick}
+          />
 
         </IonContent>
       </IonPage>

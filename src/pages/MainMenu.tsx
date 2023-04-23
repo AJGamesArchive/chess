@@ -32,11 +32,13 @@ const MainMenu: React.FC = () => {
   // Function to control what page in the app each option card will send you to
   function navController(connectionID: number) {
     if (connectionID === 1) {
-      nav.push(`/setup/${params.username}/PVP`);
+      window.location.href = `/setup/${params.username}/PVP`;
+      // nav.push(`/setup/${params.username}/PVP`); //! Remove later if not needed
       return;
     }
     if (connectionID === 2) {
-      nav.push(`/setup/${params.username}/PVE`);
+      window.location.href = `/setup/${params.username}/PVE`;
+      // nav.push(`/setup/${params.username}/PVE`); //! Remove later if not needed
       return;
     }
     if (connectionID === 3) {

@@ -1,0 +1,11 @@
+.action-button-card-blue {
+  border-left: 8px solid var(--ion-color-primary);
+}
+
+.action-button-card-yellow {
+  border-left: 8px solid var(--ion-color-warning);
+}
+
+.action-button-card-header {
+  font-weight: bold;
+}
