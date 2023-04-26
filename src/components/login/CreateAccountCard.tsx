@@ -10,6 +10,7 @@ interface CreateAccountProps {
   hidden: boolean;
   setHidden: (value: boolean) => void;
   setHiddenOptions: (value: boolean) => void;
+  disable: boolean;
   createUsername: string;
   setCreateUsername: (value: string) => void;
   crtUsernameTxtClr: string
@@ -22,7 +23,7 @@ interface CreateAccountProps {
   onCreateAccount: (username: string, password: string, mode: number) => void;
 }
 
-const CreateAccountCard: React.FC<CreateAccountProps> = ({ hidden, setHidden, setHiddenOptions, createUsername, setCreateUsername, crtUsernameTxtClr, createPassword, setCreatePassword, crtPasswordTxtClr, confirmPassword, setConfirmPassword, cfmPasswordTxtClr, onCreateAccount }) => {
+const CreateAccountCard: React.FC<CreateAccountProps> = ({ hidden, setHidden, setHiddenOptions, disable, createUsername, setCreateUsername, crtUsernameTxtClr, createPassword, setCreatePassword, crtPasswordTxtClr, confirmPassword, setConfirmPassword, cfmPasswordTxtClr, onCreateAccount }) => {
   return (
     <IonCard hidden={hidden}>
       <IonItem lines="full">
@@ -78,7 +79,7 @@ const CreateAccountCard: React.FC<CreateAccountProps> = ({ hidden, setHidden, se
           onIonChange={e => setConfirmPassword(e.detail.value!)}
         />
       </IonItem>
-      <IonItem button detail={false} lines="none" onClick={() => {
+      <IonItem button detail={false} disabled={disable} lines="none" onClick={() => {
         onCreateAccount(createUsername, createPassword, 2);
       }}>
         <IonLabel slot="end" color="primary">

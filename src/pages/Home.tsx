@@ -13,10 +13,11 @@ import {
   IonPage,
   IonText,
   IonTitle,
+  IonToast,
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { logIn, addCircle, home } from 'ionicons/icons';
+import { logIn, addCircle, home, warning, checkmarkDone } from 'ionicons/icons';
 import './Home.css';
 
 // Importing page components
@@ -26,6 +27,9 @@ import CreateAccountCard from '../components/login/CreateAccountCard';
 // Importing page functions
 import { Login } from '../functions/login/Login';
 import { CreateAccount } from '../functions/login/CreateAccount';
+
+// Importing page types
+import { CredentialValidation } from '../types/login/AccountVerification';
 
 const Home: React.FC = () => {
 
@@ -85,6 +89,28 @@ const Home: React.FC = () => {
   const [hiddenLogin, setHiddenLogin] = useState<boolean>(true);
   const [hiddenCreateAccount, setHiddenCreateAccount] = useState<boolean>(true);
 
+  // React variable to control disabling the 'Login' and 'Create Account' buttons
+  //? const [disableButton, setDisableButton] = useState<boolean>(false);
+  var disableCreate: boolean;
+  var disableLogin: boolean;
+
+  // Check whether conditions have been met to enable to respective action button
+  if (createUsername === "" || createPassword === "" || confirmPassword === "") {
+    disableCreate = true;
+  } else {
+    disableCreate = false;
+  }
+  if (username === "" || password === "") {
+    disableLogin = true;
+  } else {
+    disableLogin = false;
+  }
+
+  // React variables that control error and confirmation messages
+  const [creationError, setCreationError] = useState<boolean>(false);
+  const [creationConfirm, setCreationConfirm] = useState<boolean>(false);
+  const [creationMessage, setCreationMessage] = useState<string>("");
+
   // Function to control whether or not you've successfully logged in and are able to proceed to the main menu
   function loginController(username: string, password: string, mode: number) {
     if (mode === 1) {
@@ -96,12 +122,20 @@ const Home: React.FC = () => {
       return;
     }
     if (mode === 2) {
-      //? Might need to change system so that it checks if the username is unique before going to the account creation function?
-      if (CreateAccount(username, password)) {
-        //TODO Insert code for what happens when an account is successfully created
-        return;
+      let confirmation: CredentialValidation = CreateAccount(createUsername, createPassword, confirmPassword);
+      setCreationMessage(confirmation.message);
+      if (confirmation.valid) {
+        setCreationConfirm(true);
+        setHiddenCreateAccount(true);
+        setHiddenOptions(false);
+        setCreateUsername("");
+        setUsername("");
+        setPassword("");
+      } else {
+        setCreationError(true);
       }
-      //TODO Add something to give the user feedback if the account creation was unsuccessful
+      setCreatePassword("");
+      setConfirmPassword("");
       return;
     }
     return;
@@ -164,7 +198,7 @@ const Home: React.FC = () => {
               What would you like to do?
             </IonCardTitle>
           </IonItem>
-          <IonItem button lines="inset" detail={false} onClick={() => {
+          <IonItem button lines="inset" detail={false} disabled={true} onClick={() => {
             setHiddenOptions(true);
             setHiddenLogin(false);
           }}>
@@ -174,7 +208,7 @@ const Home: React.FC = () => {
             <IonText slot="end" color="primary">Login</IonText>
             <IonIcon slot="end" color="primary" icon={logIn}></IonIcon>
           </IonItem>
-          <IonItem button lines="none" detail={false} onClick={() => {
+          <IonItem button lines="none" detail={false} disabled={true} onClick={() => {
             setHiddenOptions(true);
             setHiddenCreateAccount(false);
           }}>
@@ -195,6 +229,7 @@ const Home: React.FC = () => {
           hidden={hiddenLogin}
           setHidden={setHiddenLogin}
           setHiddenOptions={setHiddenOptions}
+          disable={disableLogin}
           username={username}
           setUsername={setUsername}
           usernameTextColor={usernameTextColor}
@@ -213,6 +248,7 @@ const Home: React.FC = () => {
           hidden={hiddenCreateAccount}
           setHidden={setHiddenCreateAccount}
           setHiddenOptions={setHiddenOptions}
+          disable={disableCreate}
           createUsername={createUsername}
           setCreateUsername={setCreateUsername}
           crtUsernameTxtClr={crtUsernameTxtClr}
@@ -223,6 +259,40 @@ const Home: React.FC = () => {
           setConfirmPassword={setConfirmPassword}
           cfmPasswordTxtClr={cfmPasswordTxtClr}
           onCreateAccount={loginController}
+        />
+
+        <IonToast
+          isOpen={creationError}
+          onDidPresent={() => {}}
+          onDidDismiss={() => setCreationError(false)}
+          message={creationMessage}
+          icon={warning}
+          color="danger"
+          position="middle"
+          buttons={[
+            {
+              text: "Ok",
+              role: "cancel",
+              handler: () => {}
+            }
+          ]}
+        />
+
+        <IonToast
+          isOpen={creationConfirm}
+          onDidPresent={() => {}}
+          onDidDismiss={() => setCreationConfirm(false)}
+          message={creationMessage}
+          icon={checkmarkDone}
+          color="success"
+          position="middle"
+          buttons={[
+            {
+              text: "Ok",
+              role: "cancel",
+              handler: () => {}
+            }
+          ]}
         />
 
       </IonContent>

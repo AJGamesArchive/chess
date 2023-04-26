@@ -10,6 +10,7 @@ interface LoginProps {
   hidden: boolean;
   setHidden: (value: boolean) => void;
   setHiddenOptions: (value: boolean) => void;
+  disable: boolean;
   username: string;
   setUsername: (value: string) => void;
   usernameTextColor: string
@@ -19,7 +20,7 @@ interface LoginProps {
   onLogin: (username: string, password: string, mode: number) => void;
 }
 
-const LoginCard: React.FC<LoginProps> = ({ hidden, setHidden, setHiddenOptions, username, setUsername, usernameTextColor, password, setPassword, passwordTextColor, onLogin }) => {
+const LoginCard: React.FC<LoginProps> = ({ hidden, setHidden, setHiddenOptions, disable, username, setUsername, usernameTextColor, password, setPassword, passwordTextColor, onLogin }) => {
   return (
     <IonCard hidden={hidden}>
       <IonItem lines="full">
@@ -61,7 +62,7 @@ const LoginCard: React.FC<LoginProps> = ({ hidden, setHidden, setHiddenOptions, 
           onIonChange={e => setPassword(e.detail.value!)}
         />
       </IonItem>
-      <IonItem button detail={false} lines="none" onClick={() => {
+      <IonItem button detail={false} disabled={disable} lines="none" onClick={() => {
         onLogin(username, password, 1);
       }}>
         <IonLabel slot="end" color="primary">
