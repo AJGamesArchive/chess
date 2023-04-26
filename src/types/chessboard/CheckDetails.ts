@@ -10,3 +10,8 @@ export type CheckDetails = {
   kingInCheckSquare: CheckSquare;
   puttingInCheckSquare: CheckSquare[];
 };
+
+export type CheckAllowMove = {
+  board: any[][];
+  allowMove: boolean;
+};

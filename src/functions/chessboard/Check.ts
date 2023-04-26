@@ -1,4 +1,59 @@
-import { CheckDetails } from "../../types/chessboard/CheckDetails";
+import { CheckDetails, CheckAllowMove } from "../../types/chessboard/CheckDetails";
+import { resetSquareColor } from "./ResetSquareColor";
+import { updateBoard } from "./UpdateBoard";
+
+// Declaring React variable to store the state of check at the end of each move
+var check: CheckDetails = ({
+  selfInCheck: false, 
+  opponentInCheck: false,
+  colorInCheck: "",
+  kingInCheckSquare: {row: -1, col: -1},
+  puttingInCheckSquare: []
+});
+
+// Function to control how check if validated and output the result
+export function checkHandler(chessboard: any[][], sourceSquare: any, targetSquare: any, checkHighlighter: string, darkSquareColor: string, huntHighlighter: string): CheckAllowMove {
+  let newChessboard: any[][] = Array.from(chessboard);
+  let allowMove: CheckAllowMove;
+  // Check if any one is in check and color squares accordingly
+  const checkDetails: CheckDetails = checkEvaluation(sourceSquare, targetSquare, chessboard);
+  if (checkDetails.selfInCheck) {
+    newChessboard = updateBoard(targetSquare, sourceSquare, chessboard);
+    allowMove = {
+      board: newChessboard,
+      allowMove: false
+    }
+    return allowMove;
+  }
+  if ((checkDetails.colorInCheck === check.colorInCheck) && check.colorInCheck !== "") {
+    newChessboard = updateBoard(targetSquare, sourceSquare, chessboard);
+    allowMove = {
+      board: newChessboard,
+      allowMove: false
+    }
+    return allowMove;
+  }
+  if (checkDetails.opponentInCheck) {
+    // Checks if any squares are in the check highlighter and un-highlights them
+    if (check.opponentInCheck) {
+      newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, huntHighlighter, false);
+    };
+    // Highlight squares to show who is in check and where from
+    newChessboard = checkHighlight(checkDetails, newChessboard, checkHighlighter, darkSquareColor, huntHighlighter, true);
+  } else {
+    // Checks if any squares are in the check highlighter and um-highlights them
+    if (check.opponentInCheck) {
+      newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, huntHighlighter, false);
+    };
+  };
+  // Save the check state from this piece move
+  check = checkDetails;
+  allowMove = {
+    board: newChessboard,
+    allowMove: true
+  }
+  return allowMove;
+};
 
 // Function that takes in the current state of the game every time a move is made and works out if anyone is in check
 // The source and target square from the most recent move are also passed in to check that the play isn't moving them self into check
@@ -20,4 +75,24 @@ export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard
     puttingInCheckSquare: []
   }
   return checkDetails;
+};
+
+// Function that either highlights the squares on the board that are in check or un-highlights the board squares that were previously in check, depending on given params
+export function checkHighlight(checkState: CheckDetails, chessboard: any[][], highlightColor: string, darkSquareColor: string, huntHighlightColor: string, highlight: boolean): any[][] {
+  if (highlight) {
+    let kingsSquare: any = chessboard[checkState.kingInCheckSquare.row][checkState.kingInCheckSquare.col];
+    kingsSquare.color = highlightColor;
+    for (const square of checkState.puttingInCheckSquare) {
+      let pieceSquare = chessboard[square.row][square.col];
+      pieceSquare.color = huntHighlightColor;
+    };
+  } else {
+    let kingsSquare: any = chessboard[checkState.kingInCheckSquare.row][checkState.kingInCheckSquare.col];
+    kingsSquare.color = resetSquareColor("#FFFFFF", darkSquareColor, kingsSquare);
+    for (const square of checkState.puttingInCheckSquare) {
+      let pieceSquare = chessboard[square.row][square.col];
+      pieceSquare.color = resetSquareColor("#FFFFFF", darkSquareColor, pieceSquare);
+    };
+  };
+  return chessboard;
 };
