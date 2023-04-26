@@ -8,11 +8,12 @@ export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard
   // selfInCheck - This should return true if the player is moving their own king into check, else return false
   // opponentInCheck - This should return true if the most recent move has put the opponents king into check, else return false
   // colorInCheck - Should return "w" if the white king is in check, "b" if the black king is in check, "" if no king is in check
+  //                if a king is already in check and this move puts the second king into check so both kings are now in check, return the color of the FIRST king put in check
   // kingInCheckSquare - Should return the square index of whichever king is in check in the form of {row: 0, col: 0}, should return -1 if no king is in check
   // puttingInCheckSquare - Should return a custom typed array of all the square indexes of all the pieces putting the king in check, return empty if no king is in check
   // Current return statement shows the data structure that needs returning and the default state for if no king is in check
   const checkDetails: CheckDetails = {
-    selfInCheck: false, 
+    selfInCheck: false,
     opponentInCheck: false,
     colorInCheck: "",
     kingInCheckSquare: {row: -1, col: -1},

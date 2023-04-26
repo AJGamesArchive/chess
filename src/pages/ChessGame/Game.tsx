@@ -40,8 +40,7 @@ import { bishopPiece } from '../../functions/chessboard/Bishop';
 import { queenPiece } from '../../functions/chessboard/Queen';
 import { kingPiece } from '../../functions/chessboard/King';
 
-import { isCastleing } from '../../functions/chessboard/Castleing';
-import { carryOutCastleing } from '../../functions/chessboard/Castleing';
+import { isCastleing, carryOutCastleing } from '../../functions/chessboard/Castleing';
 import { checkEvaluation } from '../../functions/chessboard/Check';
 import { checkHighlight } from '../../functions/chessboard/CheckHighlight';
 
@@ -78,26 +77,27 @@ const ChessGame: React.FC = () => {
   // Declaring variable to keep track of whether or not a source square has been selected
   const [isSourceSelect, setIsSourceSelected] = useState<boolean>(false);
 
-  // React variables for making sure the king and rooks havent been moved yet for castling
-  const [kingWMoved, setkingWMoved] = useState<boolean>(false);
-  const [kingbMoved, setkingBMoved] = useState<boolean>(false);
-  const [rook1WMoved, setrook1WMoved] = useState<boolean>(false);
-  const [rook2WMoved, setrook2WMoved] = useState<boolean>(false);
-  const [rook1BMoved, setrook1BMoved] = useState<boolean>(false);
-  const [rook2BMoved, setrook2BMoved] = useState<boolean>(false);
+  // React variables for making sure the king and rooks haven't been moved yet for castling
+  const [kingWMoved, setKingWMoved] = useState<boolean>(false);
+  const [kingbMoved, setKingBMoved] = useState<boolean>(false);
+  const [rook1WMoved, setRook1WMoved] = useState<boolean>(false);
+  const [rook2WMoved, setRook2WMoved] = useState<boolean>(false);
+  const [rook1BMoved, setRook1BMoved] = useState<boolean>(false);
+  const [rook2BMoved, setRook2BMoved] = useState<boolean>(false);
 
-  // Guard statments to watch the chessboard and log when each king and rook first moves
-  if (!kingWMoved) {if (chessboard[0][4].piece.type !== "King") {setkingWMoved(true)};}
-  if (!kingbMoved) {if (chessboard[7][4].piece.type !== "King") {setkingBMoved(true)};}
-  if (!rook1WMoved) {if (chessboard[0][0].piece.type !== "Rook") {setrook1WMoved(true)};}
-  if (!rook2WMoved) {if (chessboard[0][7].piece.type !== "Rook") {setrook2WMoved(true)};}
-  if (!rook1BMoved) {if (chessboard[7][0].piece.type !== "Rook") {setrook1BMoved(true)};}
-  if (!rook2BMoved) {if (chessboard[7][7].piece.type !== "Rook") {setrook2BMoved(true)};}
+  // Guard statements to watch the chessboard and log when each king and rook first moves
+  if (!kingWMoved) {if (chessboard[0][4].piece.type !== "King") {setKingWMoved(true)};}
+  if (!kingbMoved) {if (chessboard[7][4].piece.type !== "King") {setKingBMoved(true)};}
+  if (!rook1WMoved) {if (chessboard[0][0].piece.type !== "Rook") {setRook1WMoved(true)};}
+  if (!rook2WMoved) {if (chessboard[0][7].piece.type !== "Rook") {setRook2WMoved(true)};}
+  if (!rook1BMoved) {if (chessboard[7][0].piece.type !== "Rook") {setRook1BMoved(true)};}
+  if (!rook2BMoved) {if (chessboard[7][7].piece.type !== "Rook") {setRook2BMoved(true)};}
 
   // Declaring variables to store the color used to highlight squares
   const [highlighter] = useState<string>("#eeff00");
-  const [checkHighlighter, setCheckHighlighter] = useState<string>("#fc8c03");
-  const [checkMateHighlighter, setCheckMateHighlighter] = useState<string>("#eb3b3b");
+  const [checkHighlighter, setCheckHighlighter] = useState<string>("#ffb947");
+  const [huntHighlighter, setHuntHighlighter] = useState<string>("#ff80fd");
+  const [checkMateHighlighter, setCheckMateHighlighter] = useState<string>("#ff5454");
 
   // Declaring React variable to store the state of check at the end of each move
   const [check, setCheck] = useState<CheckDetails>({
@@ -146,7 +146,6 @@ const ChessGame: React.FC = () => {
         setChessboard(newChessboard);
         return;
       }
-
       // Check if the player is castleing;
       if (isCastleing(sourceSquare, square, chessboard, {
         whiteKing: kingWMoved,
@@ -156,24 +155,23 @@ const ChessGame: React.FC = () => {
         rookOneBlack: rook1BMoved,
         rookTwoBlack: rook2BMoved
       })) {
-        console.log("Out of First Function");
         // Carry out the castleing move on the chess board
-        let newChessboard: any[][] = carryOutCastleing(turn, chessboard, sourceSquare);
+        let newChessboard: any[][] = carryOutCastleing(chessboard, sourceSquare, square, false);
         // Check if any one is in check and color squares accordingly
         const checkDetails: CheckDetails = checkEvaluation(sourceSquare, square, newChessboard);
-        if (checkDetails.selfInCheck) {return;}
-        if ((checkDetails.colorInCheck === check.colorInCheck) && check.colorInCheck !== "") {return;}
+        if (checkDetails.selfInCheck) {newChessboard = carryOutCastleing(chessboard, sourceSquare, square, true);return;}
+        if ((checkDetails.colorInCheck === check.colorInCheck) && check.colorInCheck !== "") {newChessboard = carryOutCastleing(chessboard, sourceSquare, square, true);return;}
         if (checkDetails.opponentInCheck) {
           // Checks if any squares are in the check highlighter and highlights them
           if (check.opponentInCheck) {
-            newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, false);
+            newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, huntHighlighter, false);
           };
           // Highlight squares to show who is in check and where from
-          newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, true);
+          newChessboard = checkHighlight(checkDetails, newChessboard, checkHighlighter, darkSquareColor, huntHighlighter, true);
         } else {
           // Checks if any squares are in the check highlighter and highlights them
           if (check.opponentInCheck) {
-            newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, false);
+            newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, huntHighlighter, false);
           };
         };
         // Save the check state from this piece move
@@ -210,19 +208,19 @@ const ChessGame: React.FC = () => {
         let newChessboard: any[][] = updateBoard(sourceSquare, square, chessboard);
         // Check if any one is in check and color squares accordingly
         const checkDetails: CheckDetails = checkEvaluation(sourceSquare, square, newChessboard);
-        if (checkDetails.selfInCheck) {return;}
-        if ((checkDetails.colorInCheck === check.colorInCheck) && check.colorInCheck !== "") {return;}
+        if (checkDetails.selfInCheck) {newChessboard = updateBoard(square, sourceSquare, chessboard);return;}
+        if ((checkDetails.colorInCheck === check.colorInCheck) && check.colorInCheck !== "") {newChessboard = updateBoard(square, sourceSquare, chessboard);return;}
         if (checkDetails.opponentInCheck) {
-          // Checks if any squares are in the check highlighter and highlights them
+          // Checks if any squares are in the check highlighter and un-highlights them
           if (check.opponentInCheck) {
-            newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, false);
+            newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, huntHighlighter, false);
           };
           // Highlight squares to show who is in check and where from
-          newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, true);
+          newChessboard = checkHighlight(checkDetails, newChessboard, checkHighlighter, darkSquareColor, huntHighlighter, true);
         } else {
-          // Checks if any squares are in the check highlighter and highlights them
+          // Checks if any squares are in the check highlighter and um-highlights them
           if (check.opponentInCheck) {
-            newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, false);
+            newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, huntHighlighter, false);
           };
         };
         // Save the check state from this piece move

@@ -24,6 +24,7 @@
         "chessboardjsx",
         "Firestore",
         "ionicons",
+        "kingb",
         "paramaters"
     ],
     "FSharp.suggestGitignore": false
