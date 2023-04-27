@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import {
   IonCard,
+  IonCardContent,
   IonCardTitle,
   IonContent,
   IonHeader,
@@ -22,6 +23,7 @@ import './Home.css';
 // Importing page components
 import LoginCard from '../components/login/LoginCard';
 import CreateAccountCard from '../components/login/CreateAccountCard';
+import WarningMessage from '../components/general/Warning';
 
 // Importing page functions
 import { Login } from '../functions/login/Login';
@@ -260,6 +262,20 @@ const Home: React.FC = () => {
           setConfirmPassword={setConfirmPassword}
           cfmPasswordTxtClr={cfmPasswordTxtClr}
           onCreateAccount={loginController}
+        />
+
+        {
+          /*
+            Temporary account creation password warning
+          */
+        }
+
+        <WarningMessage
+          hidden={hiddenCreateAccount}
+          color={"danger"}
+          icon={warning}
+          title={"Warning!"}
+          message={"When creating an account, please do NOT use a password that you use for other platforms & services. The passwords are currently NOT encrypted before being stored and the database is in 'testing' mode. As a result, passwords are not currently stored as securely as they could be and so we strongly recommend you use a throwaway password."}
         />
 
         {
