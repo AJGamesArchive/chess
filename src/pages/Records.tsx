@@ -10,10 +10,11 @@ import {
   IonPage,
   IonText,
   IonTitle,
+  IonToast,
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { home, arrowBack } from 'ionicons/icons';
+import { home, arrowBack, warning } from 'ionicons/icons';
 import './Records.css';
 import { useParams } from 'react-router';
 import { useState } from 'react';
@@ -43,6 +44,9 @@ const Records: React.FC = () => {
   // React variables to store the password that the user enters
   const [password, setPassword] = useState<string>("");
 
+  // React variable to control the color of the password verification button
+  const [verifyBtnClr, setVerifyBtnClr] = useState<string>("primary");
+
   // Variable to change the color of confirm password user input text
   var passwordTextColor: string;
 
@@ -53,6 +57,16 @@ const Records: React.FC = () => {
     passwordTextColor = "success";
   }
 
+  // Variables to control disabling and enabling the action button on the password verification system
+  var disableVerifyButton: boolean;
+
+  // If statements to listen for React state changes and update the password verification button state
+  if (password === "") {
+    disableVerifyButton = true;
+  } else {
+    disableVerifyButton = false;
+  };
+
   //! TRINITY
   var title: string = "Title";
 
@@ -60,19 +74,22 @@ const Records: React.FC = () => {
   const [hiddenPassVerifier, setHiddenPassVerifier] = useState<boolean>(false);
   const [hiddenRecords, setHiddenRecords] = useState<boolean>(true);
 
+  // React variables to control the pop-up messages
+  const [passwordError, setPasswordError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
   // Function to verify that the entered password is valid
   async function passwordVerifier(password: string) {
+    // Change the color of the action button while system is loading
+    setVerifyBtnClr("medium");
+    // Handle password verification
     let confirmation: CredentialValidation = await Login(params.username, password);
     if (confirmation.valid) {
-      //TODO Insert code for what happens when the entered password is valid
-      console.log("Valid Password");
-      setHiddenPassVerifier(true);
-      setHiddenRecords(false);
-      return;
+      setHiddenPassVerifier(true); setHiddenRecords(false); setPassword("");
+      return setVerifyBtnClr("primary");
     }
-    //TODO Insert code for what happens when the entered password is invalid
-    console.log("Invalid Password");
-    return;
+    setErrorMessage("The password you have entered is incorrect. Please re-enter your password."); setPasswordError(true); setPassword("");
+    return setVerifyBtnClr("primary");
   }
 
   // JSX code for generating the main menu page GUI
@@ -113,6 +130,8 @@ const Records: React.FC = () => {
         }
 
         <AccountVerifyCard
+          disableActionButton={disableVerifyButton}
+          actionButtonColor={verifyBtnClr}
           hidden={hiddenPassVerifier}
           setHidden={setHiddenPassVerifier}
           setHiddenRecords={setHiddenRecords}
@@ -147,6 +166,30 @@ const Records: React.FC = () => {
           hiddenRecords={hiddenRecords}
           setHiddenRecords={setHiddenRecords}
           title={title}
+        />
+
+        {
+          /*
+            Pop-up messages
+            Used for errors and confirmations
+          */
+        }
+
+        <IonToast
+          isOpen={passwordError}
+          onDidPresent={() => {}}
+          onDidDismiss={() => setPasswordError(false)}
+          message={errorMessage}
+          icon={warning}
+          color="danger"
+          position="middle"
+          buttons={[
+            {
+              text: "Ok",
+              role: "cancel",
+              handler: () => {}
+            }
+          ]}
         />
 
       </IonContent>

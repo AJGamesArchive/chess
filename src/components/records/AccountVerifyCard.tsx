@@ -7,6 +7,8 @@ import './AccountVerifyCard.css';
 //TODO Add comments to this component at some point
 
 interface LoginProps {
+  disableActionButton: boolean;
+  actionButtonColor: string;
   hidden: boolean;
   setHidden: (value: boolean) => void;
   setHiddenRecords: (value: boolean) => void;
@@ -16,7 +18,7 @@ interface LoginProps {
   onVerify: (password: string) => void;
 }
 
-const AccountVerifyCard: React.FC<LoginProps> = ({ hidden, setHidden, setHiddenRecords, password, setPassword, passwordTextColor, onVerify }) => {
+const AccountVerifyCard: React.FC<LoginProps> = ({ disableActionButton, actionButtonColor, hidden, setHidden, setHiddenRecords, password, setPassword, passwordTextColor, onVerify }) => {
   return (
     <IonCard hidden={hidden}>
       <IonItem lines="full">
@@ -38,13 +40,13 @@ const AccountVerifyCard: React.FC<LoginProps> = ({ hidden, setHidden, setHiddenR
           onIonChange={e => setPassword(e.detail.value!)}
         />
       </IonItem>
-      <IonItem button detail={false} lines="none" onClick={() => {
+      <IonItem button detail={false} lines="none" disabled={disableActionButton} onClick={() => {
         onVerify(password);
       }}>
-        <IonLabel slot="end" color="primary">
+        <IonLabel slot="end" color={actionButtonColor}>
           Verify
         </IonLabel>
-        <IonIcon icon={arrowForwardCircle} slot="end" color="primary"></IonIcon>
+        <IonIcon icon={arrowForwardCircle} slot="end" color={actionButtonColor}></IonIcon>
       </IonItem>
     </IonCard>
   );

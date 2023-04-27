@@ -113,7 +113,7 @@ const MainMenu: React.FC = () => {
         />
 
         <OptionCard
-          disabled={true}
+          disabled={false}
           banner="/assets/images/PageBanners/MenuSettingsBanner.png"
           connectionID={3}
           nav={navController}
