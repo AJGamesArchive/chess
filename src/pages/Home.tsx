@@ -111,9 +111,10 @@ const Home: React.FC = () => {
   const [creationConfirm, setCreationConfirm] = useState<boolean>(false);
   const [creationMessage, setCreationMessage] = useState<string>("");
 
-  // Function to control whether or not you've successfully logged in and are able to proceed to the main menu
-  function loginController(username: string, password: string, mode: number) {
+  // Async Function to control whether or not you've successfully logged in and are able to proceed to the main menu
+  async function loginController(username: string, password: string, mode: number) {
     if (mode === 1) {
+      // Handle login
       if (Login(username, password)) {
         nav.push(`/mainMenu/${username}`);
         return;
@@ -122,7 +123,8 @@ const Home: React.FC = () => {
       return;
     }
     if (mode === 2) {
-      let confirmation: CredentialValidation = CreateAccount(createUsername, createPassword, confirmPassword);
+      // Handle account creation
+      let confirmation: CredentialValidation = await CreateAccount(createUsername, createPassword, confirmPassword);
       setCreationMessage(confirmation.message);
       if (confirmation.valid) {
         setCreationConfirm(true);
@@ -208,7 +210,7 @@ const Home: React.FC = () => {
             <IonText slot="end" color="primary">Login</IonText>
             <IonIcon slot="end" color="primary" icon={logIn}></IonIcon>
           </IonItem>
-          <IonItem button lines="none" detail={false} disabled={true} onClick={() => {
+          <IonItem button lines="none" detail={false} onClick={() => {
             setHiddenOptions(true);
             setHiddenCreateAccount(false);
           }}>
