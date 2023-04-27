@@ -40,6 +40,9 @@ import ActionButtons from '../../components/setup/ActionButtons';
 import { readyToStart } from '../../functions/setup/ReadyToStart';
 import { ValidOpponent } from '../../functions/setup/ValidOpponent';
 
+// Importing page types
+import { CredentialValidation } from '../../types/login/AccountVerification';
+
 const GameSetup: React.FC = () => {
 
   // Setup navigation system on this page so we can call other pages
@@ -79,6 +82,9 @@ const GameSetup: React.FC = () => {
   // React variable to control when your allowed to start the game
   const [disableStart, setDisableStart] = useState<boolean>(true);
 
+  // React variable to control the color of the 'search account' button to give more user feedback
+  const [searchBtnClr, setSearchBtnClr] = useState<string>("primary");
+
   // React variables to control the visibility of PVP mode opponent finding cards
   const [hiddenOpSelect, setHiddenOpSelect] = useState<boolean>(false);
   const [hiddenHasAccount, setHiddenHasAccount] = useState<boolean>(true);
@@ -95,18 +101,36 @@ const GameSetup: React.FC = () => {
   // React variables to display errors to the user if they enter an invalid username when setting up an opponent in PVP mode
   const [errorGuestName, setErrorGuestName] = useState<boolean>(false);
   const [errorInvalidUsername, setErrorInvalidUsername] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   // Function to handle setting up the players opponent
-  function setupOpponent(hasAccount: boolean) {
+  async function setupOpponent(hasAccount: boolean) {
+    // Change the color of the action button while system is loading
+    setSearchBtnClr("medium");
+    // Guard statement to ensure the has entered an opponents name
+    if (playerTwo === "") {
+      setErrorMessage("You have not entered a username for your opponent. Please ensure you enter a username."); 
+      setErrorGuestName(true);  
+      return setSearchBtnClr("primary");
+    };
+    // Guard statement to ensure that the opponents name is not the same as the players name
+    if (playerTwo.toUpperCase() === params.username.toUpperCase()) {
+      setErrorMessage("You're opponents name cannot be the same as your name. Please enter a different name."); 
+      setErrorInvalidUsername(true);  
+      return setSearchBtnClr("primary");
+    };
+    // Guard statement to ensure that if the opponent has an account, the account is real and accessible
     if (hasAccount) {
-      if (!ValidOpponent(playerTwo)) {setErrorInvalidUsername(true);return;}
-    } else {
-      if (playerTwo === "") {setErrorGuestName(true);return;}
-    }
+      const locatedUser: CredentialValidation = await ValidOpponent(playerTwo);
+      setErrorMessage(locatedUser.message);
+      if (!locatedUser.valid) {setErrorInvalidUsername(true); return setSearchBtnClr("primary");}
+    };
+    // Moving setup forward to the final settings window
     setHiddenNoAccount(true);
+    setHiddenHasAccount(true);
     setHiddenSettings(false);
-    return;
-  }
+    return setSearchBtnClr("primary");
+  };
 
   // Function that handles what happens when an action button is clicked
   function actionButtonClick(buttonName: string) {
@@ -173,6 +197,7 @@ const GameSetup: React.FC = () => {
             inputPlaceHolder={"Enter your Opponents Username"}
             inputColor={playerTwoInputColor}
             buttonText={"Search"}
+            buttonColor={searchBtnClr}
             icon={search}
             hasAccount={true}
             onNameEnter={setupOpponent}
@@ -188,6 +213,7 @@ const GameSetup: React.FC = () => {
             inputPlaceHolder={"Enter a Guest Username"}
             inputColor={playerTwoInputColor}
             buttonText={"Confirm"}
+            buttonColor={searchBtnClr}
             icon={addCircle}
             hasAccount={false}
             onNameEnter={setupOpponent}
@@ -239,7 +265,7 @@ const GameSetup: React.FC = () => {
             isOpen={errorGuestName}
             onDidPresent={() => {}}
             onDidDismiss={() => setErrorGuestName(false)}
-            message="You have not entered a username for your opponent. Please ensure you enter a username."
+            message={errorMessage}
             icon={warning}
             color="medium"
             position="middle"
@@ -256,7 +282,7 @@ const GameSetup: React.FC = () => {
             isOpen={errorInvalidUsername}
             onDidPresent={() => setPlayerTwo("")}
             onDidDismiss={() => setErrorInvalidUsername(false)}
-            message="The user you searched for could not be found. Please enter a different username."
+            message={errorMessage}
             icon={warning}
             color="danger"
             position="middle"

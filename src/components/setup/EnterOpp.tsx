@@ -16,12 +16,13 @@ interface EnterOppProps {
   inputPlaceHolder: string;
   inputColor: string;
   buttonText: string
+  buttonColor: string;
   icon: any;
   hasAccount: boolean;
   onNameEnter: (hasAccount: boolean) => void;
 }
 
-const EnterOpp: React.FC<EnterOppProps> = ({ hidden, setHidden, setHiddenOpSelect, cardTitle, playerName, setPlayerName, inputPlaceHolder, inputColor, buttonText, icon, hasAccount, onNameEnter }) => {
+const EnterOpp: React.FC<EnterOppProps> = ({ hidden, setHidden, setHiddenOpSelect, cardTitle, playerName, setPlayerName, inputPlaceHolder, inputColor, buttonText, buttonColor, icon, hasAccount, onNameEnter }) => {
   return (
     <IonCard hidden={hidden}>
       <IonItem lines="full">
@@ -52,8 +53,8 @@ const EnterOpp: React.FC<EnterOppProps> = ({ hidden, setHidden, setHiddenOpSelec
       <IonItem button detail={false} lines="none" onClick={() => {
         onNameEnter(hasAccount);
       }}>
-        <IonText color="primary" slot="end">{buttonText}</IonText>
-        <IonIcon color="primary" slot="end" src={icon}/>
+        <IonText color={buttonColor} slot="end">{buttonText}</IonText>
+        <IonIcon color={buttonColor} slot="end" src={icon}/>
       </IonItem>
     </IonCard>
   );

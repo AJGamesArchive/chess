@@ -63,7 +63,7 @@ export async function CreateAccount(username: string, password: string, confirmP
 }
 
 // Async function to retrieve all the existing usernames from the database
-async function retrieveUsernames(): Promise<string | string[]> {
+export async function retrieveUsernames(): Promise<string | string[]> {
   let existingUsernames: string[] = [];
   const q = query(collection(db, "users"));
   let documents;
