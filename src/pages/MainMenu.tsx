@@ -91,6 +91,7 @@ const MainMenu: React.FC = () => {
         }
 
         <OptionCard
+          disabled={false}
           banner="/assets/images/PageBanners/MenuPVPBanner.png"
           connectionID={1}
           nav={navController}
@@ -101,6 +102,7 @@ const MainMenu: React.FC = () => {
         />
 
         <OptionCard
+          disabled={false}
           banner="/assets/images/PageBanners/MenuPVEBanner.png"
           connectionID={2}
           nav={navController}
@@ -111,6 +113,7 @@ const MainMenu: React.FC = () => {
         />
 
         <OptionCard
+          disabled={true}
           banner="/assets/images/PageBanners/MenuSettingsBanner.png"
           connectionID={3}
           nav={navController}

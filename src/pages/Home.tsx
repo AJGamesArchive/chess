@@ -1,7 +1,6 @@
 // Importing required library's
 import { useState } from 'react';
 import {
-  IonButton,
   IonCard,
   IonCardTitle,
   IonContent,
@@ -17,7 +16,7 @@ import {
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { logIn, addCircle, home, warning, checkmarkDone } from 'ionicons/icons';
+import { logIn, addCircle, warning, checkmarkDone } from 'ionicons/icons';
 import './Home.css';
 
 // Importing page components
@@ -40,6 +39,9 @@ const Home: React.FC = () => {
   // React variables for storing the username and password that the user enters when they go to login
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
+  // React variable to control the color of the 'login' and 'create account' buttons to help with user feedback while systems are loading
+  const [actionBtnClr, setActionBtnClr] = useState<string>("primary");
 
   // Variables for changing the color of the login user input text
   var usernameTextColor: string;
@@ -90,7 +92,6 @@ const Home: React.FC = () => {
   const [hiddenCreateAccount, setHiddenCreateAccount] = useState<boolean>(true);
 
   // React variable to control disabling the 'Login' and 'Create Account' buttons
-  //? const [disableButton, setDisableButton] = useState<boolean>(false);
   var disableCreate: boolean;
   var disableLogin: boolean;
 
@@ -113,35 +114,33 @@ const Home: React.FC = () => {
 
   // Async Function to control whether or not you've successfully logged in and are able to proceed to the main menu
   async function loginController(username: string, password: string, mode: number) {
+    // Change the color of the action button while system is loading
+    setActionBtnClr("medium");
+    // Work out if the user is logging in or creating an account
     if (mode === 1) {
       // Handle login
-      if (Login(username, password)) {
+      let confirmation: CredentialValidation = await Login(username, password);
+      if (confirmation.valid) {
         nav.push(`/mainMenu/${username}`);
-        return;
-      }
-      //TODO Add something to give the user feedback if the login was unsuccessful
-      return;
-    }
+        return setActionBtnClr("primary");
+      };
+      setCreationMessage(confirmation.message); setCreationError(true); setPassword("");
+      return setActionBtnClr("primary");
+    };
     if (mode === 2) {
       // Handle account creation
       let confirmation: CredentialValidation = await CreateAccount(createUsername, createPassword, confirmPassword);
       setCreationMessage(confirmation.message);
       if (confirmation.valid) {
-        setCreationConfirm(true);
-        setHiddenCreateAccount(true);
-        setHiddenOptions(false);
-        setCreateUsername("");
-        setUsername("");
-        setPassword("");
+        setCreationConfirm(true); setHiddenCreateAccount(true); setHiddenOptions(false); setCreateUsername(""); setUsername(""); setPassword("");
       } else {
         setCreationError(true);
-      }
-      setCreatePassword("");
-      setConfirmPassword("");
-      return;
-    }
-    return;
-  }
+      };
+      setCreatePassword(""); setConfirmPassword("");
+      return setActionBtnClr("primary");
+    };
+    return setActionBtnClr("primary");
+  };
 
   // JSX code for generating the login page GUI
   return (
@@ -157,11 +156,9 @@ const Home: React.FC = () => {
           <IonTitle className="home-header">
             Welcome!
           </IonTitle>
-          <IonButton slot="end" fill="clear" color="danger" onClick={() => {
-            nav.push(`/mainMenu/DEV`);
-          }}>
-            <IonIcon icon={home}></IonIcon>
-          </IonButton>
+          <IonTitle slot="end" className='home-header'>
+            Build: <IonText color="success">1.0.0</IonText>
+          </IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -200,7 +197,7 @@ const Home: React.FC = () => {
               What would you like to do?
             </IonCardTitle>
           </IonItem>
-          <IonItem button lines="inset" detail={false} disabled={true} onClick={() => {
+          <IonItem button lines="inset" detail={false} onClick={() => {
             setHiddenOptions(true);
             setHiddenLogin(false);
           }}>
@@ -232,6 +229,7 @@ const Home: React.FC = () => {
           setHidden={setHiddenLogin}
           setHiddenOptions={setHiddenOptions}
           disable={disableLogin}
+          actionButtonColor={actionBtnClr}
           username={username}
           setUsername={setUsername}
           usernameTextColor={usernameTextColor}
@@ -251,6 +249,7 @@ const Home: React.FC = () => {
           setHidden={setHiddenCreateAccount}
           setHiddenOptions={setHiddenOptions}
           disable={disableCreate}
+          actionButtonColor={actionBtnClr}
           createUsername={createUsername}
           setCreateUsername={setCreateUsername}
           crtUsernameTxtClr={crtUsernameTxtClr}
@@ -263,6 +262,12 @@ const Home: React.FC = () => {
           onCreateAccount={loginController}
         />
 
+        {
+          /*
+            Pop-up boxes that display messages to the user based on actions they've preformed
+            Used to return errors and confirmations
+          */
+        }
         <IonToast
           isOpen={creationError}
           onDidPresent={() => {}}

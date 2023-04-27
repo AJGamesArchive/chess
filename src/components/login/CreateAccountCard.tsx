@@ -11,6 +11,7 @@ interface CreateAccountProps {
   setHidden: (value: boolean) => void;
   setHiddenOptions: (value: boolean) => void;
   disable: boolean;
+  actionButtonColor: string;
   createUsername: string;
   setCreateUsername: (value: string) => void;
   crtUsernameTxtClr: string
@@ -23,7 +24,7 @@ interface CreateAccountProps {
   onCreateAccount: (username: string, password: string, mode: number) => void;
 }
 
-const CreateAccountCard: React.FC<CreateAccountProps> = ({ hidden, setHidden, setHiddenOptions, disable, createUsername, setCreateUsername, crtUsernameTxtClr, createPassword, setCreatePassword, crtPasswordTxtClr, confirmPassword, setConfirmPassword, cfmPasswordTxtClr, onCreateAccount }) => {
+const CreateAccountCard: React.FC<CreateAccountProps> = ({ hidden, setHidden, setHiddenOptions, disable, actionButtonColor, createUsername, setCreateUsername, crtUsernameTxtClr, createPassword, setCreatePassword, crtPasswordTxtClr, confirmPassword, setConfirmPassword, cfmPasswordTxtClr, onCreateAccount }) => {
   return (
     <IonCard hidden={hidden}>
       <IonItem lines="full">
@@ -82,10 +83,10 @@ const CreateAccountCard: React.FC<CreateAccountProps> = ({ hidden, setHidden, se
       <IonItem button detail={false} disabled={disable} lines="none" onClick={() => {
         onCreateAccount(createUsername, createPassword, 2);
       }}>
-        <IonLabel slot="end" color="primary">
+        <IonLabel slot="end" color={actionButtonColor}>
           Create Account
         </IonLabel>
-        <IonIcon icon={addCircle} slot="end" color="primary"></IonIcon>
+        <IonIcon icon={addCircle} slot="end" color={actionButtonColor}></IonIcon>
       </IonItem>
     </IonCard>
   );

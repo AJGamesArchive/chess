@@ -5,6 +5,7 @@ import './OptionCard.css';
 
 // Props that fetch the data being passed from the source call and passes the data into the component
 interface MenuOptionProps {
+  disabled: boolean;
   banner: string;
   connectionID: number;
   nav: (connectionID: number) => void;
@@ -15,10 +16,10 @@ interface MenuOptionProps {
 }
 
 // React function that setups the JSX component to be exported and passes data into the component
-const OptionCard: React.FC<MenuOptionProps> = ({ banner, connectionID, nav, title, buttonName, icon, description }) => {
+const OptionCard: React.FC<MenuOptionProps> = ({ disabled, banner, connectionID, nav, title, buttonName, icon, description }) => {
   // JSX code for generating the custom 'Option Card' UI component using passed in data
   return (
-    <IonCard>
+    <IonCard disabled={disabled}>
       <IonImg src={banner}/>
       <IonItem button detail={false} lines="full" onClick={() => {
         nav(connectionID);

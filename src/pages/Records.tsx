@@ -28,6 +28,9 @@ import GameRecord from '../components/records/GameRecord';
 // Importing the required function for this page
 import { Login } from '../functions/login/Login';
 
+// Importing the required types for this page
+import { CredentialValidation } from '../types/login/AccountVerification';
+
 const Records: React.FC = () => {
 
   // Setup navigation system on this page so we can call other pages
@@ -58,8 +61,9 @@ const Records: React.FC = () => {
   const [hiddenRecords, setHiddenRecords] = useState<boolean>(true);
 
   // Function to verify that the entered password is valid
-  function passwordVerifier(password: string) {
-    if (Login(params.username, password)) {
+  async function passwordVerifier(password: string) {
+    let confirmation: CredentialValidation = await Login(params.username, password);
+    if (confirmation.valid) {
       //TODO Insert code for what happens when the entered password is valid
       console.log("Valid Password");
       setHiddenPassVerifier(true);

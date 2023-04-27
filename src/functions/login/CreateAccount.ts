@@ -1,5 +1,7 @@
 // Importing libraries
 import { getDoc, setDoc, doc, collection, query, where, getDocs } from "firebase/firestore";
+
+// Importing the database
 import { db } from "../../database/initalise";
 
 // Importing page types
@@ -19,7 +21,7 @@ export async function CreateAccount(username: string, password: string, confirmP
     return Promise.resolve(confirmation);
   }
   // Retrieving an array of all the usernames currently in use from the db
-  let documents: string | string[] = await retrieveUsernames();
+  const documents: string | string[] = await retrieveUsernames();
   // Guard statement to ensure the array of usernames was retrieved successfully
   if (typeof documents === "string") {
     confirmation = {
@@ -41,7 +43,7 @@ export async function CreateAccount(username: string, password: string, confirmP
     };
   };
   // Attempting to create the account with the entered username and password
-  let creationSuccessful: boolean = await accountCreation(username, password);
+  const creationSuccessful: boolean = await accountCreation(username, password);
   //Guard statement to ensure the account was created successfully
   if (!creationSuccessful) {
     confirmation = {
