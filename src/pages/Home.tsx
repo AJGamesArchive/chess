@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import {
   IonCard,
-  IonCardContent,
   IonCardTitle,
   IonContent,
   IonHeader,
