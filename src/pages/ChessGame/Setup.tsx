@@ -1,27 +1,16 @@
 // Importing required library's
 import {
-  IonAvatar,
   IonButton,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
   IonContent,
   IonHeader,
   IonIcon,
-  IonImg,
-  IonInput,
-  IonItem,
-  IonLabel,
   IonPage,
-  IonSelect,
-  IonSelectOption,
-  IonText,
   IonTitle,
   IonToast,
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { arrowBack, gameController, person, radio, addCircle, search, warning } from 'ionicons/icons';
+import { arrowBack, gameController, person, radio, addCircle, search, warning, logIn } from 'ionicons/icons';
 import { useParams } from 'react-router';
 import { useState } from 'react';
 import './Setup.css';
@@ -39,6 +28,7 @@ import ActionButtons from '../../components/setup/ActionButtons';
 // Importing page functions
 import { readyToStart } from '../../functions/setup/ReadyToStart';
 import { ValidOpponent } from '../../functions/setup/ValidOpponent';
+import { Login } from '../../functions/login/Login';
 
 // Importing page types
 import { CredentialValidation } from '../../types/login/AccountVerification';
@@ -73,9 +63,10 @@ const GameSetup: React.FC = () => {
   // Declaring React variables for game settings
   const [hiddenSettings, setHiddenSettings] = useState<boolean>(defaultHiddenSettings);
   const [playerTwo, setPlayerTwo] = useState<string>(defaultPlayerTwo);
+  const [playerTwoPassword, setPlayerTwoPassword] = useState<string>("");
   const [playerTwoIcon] = useState<any>(defaultPlayerTwoIcon);
   const [playerTwoColor, setPlayerTwoColor] = useState<string>("");
-  const [boardColor, setBoardColor] = useState<string>(defaultBoardColor);
+  const [boardColor] = useState<string>(defaultBoardColor);
   const [whitePlayer, setWhitePlayer] = useState<string>("");
   const [blackPlayer, setBlackPlayer] = useState<string>("");
 
@@ -88,6 +79,7 @@ const GameSetup: React.FC = () => {
   // React variables to control the visibility of PVP mode opponent finding cards
   const [hiddenOpSelect, setHiddenOpSelect] = useState<boolean>(false);
   const [hiddenHasAccount, setHiddenHasAccount] = useState<boolean>(true);
+  const [hiddenOppPassword, setHiddenOppPassword] = useState<boolean>(true);
   const [hiddenNoAccount, setHiddenNoAccount] = useState<boolean>(true);
 
   // Variables to control the color of text input boxes
@@ -96,7 +88,13 @@ const GameSetup: React.FC = () => {
     playerTwoInputColor = "medium";
   } else {
     playerTwoInputColor = "success";
-  }
+  };
+  var playerTwoPasswordInputColor: string;
+  if (playerTwoPassword === "") {
+    playerTwoPasswordInputColor = "medium";
+  } else {
+    playerTwoPasswordInputColor = "success"
+  };
 
   // React variables to display errors to the user if they enter an invalid username when setting up an opponent in PVP mode
   const [errorGuestName, setErrorGuestName] = useState<boolean>(false);
@@ -110,24 +108,50 @@ const GameSetup: React.FC = () => {
     // Guard statement to ensure the has entered an opponents name
     if (playerTwo === "") {
       setErrorMessage("You have not entered a username for your opponent. Please ensure you enter a username."); 
-      setErrorGuestName(true);  
+      setErrorGuestName(true);
+      setPlayerTwo("");
       return setSearchBtnClr("primary");
     };
     // Guard statement to ensure that the opponents name is not the same as the players name
     if (playerTwo.toUpperCase() === params.username.toUpperCase()) {
       setErrorMessage("You're opponents name cannot be the same as your name. Please enter a different name."); 
-      setErrorInvalidUsername(true);  
+      setErrorInvalidUsername(true);
+      setPlayerTwo("");
       return setSearchBtnClr("primary");
     };
     // Guard statement to ensure that if the opponent has an account, the account is real and accessible
     if (hasAccount) {
       const locatedUser: CredentialValidation = await ValidOpponent(playerTwo);
       setErrorMessage(locatedUser.message);
-      if (!locatedUser.valid) {setErrorInvalidUsername(true); return setSearchBtnClr("primary");}
+      if (!locatedUser.valid) {setErrorInvalidUsername(true); setPlayerTwo(""); return setSearchBtnClr("primary");}
     };
-    // Moving setup forward to the final settings window
+    // Moving setup forward to the next section
     setHiddenNoAccount(true);
     setHiddenHasAccount(true);
+    if (hasAccount) {
+      setHiddenOppPassword(false);
+    } else {
+      setHiddenSettings(false);
+    };
+    return setSearchBtnClr("primary");
+  };
+
+  // Async function to validate the opponents account login
+  async function validPassword() {
+    // Change the color of the action button while system is loading
+    setSearchBtnClr("medium");
+    // Guard statement to ensure the has entered an opponents name
+    if (playerTwoPassword === "") {
+      setErrorMessage("You have not entered a password. Please ensure you enter a password."); 
+      setErrorGuestName(true);
+      return setSearchBtnClr("primary");
+    };
+    // Using the Login function to validate the opponents account login
+    const validLogin: CredentialValidation = await Login(playerTwo, playerTwoPassword);
+    setErrorMessage(validLogin.message);
+    if (!validLogin.valid) {setErrorInvalidUsername(true); setPlayerTwoPassword(""); return setSearchBtnClr("primary");}
+    // Moving setup forward to the next section
+    setHiddenOppPassword(true);
     setHiddenSettings(false);
     return setSearchBtnClr("primary");
   };
@@ -201,6 +225,22 @@ const GameSetup: React.FC = () => {
             icon={search}
             hasAccount={true}
             onNameEnter={setupOpponent}
+          />
+
+          <EnterOpp
+            hidden={hiddenOppPassword}
+            setHidden={setHiddenOppPassword}
+            setHiddenOpSelect={setHiddenOpSelect}
+            cardTitle={`Enter Password:`}
+            playerName={playerTwoPassword}
+            setPlayerName={setPlayerTwoPassword}
+            inputPlaceHolder={`Enter ${playerTwo}'s Account Password`}
+            inputColor={playerTwoPasswordInputColor}
+            buttonText={"Confirm"}
+            buttonColor={searchBtnClr}
+            icon={logIn}
+            hasAccount={true}
+            onNameEnter={validPassword}
           />
 
           <EnterOpp
@@ -280,7 +320,7 @@ const GameSetup: React.FC = () => {
 
           <IonToast
             isOpen={errorInvalidUsername}
-            onDidPresent={() => setPlayerTwo("")}
+            onDidPresent={() => {}}
             onDidDismiss={() => setErrorInvalidUsername(false)}
             message={errorMessage}
             icon={warning}
