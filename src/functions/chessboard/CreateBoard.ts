@@ -1,3 +1,7 @@
+import { resetSquareColor } from "./ResetSquareColor";
+
+//TODO Remove unneeded code and add comments
+
 function getPiece(char: string) {
   switch (char) {
     case "K":
@@ -50,9 +54,10 @@ export function CreateBoard(lightSquareClr: string, darkSquareClr: string): any[
     chessBoard[row] = new Array(Cols);
 
     for (let col = 0; col < Cols; col++){
-      const isLightSquare = (row + col) % 2 ===0;
+      const color = resetSquareColor(lightSquareClr, darkSquareClr, {row: row, col: col})
+      // const isLightSquare = (row + col) % 2 ===0;
+      // const color = isLightSquare ? lightSquareClr : darkSquareClr;
       const piece = getPiece(startingPosition[row][col]);
-      const color = isLightSquare ? lightSquareClr : darkSquareClr;
 
       chessBoard[row][col] = {
         row,

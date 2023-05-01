@@ -12,7 +12,7 @@ import {
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { logOut, hammer, refresh, home } from 'ionicons/icons';
+import { logOut, hammer, refresh, home, radioButtonOff, radioButtonOn, } from 'ionicons/icons';
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import './Game.css';
@@ -23,13 +23,16 @@ import { ChessGameParams } from '../../interfaces/ChessGameParams';
 
 // Importing page components
 import ChessBoard from '../../components/chessboard/Board';
+import PlayerCard from '../../components/chessboard/PlayerCard';
 
 // Importing page types
 import { GameControl } from '../../types/chessboard/GameControl';
+import { Piece } from '../../types/chessboard/Piece';
 
 // Importing page functions
 import { CreateBoard } from '../../functions/chessboard/CreateBoard';
 import { GameController } from '../../functions/chessboard/GameController';
+import { createPiecesTakenArray } from '../../functions/chessboard/TakenPiecesArrayGenerator';
 
 const ChessGame: React.FC = () => {
 
@@ -63,6 +66,44 @@ const ChessGame: React.FC = () => {
 
   // Declaring variable to control whether the board is locked or usable
   const [lockBoard, setLockBoard] = useState<boolean>(false);
+
+  // Declaring and assigning variables that will be used to power the player card UI components
+  var whitePlayerName: string;
+  var blackPlayerName: string;
+  if (game.opponentColor === "w") {
+    whitePlayerName = game.opponent;
+    blackPlayerName = params.username;
+  } else {
+    blackPlayerName = game.opponent;
+    whitePlayerName = params.username;
+  };
+  var whiteTurnIcon: any;
+  var whiteTurnIconClr: any;
+  var blackTurnIcon: any;
+  var blackTurnIconClr: any;
+  if (turn === "w") {
+    whiteTurnIcon = radioButtonOn;
+    blackTurnIcon = radioButtonOff;
+    if (game.mode === "PVP") {
+      whiteTurnIconClr = "primary";
+    } else {
+      whiteTurnIconClr = "success";
+    };
+    blackTurnIconClr = "medium";
+  } else {
+    blackTurnIcon = radioButtonOn;
+    whiteTurnIcon = radioButtonOff;
+    if (game.mode === "PVP") {
+      blackTurnIconClr = "primary";
+    } else {
+      blackTurnIconClr = "success";
+    };
+    whiteTurnIconClr = "medium";
+  };
+
+  // Declaring React arrays to store the pieces taken of each color
+  const [whitePiecesTaken, setWhitePiecesTaken] = useState<Piece[][]>(createPiecesTakenArray());
+  const [blackPiecesTaken, setBlackPiecesTaken] = useState<Piece[][]>(createPiecesTakenArray());
 
   // Declaring variable to keep track of whether or not a source square has been selected
   // const [isSourceSelect, setIsSourceSelected] = useState<boolean>(false); //? Remove later if not needed in this file
@@ -294,10 +335,26 @@ const ChessGame: React.FC = () => {
             */
           }
 
+          <PlayerCard
+            cardImage='/assets/images/ChessPieces/white-Pawn.png'
+            playerName={whitePlayerName}
+            turnIcon={whiteTurnIcon}
+            turnIconClr={whiteTurnIconClr}
+            takenPieces={whitePiecesTaken}
+          />
+
           <ChessBoard
             board={chessboard}
             locked={lockBoard}
             onSquareClick={onSquareClick}
+          />
+
+          <PlayerCard
+            cardImage='/assets/images/ChessPieces/black-Pawn.png'
+            playerName={blackPlayerName}
+            turnIcon={blackTurnIcon}
+            turnIconClr={blackTurnIconClr}
+            takenPieces={blackPiecesTaken}
           />
 
           {
@@ -306,7 +363,7 @@ const ChessGame: React.FC = () => {
             */
           }
 
-          <IonCard>
+          <IonCard hidden={false}>
             <IonItem lines="full">
               DEV Action Buttons
             </IonItem>
@@ -372,10 +429,26 @@ const ChessGame: React.FC = () => {
             */
           }
 
+          <PlayerCard
+            cardImage='/assets/images/ChessPieces/white-Pawn.png'
+            playerName={whitePlayerName}
+            turnIcon={whiteTurnIcon}
+            turnIconClr={whiteTurnIconClr}
+            takenPieces={whitePiecesTaken}
+          />
+
           <ChessBoard
             board={chessboard}
             locked={lockBoard}
             onSquareClick={onSquareClick}
+          />
+
+          <PlayerCard
+            cardImage='/assets/images/ChessPieces/black-Pawn.png'
+            playerName={blackPlayerName}
+            turnIcon={blackTurnIcon}
+            turnIconClr={blackTurnIconClr}
+            takenPieces={blackPiecesTaken}
           />
 
           {
@@ -384,7 +457,7 @@ const ChessGame: React.FC = () => {
             */
           }
 
-          <IonCard>
+          <IonCard hidden={false}>
             <IonItem lines="full">
               DEV Action Buttons
             </IonItem>
