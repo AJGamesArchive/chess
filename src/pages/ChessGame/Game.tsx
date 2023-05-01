@@ -12,7 +12,7 @@ import {
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { logOut, hammer, refresh, home, radioButtonOff, radioButtonOn, } from 'ionicons/icons';
+import { hammer, refresh, home, radioButtonOff, radioButtonOn, } from 'ionicons/icons';
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import './Game.css';
@@ -302,234 +302,326 @@ const ChessGame: React.FC = () => {
   }
 
   // IF statement to render page GUI differently depending on what game mode is selected
-  if (game.mode === "PVP") {
-    // JSX code for generating the chess game GUI for PVP mode
-    return (
-      <IonPage id="game-page">
-        {
-          /*
-            Page Header Code
-            Contains a page title
-          */
-        }
-        <IonHeader>
+  return (
+    <IonPage id="game-page">
+      {
+        /*
+          Page Header Code
+          Contains a page title
+        */
+      }
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle className="game-header">
+            Chess: <IonText color="primary">{params.username}</IonText> VS <IonText color="primary">{game.opponent}</IonText>!
+          </IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent fullscreen>
+
+        <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle className="game-header">
+            <IonTitle size="large" className="game-header">
               Chess: <IonText color="primary">{params.username}</IonText> VS <IonText color="primary">{game.opponent}</IonText>!
             </IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent fullscreen>
 
-          <IonHeader collapse="condense">
-            <IonToolbar>
-              <IonTitle size="large" className="game-header">
-                Chess: <IonText color="primary">{params.username}</IonText> VS <IonText color="primary">{game.opponent}</IonText>!
-              </IonTitle>
-            </IonToolbar>
-          </IonHeader>
-
-          {
-            /*
-              Page Content Code
-            */
-          }
-
-          <PlayerCard
-            cardImage='/assets/images/ChessPieces/white-Pawn.png'
-            playerName={whitePlayerName}
-            turnIcon={whiteTurnIcon}
-            turnIconClr={whiteTurnIconClr}
-            takenPieces={whitePiecesTaken}
-          />
-
-          <ChessBoard
-            board={chessboard}
-            locked={lockBoard}
-            onSquareClick={onSquareClick}
-          />
-
-          <PlayerCard
-            cardImage='/assets/images/ChessPieces/black-Pawn.png'
-            playerName={blackPlayerName}
-            turnIcon={blackTurnIcon}
-            turnIconClr={blackTurnIconClr}
-            takenPieces={blackPiecesTaken}
-          />
-
-          {
-            /*
-              ! Temporary buttons to aid with development
-            */
-          }
-
-          <IonCard hidden={false}>
-            <IonItem lines="full">
-              DEV Action Buttons
-            </IonItem>
-            <IonItem lines="full">
-              Print Current Game State/Array To Console
-              <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
-                console.log(chessboard);
-              }}>
-                <IonIcon icon={hammer}></IonIcon>
-              </IonButton>
-            </IonItem>
-            <IonItem lines="full">
-              Reload/Reset Game
-              <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
-                window.location.reload();
-              }}>
-                <IonIcon icon={refresh}></IonIcon>
-              </IonButton>
-            </IonItem>
-            <IonItem lines="none">
-              Go To Main Menu
-              <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
-                nav.push(`/mainMenu/${params.username}`);
-              }}>
-                <IonIcon icon={home}></IonIcon>
-              </IonButton>
-            </IonItem>
-          </IonCard>
-
-        </IonContent>
-      </IonPage>
-    );
-  } else if (game.mode === "PVE") {
-    // JSX code for generating the chess game GUI for PVE mode
-    return (
-      <IonPage id="game-page">
         {
           /*
-            Page Header Code
-            Contains a page title
+            Page Content Code
           */
         }
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle className="game-header">
-              Chess: <IonText color="primary">{params.username}</IonText> VS <IonText color="primary">Computer</IonText>!
-            </IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent fullscreen>
 
-          <IonHeader collapse="condense">
-            <IonToolbar>
-              <IonTitle size="large" className="game-header">
-                Chess: <IonText color="primary">{params.username}</IonText> VS <IonText color="primary">Computer</IonText>!
-              </IonTitle>
-            </IonToolbar>
-          </IonHeader>
+        <PlayerCard
+          cardImage='/assets/images/ChessPieces/white-Pawn.png'
+          playerName={whitePlayerName}
+          turnIcon={whiteTurnIcon}
+          turnIconClr={whiteTurnIconClr}
+          takenPieces={whitePiecesTaken}
+        />
 
-          {
-            /*
-              Page Content Code
-            */
-          }
+        <ChessBoard
+          board={chessboard}
+          locked={lockBoard}
+          onSquareClick={onSquareClick}
+        />
 
-          <PlayerCard
-            cardImage='/assets/images/ChessPieces/white-Pawn.png'
-            playerName={whitePlayerName}
-            turnIcon={whiteTurnIcon}
-            turnIconClr={whiteTurnIconClr}
-            takenPieces={whitePiecesTaken}
-          />
+        <PlayerCard
+          cardImage='/assets/images/ChessPieces/black-Pawn.png'
+          playerName={blackPlayerName}
+          turnIcon={blackTurnIcon}
+          turnIconClr={blackTurnIconClr}
+          takenPieces={blackPiecesTaken}
+        />
 
-          <ChessBoard
-            board={chessboard}
-            locked={lockBoard}
-            onSquareClick={onSquareClick}
-          />
-
-          <PlayerCard
-            cardImage='/assets/images/ChessPieces/black-Pawn.png'
-            playerName={blackPlayerName}
-            turnIcon={blackTurnIcon}
-            turnIconClr={blackTurnIconClr}
-            takenPieces={blackPiecesTaken}
-          />
-
-          {
-            /*
-              ! Temporary buttons to aid with development
-            */
-          }
-
-          <IonCard hidden={false}>
-            <IonItem lines="full">
-              DEV Action Buttons
-            </IonItem>
-            <IonItem lines="full">
-              Print Current Game State/Array To Console
-              <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
-                console.log(chessboard);
-              }}>
-                <IonIcon icon={hammer}></IonIcon>
-              </IonButton>
-            </IonItem>
-            <IonItem lines="full">
-              Reload/Reset Game
-              <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
-                window.location.reload();
-              }}>
-                <IonIcon icon={refresh}></IonIcon>
-              </IonButton>
-            </IonItem>
-            <IonItem lines="none">
-              Go To Main Menu
-              <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
-                nav.push(`/mainMenu/${params.username}`);
-              }}>
-                <IonIcon icon={home}></IonIcon>
-              </IonButton>
-            </IonItem>
-          </IonCard>
-
-        </IonContent>
-      </IonPage>
-    );
-  } else {
-    // JSX code for generating the chess game GUI for no selected mode //TODO Turn this into a 'what to do next' page that's called when a chess game finishes
-    return (
-      <IonPage id="game-page">
         {
           /*
-            Page Header Code
-            Contains a page title
+            ! Temporary buttons to aid with development
           */
         }
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle className="game-header">
-              Something Went Wrong
-            </IonTitle>
-            <IonButton slot="end" fill="clear" color="warning" href="/Home">
-              <IonIcon icon={logOut}></IonIcon>
+
+        <IonCard hidden={false}>
+          <IonItem lines="full">
+            DEV Action Buttons
+          </IonItem>
+          <IonItem lines="full">
+            Print Current Game State/Array To Console
+            <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
+              console.log(chessboard);
+            }}>
+              <IonIcon icon={hammer}></IonIcon>
             </IonButton>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent fullscreen>
+          </IonItem>
+          <IonItem lines="full">
+            Reload/Reset Game
+            <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
+              window.location.reload();
+            }}>
+              <IonIcon icon={refresh}></IonIcon>
+            </IonButton>
+          </IonItem>
+          <IonItem lines="none">
+            Go To Main Menu
+            <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
+              nav.push(`/mainMenu/${params.username}`);
+            }}>
+              <IonIcon icon={home}></IonIcon>
+            </IonButton>
+          </IonItem>
+        </IonCard>
 
-          <IonHeader collapse="condense">
-            <IonToolbar>
-              <IonTitle size="large" className="game-header">
-                Something Went Wrong
-              </IonTitle>
-            </IonToolbar>
-          </IonHeader>
+      </IonContent>
+    </IonPage>
+  );
+  // if (game.mode === "PVP") {
+  //   // JSX code for generating the chess game GUI for PVP mode
+  //   return (
+  //     <IonPage id="game-page">
+  //       {
+  //         /*
+  //           Page Header Code
+  //           Contains a page title
+  //         */
+  //       }
+  //       <IonHeader>
+  //         <IonToolbar>
+  //           <IonTitle className="game-header">
+  //             Chess: <IonText color="primary">{params.username}</IonText> VS <IonText color="primary">{game.opponent}</IonText>!
+  //           </IonTitle>
+  //         </IonToolbar>
+  //       </IonHeader>
+  //       <IonContent fullscreen>
 
-          {
-            /*
-              Page Content Code
-            */
-          }
+  //         <IonHeader collapse="condense">
+  //           <IonToolbar>
+  //             <IonTitle size="large" className="game-header">
+  //               Chess: <IonText color="primary">{params.username}</IonText> VS <IonText color="primary">{game.opponent}</IonText>!
+  //             </IonTitle>
+  //           </IonToolbar>
+  //         </IonHeader>
 
-        </IonContent>
-      </IonPage>
-    );
-  }
+  //         {
+  //           /*
+  //             Page Content Code
+  //           */
+  //         }
+
+  //         <PlayerCard
+  //           cardImage='/assets/images/ChessPieces/white-Pawn.png'
+  //           playerName={whitePlayerName}
+  //           turnIcon={whiteTurnIcon}
+  //           turnIconClr={whiteTurnIconClr}
+  //           takenPieces={whitePiecesTaken}
+  //         />
+
+  //         <ChessBoard
+  //           board={chessboard}
+  //           locked={lockBoard}
+  //           onSquareClick={onSquareClick}
+  //         />
+
+  //         <PlayerCard
+  //           cardImage='/assets/images/ChessPieces/black-Pawn.png'
+  //           playerName={blackPlayerName}
+  //           turnIcon={blackTurnIcon}
+  //           turnIconClr={blackTurnIconClr}
+  //           takenPieces={blackPiecesTaken}
+  //         />
+
+  //         {
+  //           /*
+  //             ! Temporary buttons to aid with development
+  //           */
+  //         }
+
+  //         <IonCard hidden={false}>
+  //           <IonItem lines="full">
+  //             DEV Action Buttons
+  //           </IonItem>
+  //           <IonItem lines="full">
+  //             Print Current Game State/Array To Console
+  //             <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
+  //               console.log(chessboard);
+  //             }}>
+  //               <IonIcon icon={hammer}></IonIcon>
+  //             </IonButton>
+  //           </IonItem>
+  //           <IonItem lines="full">
+  //             Reload/Reset Game
+  //             <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
+  //               window.location.reload();
+  //             }}>
+  //               <IonIcon icon={refresh}></IonIcon>
+  //             </IonButton>
+  //           </IonItem>
+  //           <IonItem lines="none">
+  //             Go To Main Menu
+  //             <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
+  //               nav.push(`/mainMenu/${params.username}`);
+  //             }}>
+  //               <IonIcon icon={home}></IonIcon>
+  //             </IonButton>
+  //           </IonItem>
+  //         </IonCard>
+
+  //       </IonContent>
+  //     </IonPage>
+  //   );
+  // } else if (game.mode === "PVE") {
+  //   // JSX code for generating the chess game GUI for PVE mode
+  //   return (
+  //     <IonPage id="game-page">
+  //       {
+  //         /*
+  //           Page Header Code
+  //           Contains a page title
+  //         */
+  //       }
+  //       <IonHeader>
+  //         <IonToolbar>
+  //           <IonTitle className="game-header">
+  //             Chess: <IonText color="primary">{params.username}</IonText> VS <IonText color="primary">Computer</IonText>!
+  //           </IonTitle>
+  //         </IonToolbar>
+  //       </IonHeader>
+  //       <IonContent fullscreen>
+
+  //         <IonHeader collapse="condense">
+  //           <IonToolbar>
+  //             <IonTitle size="large" className="game-header">
+  //               Chess: <IonText color="primary">{params.username}</IonText> VS <IonText color="primary">Computer</IonText>!
+  //             </IonTitle>
+  //           </IonToolbar>
+  //         </IonHeader>
+
+  //         {
+  //           /*
+  //             Page Content Code
+  //           */
+  //         }
+
+  //         <PlayerCard
+  //           cardImage='/assets/images/ChessPieces/white-Pawn.png'
+  //           playerName={whitePlayerName}
+  //           turnIcon={whiteTurnIcon}
+  //           turnIconClr={whiteTurnIconClr}
+  //           takenPieces={whitePiecesTaken}
+  //         />
+
+  //         <ChessBoard
+  //           board={chessboard}
+  //           locked={lockBoard}
+  //           onSquareClick={onSquareClick}
+  //         />
+
+  //         <PlayerCard
+  //           cardImage='/assets/images/ChessPieces/black-Pawn.png'
+  //           playerName={blackPlayerName}
+  //           turnIcon={blackTurnIcon}
+  //           turnIconClr={blackTurnIconClr}
+  //           takenPieces={blackPiecesTaken}
+  //         />
+
+  //         {
+  //           /*
+  //             ! Temporary buttons to aid with development
+  //           */
+  //         }
+
+  //         <IonCard hidden={false}>
+  //           <IonItem lines="full">
+  //             DEV Action Buttons
+  //           </IonItem>
+  //           <IonItem lines="full">
+  //             Print Current Game State/Array To Console
+  //             <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
+  //               console.log(chessboard);
+  //             }}>
+  //               <IonIcon icon={hammer}></IonIcon>
+  //             </IonButton>
+  //           </IonItem>
+  //           <IonItem lines="full">
+  //             Reload/Reset Game
+  //             <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
+  //               window.location.reload();
+  //             }}>
+  //               <IonIcon icon={refresh}></IonIcon>
+  //             </IonButton>
+  //           </IonItem>
+  //           <IonItem lines="none">
+  //             Go To Main Menu
+  //             <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
+  //               nav.push(`/mainMenu/${params.username}`);
+  //             }}>
+  //               <IonIcon icon={home}></IonIcon>
+  //             </IonButton>
+  //           </IonItem>
+  //         </IonCard>
+
+  //       </IonContent>
+  //     </IonPage>
+  //   );
+  // } else {
+  //   // JSX code for generating the chess game GUI for no selected mode //TODO Turn this into a 'what to do next' page that's called when a chess game finishes
+  //   return (
+  //     <IonPage id="game-page">
+  //       {
+  //         /*
+  //           Page Header Code
+  //           Contains a page title
+  //         */
+  //       }
+  //       <IonHeader>
+  //         <IonToolbar>
+  //           <IonTitle className="game-header">
+  //             Something Went Wrong
+  //           </IonTitle>
+  //           <IonButton slot="end" fill="clear" color="warning" href="/Home">
+  //             <IonIcon icon={logOut}></IonIcon>
+  //           </IonButton>
+  //         </IonToolbar>
+  //       </IonHeader>
+  //       <IonContent fullscreen>
+
+  //         <IonHeader collapse="condense">
+  //           <IonToolbar>
+  //             <IonTitle size="large" className="game-header">
+  //               Something Went Wrong
+  //             </IonTitle>
+  //           </IonToolbar>
+  //         </IonHeader>
+
+  //         {
+  //           /*
+  //             Page Content Code
+  //           */
+  //         }
+
+  //       </IonContent>
+  //     </IonPage>
+  //   );
+  // }
 };
 
 export default ChessGame;
