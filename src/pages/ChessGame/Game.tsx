@@ -25,25 +25,11 @@ import { ChessGameParams } from '../../interfaces/ChessGameParams';
 import ChessBoard from '../../components/chessboard/Board';
 
 // Importing page types
-import { CheckDetails } from '../../types/chessboard/CheckDetails';
-import { CheckSquare } from '../../types/chessboard/CheckDetails';
 import { GameControl } from '../../types/chessboard/GameControl';
 
 // Importing page functions
 import { CreateBoard } from '../../functions/chessboard/CreateBoard';
 import { GameController } from '../../functions/chessboard/GameController';
-import { updateBoard } from '../../functions/chessboard/UpdateBoard';
-import { resetSquareColor } from '../../functions/chessboard/ResetSquareColor';
-
-import { pawnPiece } from '../../functions/chessboard/Pawn';
-import { rookPiece } from '../../functions/chessboard/Rook';
-import { knightPiece } from '../../functions/chessboard/Knight';
-import { bishopPiece } from '../../functions/chessboard/Bishop';
-import { queenPiece } from '../../functions/chessboard/Queen';
-import { kingPiece } from '../../functions/chessboard/King';
-
-import { isCastleing, carryOutCastleing } from '../../functions/chessboard/Castleing';
-import { checkEvaluation } from '../../functions/chessboard/Check';
 
 const ChessGame: React.FC = () => {
 
@@ -310,6 +296,7 @@ const ChessGame: React.FC = () => {
 
           <ChessBoard
             board={chessboard}
+            locked={lockBoard}
             onSquareClick={onSquareClick}
           />
 
@@ -387,6 +374,7 @@ const ChessGame: React.FC = () => {
 
           <ChessBoard
             board={chessboard}
+            locked={lockBoard}
             onSquareClick={onSquareClick}
           />
 
