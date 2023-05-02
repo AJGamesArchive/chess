@@ -150,6 +150,8 @@ const ChessGame: React.FC = () => {
       square, 
       turn,
       darkSquareColor,
+      whitePiecesTaken,
+      blackPiecesTaken,
       kingWMoved,
       kingbMoved,
       rook1WMoved,
@@ -160,6 +162,8 @@ const ChessGame: React.FC = () => {
     // Update the state of the board
     setChessboard(controls.board);
     setLockBoard(controls.lockBoard);
+    setWhitePiecesTaken(controls.whiteTaken);
+    setBlackPiecesTaken(controls.blackTaken);
     if (controls.switchTurn) {
       // Switch to the other players turn if current player has moved
       if (turn === "w") {
@@ -362,28 +366,18 @@ const ChessGame: React.FC = () => {
         }
 
         <IonCard hidden={false}>
-          <IonItem lines="full">
-            DEV Action Buttons
-          </IonItem>
-          <IonItem lines="full">
-            Print Current Game State/Array To Console
-            <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
+          <IonItem lines="none">
+            <IonButton slot="start" fill="clear" color="secondary" onClick={() => {
               console.log(chessboard);
             }}>
               <IonIcon icon={hammer}></IonIcon>
             </IonButton>
-          </IonItem>
-          <IonItem lines="full">
-            Reload/Reset Game
-            <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
+            <IonButton slot="start" fill="clear" color="secondary" onClick={() => {
               window.location.reload();
             }}>
               <IonIcon icon={refresh}></IonIcon>
             </IonButton>
-          </IonItem>
-          <IonItem lines="none">
-            Go To Main Menu
-            <IonButton slot="end" fill="clear" color="secondary" onClick={() => {
+            <IonButton slot="start" fill="clear" color="secondary" onClick={() => {
               nav.push(`/mainMenu/${params.username}`);
             }}>
               <IonIcon icon={home}></IonIcon>

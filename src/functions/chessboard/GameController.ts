@@ -1,6 +1,6 @@
 // Importing Game Functions
 import { resetSquareColor } from "./ResetSquareColor";
-import { checkEvaluation, checkHighlight, checkHandler } from "./Check";
+import { checkHandler } from "./Check";
 
 // Importing Movement Functions
 import { isCastleing, carryOutCastleing } from "./Castleing";
@@ -15,8 +15,9 @@ import { queenPiece } from "./Queen";
 import { kingPiece } from "./King";
 
 // Importing Types
-import { CheckDetails } from "../../types/chessboard/CheckDetails";
 import { GameControl } from "../../types/chessboard/GameControl";
+import { Piece } from "../../types/chessboard/Piece";
+import { UpdatedArrays } from "../../types/chessboard/UpdatedArrays";
 
 // Declaring variable to keep track of whether or not a source square has been selected
 var isSourceSelect: boolean = false
@@ -46,6 +47,8 @@ export function GameController(
   clickedSquare: any,
   turn: string,
   darkSquareColor: string,
+  whitePiecesTaken: Piece[][],
+  blackPiecesTaken: Piece[][],
   kingWMoved: boolean,
   kingbMoved: boolean,
   rook1WMoved: boolean,
@@ -66,7 +69,9 @@ export function GameController(
       control = {
         board: chessboard,
         switchTurn: false,
-        lockBoard: false
+        lockBoard: false,
+        whiteTaken: whitePiecesTaken,
+        blackTaken: blackPiecesTaken
       };
       return control;
     }
@@ -76,7 +81,9 @@ export function GameController(
       control = {
         board: chessboard,
         switchTurn: false,
-        lockBoard: false
+        lockBoard: false,
+        whiteTaken: whitePiecesTaken,
+        blackTaken: blackPiecesTaken
       };
       return control;
     }
@@ -92,7 +99,9 @@ export function GameController(
     control = {
       board: newChessboard,
       switchTurn: false,
-      lockBoard: false
+      lockBoard: false,
+      whiteTaken: whitePiecesTaken,
+      blackTaken: blackPiecesTaken
     };
     return control;
   } else {
@@ -105,7 +114,9 @@ export function GameController(
       control = {
         board: newChessboard,
         switchTurn: false,
-        lockBoard: false
+        lockBoard: false,
+        whiteTaken: whitePiecesTaken,
+        blackTaken: blackPiecesTaken
       };
       return control;
     }
@@ -130,14 +141,18 @@ export function GameController(
         control = {
           board: newChessboard,
           switchTurn: true,
-          lockBoard: false
+          lockBoard: false,
+          whiteTaken: whitePiecesTaken,
+          blackTaken: blackPiecesTaken
         };
       } else {
         // Return needed data
         control = {
           board: newChessboard,
           switchTurn: false,
-          lockBoard: false
+          lockBoard: false,
+          whiteTaken: whitePiecesTaken,
+          blackTaken: blackPiecesTaken
         };
       }
       return control;
@@ -150,7 +165,9 @@ export function GameController(
           control = {
             board: chessboard,
             switchTurn: false,
-            lockBoard: false
+            lockBoard: false,
+            whiteTaken: whitePiecesTaken,
+            blackTaken: blackPiecesTaken
           };
           return control;
         }
@@ -162,7 +179,9 @@ export function GameController(
           control = {
             board: chessboard,
             switchTurn: false,
-            lockBoard: false
+            lockBoard: false,
+            whiteTaken: whitePiecesTaken,
+            blackTaken: blackPiecesTaken
           };
           return control;
         }
@@ -174,7 +193,9 @@ export function GameController(
           control = {
             board: chessboard,
             switchTurn: false,
-            lockBoard: false
+            lockBoard: false,
+            whiteTaken: whitePiecesTaken,
+            blackTaken: blackPiecesTaken
           };
           return control;
         }
@@ -186,7 +207,9 @@ export function GameController(
           control = {
             board: chessboard,
             switchTurn: false,
-            lockBoard: false
+            lockBoard: false,
+            whiteTaken: whitePiecesTaken,
+            blackTaken: blackPiecesTaken
           };
           return control;
         }
@@ -198,7 +221,9 @@ export function GameController(
           control = {
             board: chessboard,
             switchTurn: false,
-            lockBoard: false
+            lockBoard: false,
+            whiteTaken: whitePiecesTaken,
+            blackTaken: blackPiecesTaken
           };
           return control;
         }
@@ -210,31 +235,60 @@ export function GameController(
           control = {
             board: chessboard,
             switchTurn: false,
-            lockBoard: false
+            lockBoard: false,
+            whiteTaken: whitePiecesTaken,
+            blackTaken: blackPiecesTaken
           };
           return control;
         }
       };
       // Move the piece from the source square to the target square
-      let newChessboard: any[][] = updateBoard(sourceSquare, clickedSquare, chessboard);
+      let updatedArray: UpdatedArrays = updateBoard(sourceSquare, clickedSquare, chessboard);
+      let newChessboard: any[][] = updatedArray.board;
       // Work out if anyone is in check and highlight the board accordingly
       let allowMove = checkHandler(newChessboard, sourceSquare, clickedSquare, checkHighlighter, darkSquareColor, huntHighlighter);
       newChessboard = allowMove.board;
       if (allowMove.allowMove) {
         // Reset all square colors to normal
         newChessboard = nextMove(newChessboard, darkSquareColor);
+        // Update the taken pieces applicable array if a piece has been taken
+        if (updatedArray.takenPiece.piece.type !== "Blank") {
+          if (updatedArray.takenPiece.piece.color === "white") {
+            arrayLoop: for (let row = 0; row < blackPiecesTaken.length; row++) {
+              for (let col = 0; col < blackPiecesTaken[row].length; col++) {
+                if (blackPiecesTaken[row][col].piece.type === "Blank") {
+                  blackPiecesTaken[row][col].piece = updatedArray.takenPiece.piece;
+                  break arrayLoop;
+                };
+              };
+            };
+          } else {
+            arrayLoop: for (let row = 0; row < whitePiecesTaken.length; row++) {
+              for (let col = 0; col < whitePiecesTaken[row].length; col++) {
+                if (whitePiecesTaken[row][col].piece.type === "Blank") {
+                  whitePiecesTaken[row][col].piece = updatedArray.takenPiece.piece;
+                  break arrayLoop;
+                };
+              };
+            };
+          };
+        };
         // Return needed data
         control = {
           board: newChessboard,
           switchTurn: true,
-          lockBoard: false
+          lockBoard: false,
+          whiteTaken: whitePiecesTaken,
+          blackTaken: blackPiecesTaken
         };
       } else {
         // Return needed data
         control = {
           board: newChessboard,
           switchTurn: false,
-          lockBoard: false
+          lockBoard: false,
+          whiteTaken: whitePiecesTaken,
+          blackTaken: blackPiecesTaken
         };
       }
       return control;

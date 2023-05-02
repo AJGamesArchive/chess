@@ -1,6 +1,7 @@
 import { CheckDetails, CheckAllowMove } from "../../types/chessboard/CheckDetails";
 import { resetSquareColor } from "./ResetSquareColor";
 import { updateBoard } from "./UpdateBoard";
+import { UpdatedArrays } from "../../types/chessboard/UpdatedArrays";
 
 // Declaring React variable to store the state of check at the end of each move
 var check: CheckDetails = ({
@@ -18,7 +19,8 @@ export function checkHandler(chessboard: any[][], sourceSquare: any, targetSquar
   // Check if any one is in check and color squares accordingly
   const checkDetails: CheckDetails = checkEvaluation(sourceSquare, targetSquare, chessboard);
   if (checkDetails.selfInCheck) {
-    newChessboard = updateBoard(targetSquare, sourceSquare, chessboard);
+    let updatedArray: UpdatedArrays = updateBoard(targetSquare, sourceSquare, chessboard);
+    newChessboard = updatedArray.board;
     allowMove = {
       board: newChessboard,
       allowMove: false
@@ -26,7 +28,8 @@ export function checkHandler(chessboard: any[][], sourceSquare: any, targetSquar
     return allowMove;
   }
   if ((checkDetails.colorInCheck === check.colorInCheck) && check.colorInCheck !== "") {
-    newChessboard = updateBoard(targetSquare, sourceSquare, chessboard);
+    let updatedArray: UpdatedArrays = updateBoard(targetSquare, sourceSquare, chessboard);
+    newChessboard = updatedArray.board;
     allowMove = {
       board: newChessboard,
       allowMove: false
