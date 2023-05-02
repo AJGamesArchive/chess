@@ -1,12 +1,17 @@
 // Importing required library's
 import {
+  IonAvatar,
   IonButton,
   IonCard,
   IonContent,
   IonHeader,
   IonIcon,
+  IonImg,
   IonItem,
+  IonLabel,
   IonPage,
+  IonSelect,
+  IonSelectOption,
   IonText,
   IonTitle,
   IonToast,
@@ -124,8 +129,6 @@ const ChessGame: React.FC = () => {
 
   // Declaring react variables to store the selection option from the piece selection boxes
   const [pawnSquare, setPawnSquare] = useState<any>();
-  const [whiteSelection, setWhiteSelection] = useState<string>("");
-  const [blackSelection, setBlackSelection] = useState<string>("");
 
   // Declaring variable to keep track of whether or not a source square has been selected
   // const [isSourceSelect, setIsSourceSelected] = useState<boolean>(false); //? Remove later if not needed in this file
@@ -399,15 +402,13 @@ const ChessGame: React.FC = () => {
   };
 
   // Function that handles swapping out a pawn that's reached the end of the board for another selected piece
-  function swapOutPawn() {
+  function swapOutPawn(selection: string) {
     setHideWhiteSelect(true);
     setHideBlackSelect(true);
-    let newChessboard;
+    let newChessboard = upgradePawn(chessboard, pawnSquare, selection);
     if (turn === "w") {
-      newChessboard = upgradePawn(chessboard, pawnSquare, whiteSelection);
       setTurn("b");
     } else {
-      newChessboard = upgradePawn(chessboard, pawnSquare, whiteSelection);
       setTurn("w");
     };
     setChessboard(newChessboard);
@@ -455,11 +456,53 @@ const ChessGame: React.FC = () => {
           takenPieces={whitePiecesTaken}
         />
 
+        <IonCard hidden={hideBlackSelect}>
+          <IonItem lines="none">
+            <IonAvatar slot="start">
+              <IonImg src="/assets/images/ChessPieces/black-Pawn.png"/>
+            </IonAvatar>
+            <IonLabel>
+              <IonText className='game-card-header'>
+                Swap For:
+              </IonText>
+            </IonLabel>
+            <IonSelect interface="alert" slot="end" placeholder={"Select"} onIonChange={(e: any) => {;
+              swapOutPawn(e.detail.value);
+            }}>
+              <IonSelectOption value='Rook'>Rook</IonSelectOption>
+              <IonSelectOption value='Knight'>Knight</IonSelectOption>
+              <IonSelectOption value='Bishop'>Bishop</IonSelectOption>
+              <IonSelectOption value='Queen'>Queen</IonSelectOption>
+            </IonSelect>
+          </IonItem>
+        </IonCard>
+
         <ChessBoard
           board={chessboard}
           locked={lockBoard}
           onSquareClick={onSquareClick}
         />
+
+        <IonCard hidden={hideWhiteSelect}>
+          <IonItem lines="none">
+            <IonAvatar slot="start">
+              <IonImg src="/assets/images/ChessPieces/white-Pawn.png"/>
+            </IonAvatar>
+            <IonLabel>
+              <IonText className='game-card-header'>
+                Swap For:
+              </IonText>
+            </IonLabel>
+            <IonSelect interface="alert" slot="end" placeholder={"Select"} onIonChange={(e: any) => {
+              swapOutPawn(e.detail.value);
+            }}>
+              <IonSelectOption value='Rook'>Rook</IonSelectOption>
+              <IonSelectOption value='Knight'>Knight</IonSelectOption>
+              <IonSelectOption value='Bishop'>Bishop</IonSelectOption>
+              <IonSelectOption value='Queen'>Queen</IonSelectOption>
+            </IonSelect>
+          </IonItem>
+        </IonCard>
 
         <PlayerCard
           cardImage='/assets/images/ChessPieces/black-Pawn.png'
