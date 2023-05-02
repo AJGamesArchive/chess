@@ -9,10 +9,11 @@ import {
   IonPage,
   IonText,
   IonTitle,
+  IonToast,
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { hammer, refresh, home, radioButtonOff, radioButtonOn, } from 'ionicons/icons';
+import { hammer, refresh, home, radioButtonOff, radioButtonOn, alertCircle, star } from 'ionicons/icons';
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import './Game.css';
@@ -24,6 +25,7 @@ import { ChessGameParams } from '../../interfaces/ChessGameParams';
 // Importing page components
 import ChessBoard from '../../components/chessboard/Board';
 import PlayerCard from '../../components/chessboard/PlayerCard';
+import ActionButtons from '../../components/setup/ActionButtons';
 
 // Importing page types
 import { GameControl } from '../../types/chessboard/GameControl';
@@ -33,6 +35,7 @@ import { Piece } from '../../types/chessboard/Piece';
 import { CreateBoard } from '../../functions/chessboard/CreateBoard';
 import { GameController } from '../../functions/chessboard/GameController';
 import { createPiecesTakenArray } from '../../functions/chessboard/TakenPiecesArrayGenerator';
+import { finished } from 'stream';
 
 const ChessGame: React.FC = () => {
 
@@ -67,8 +70,13 @@ const ChessGame: React.FC = () => {
   // Declaring variable to control whether the board is locked or usable
   const [lockBoard, setLockBoard] = useState<boolean>(false);
 
-  // Declaring react variable to store whether or not someone is in checkmate
+  // Declaring react variables to store whether or not someone is in checkmate and display alerts accordingly
   const [checkmate, setCheckmate] = useState<boolean>(false);
+  const [checkMateAlert, setCheckmateAlert] = useState<boolean>(false);
+  const [checkMateMsg, setCheckmateMsg] = useState<string>("");
+  
+  // Declaring react variable to control the visibility of the 'End Game' action button
+  const [hideEndGameBtn, setHideEndGameBtn] = useState<boolean>(true);
 
   // Declaring and assigning variables that will be used to power the player card UI components
   var whitePlayerName: string;
@@ -180,6 +188,17 @@ const ChessGame: React.FC = () => {
             setTurn("w");
           };
         };
+      } else {
+        // Work out who is in checkmate and display a an alert to the users
+        let whoInCheckMate: string;
+        if (turn === "w") {
+          whoInCheckMate = blackPlayerName;
+        } else {
+          whoInCheckMate = whitePlayerName;
+        };
+        setCheckmateMsg(`${whoInCheckMate} is in Checkmate!`);
+        setCheckmateAlert(true);
+        setHideEndGameBtn(false);
       };
     };
     // If statement to check if a source square has been selected
@@ -313,7 +332,12 @@ const ChessGame: React.FC = () => {
     // }
     // console.log("Something Went Wrong!"); //! Remove this later
     // return; //! And remove this if it cannot be triggered
-  }
+  };
+
+  // Function that finishes the game and sends you to the results page
+  function finishGame() {
+    return;
+  };
 
   // IF statement to render page GUI differently depending on what game mode is selected
   return (
@@ -367,6 +391,36 @@ const ChessGame: React.FC = () => {
           turnIcon={blackTurnIcon}
           turnIconClr={blackTurnIconClr}
           takenPieces={blackPiecesTaken}
+        />
+
+        <ActionButtons
+          canDisable={false}
+          disabled={false}
+          canHide={true}
+          hidden={hideEndGameBtn}
+          buttonName={`Finish`}
+          buttonText={`Finish Game`}
+          buttonIcon={star}
+          buttonColor={`yellow`}
+          buttonTextColor={`warning`}
+          onButtonClick={finishGame}
+        />
+
+        <IonToast
+          isOpen={checkMateAlert}
+          onDidPresent={() => {}}
+          onDidDismiss={() => setCheckmateAlert(false)}
+          message={checkMateMsg}
+          icon={alertCircle}
+          color="medium"
+          position="middle"
+          buttons={[
+            {
+              text: "Ok",
+              role: "cancel",
+              handler: () => {}
+            }
+          ]}
         />
 
         {
