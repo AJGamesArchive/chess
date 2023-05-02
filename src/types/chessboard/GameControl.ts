@@ -6,4 +6,5 @@ export type GameControl = {
   lockBoard: boolean;
   whiteTaken: Piece[][];
   blackTaken: Piece[][];
+  checkMate: boolean;
 };

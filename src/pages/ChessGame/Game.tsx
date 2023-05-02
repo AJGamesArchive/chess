@@ -67,6 +67,9 @@ const ChessGame: React.FC = () => {
   // Declaring variable to control whether the board is locked or usable
   const [lockBoard, setLockBoard] = useState<boolean>(false);
 
+  // Declaring react variable to store whether or not someone is in checkmate
+  const [checkmate, setCheckmate] = useState<boolean>(false);
+
   // Declaring and assigning variables that will be used to power the player card UI components
   var whitePlayerName: string;
   var blackPlayerName: string;
@@ -145,31 +148,38 @@ const ChessGame: React.FC = () => {
 
   // Function that handles what happens each time a board square is clicked
   function onSquareClick(square: any) {
-    let controls: GameControl = GameController(
-      chessboard, 
-      square, 
-      turn,
-      darkSquareColor,
-      whitePiecesTaken,
-      blackPiecesTaken,
-      kingWMoved,
-      kingbMoved,
-      rook1WMoved,
-      rook2WMoved,
-      rook1BMoved,
-      rook2BMoved,
-    );
-    // Update the state of the board
-    setChessboard(controls.board);
-    setLockBoard(controls.lockBoard);
-    setWhitePiecesTaken(controls.whiteTaken);
-    setBlackPiecesTaken(controls.blackTaken);
-    if (controls.switchTurn) {
-      // Switch to the other players turn if current player has moved
-      if (turn === "w") {
-        setTurn("b");
-      } else {
-        setTurn("w");
+    // Carry out the requested move only if no one is in check mate
+    if (!checkmate) {
+      let controls: GameControl = GameController(
+        chessboard, 
+        square, 
+        turn,
+        darkSquareColor,
+        whitePiecesTaken,
+        blackPiecesTaken,
+        kingWMoved,
+        kingbMoved,
+        rook1WMoved,
+        rook2WMoved,
+        rook1BMoved,
+        rook2BMoved,
+      );
+      // Update the state of the board
+      setChessboard(controls.board);
+      setLockBoard(controls.lockBoard);
+      setWhitePiecesTaken(controls.whiteTaken);
+      setBlackPiecesTaken(controls.blackTaken);
+      setCheckmate(controls.checkMate);
+      // Switch turns only if no one is in checkmate
+      if(!controls.checkMate) {
+        if (controls.switchTurn) {
+          // Switch to the other players turn if current player has moved
+          if (turn === "w") {
+            setTurn("b");
+          } else {
+            setTurn("w");
+          };
+        };
       };
     };
     // If statement to check if a source square has been selected

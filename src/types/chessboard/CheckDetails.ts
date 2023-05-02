@@ -14,4 +14,5 @@ export type CheckDetails = {
 export type CheckAllowMove = {
   board: any[][];
   allowMove: boolean;
+  checkMate: boolean;
 };

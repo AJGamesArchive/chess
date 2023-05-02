@@ -71,7 +71,8 @@ export function GameController(
         switchTurn: false,
         lockBoard: false,
         whiteTaken: whitePiecesTaken,
-        blackTaken: blackPiecesTaken
+        blackTaken: blackPiecesTaken,
+        checkMate: false
       };
       return control;
     }
@@ -83,7 +84,8 @@ export function GameController(
         switchTurn: false,
         lockBoard: false,
         whiteTaken: whitePiecesTaken,
-        blackTaken: blackPiecesTaken
+        blackTaken: blackPiecesTaken,
+        checkMate: false
       };
       return control;
     }
@@ -101,7 +103,8 @@ export function GameController(
       switchTurn: false,
       lockBoard: false,
       whiteTaken: whitePiecesTaken,
-      blackTaken: blackPiecesTaken
+      blackTaken: blackPiecesTaken,
+      checkMate: false
     };
     return control;
   } else {
@@ -116,7 +119,8 @@ export function GameController(
         switchTurn: false,
         lockBoard: false,
         whiteTaken: whitePiecesTaken,
-        blackTaken: blackPiecesTaken
+        blackTaken: blackPiecesTaken,
+        checkMate: false
       };
       return control;
     }
@@ -132,18 +136,32 @@ export function GameController(
       // Carry out the castleing move on the chess board
       let newChessboard: any[][] = carryOutCastleing(chessboard, sourceSquare, clickedSquare, false);
       // Work out if anyone is in check and highlight the board accordingly
-      let allowMove = checkHandler(newChessboard, sourceSquare, clickedSquare, checkHighlighter, darkSquareColor, huntHighlighter);
+      let allowMove = checkHandler(newChessboard, sourceSquare, clickedSquare, checkHighlighter, darkSquareColor, huntHighlighter, checkMateHighlighter);
       newChessboard = allowMove.board;
       if (allowMove.allowMove) {
         // Reset all square colors to normal
         newChessboard = nextMove(newChessboard, darkSquareColor);
-        // Return needed data
-        control = {
-          board: newChessboard,
-          switchTurn: true,
-          lockBoard: false,
-          whiteTaken: whitePiecesTaken,
-          blackTaken: blackPiecesTaken
+        // Check for checkmate
+        if (allowMove.checkMate) {
+          // Return needed data
+          control = {
+            board: newChessboard,
+            switchTurn: true,
+            lockBoard: false,
+            whiteTaken: whitePiecesTaken,
+            blackTaken: blackPiecesTaken,
+            checkMate: true
+          };
+        } else {
+          // Return needed data
+          control = {
+            board: newChessboard,
+            switchTurn: true,
+            lockBoard: false,
+            whiteTaken: whitePiecesTaken,
+            blackTaken: blackPiecesTaken,
+            checkMate: false
+          };
         };
       } else {
         // Return needed data
@@ -152,7 +170,8 @@ export function GameController(
           switchTurn: false,
           lockBoard: false,
           whiteTaken: whitePiecesTaken,
-          blackTaken: blackPiecesTaken
+          blackTaken: blackPiecesTaken,
+          checkMate: false
         };
       }
       return control;
@@ -167,7 +186,8 @@ export function GameController(
             switchTurn: false,
             lockBoard: false,
             whiteTaken: whitePiecesTaken,
-            blackTaken: blackPiecesTaken
+            blackTaken: blackPiecesTaken,
+            checkMate: false
           };
           return control;
         }
@@ -181,7 +201,8 @@ export function GameController(
             switchTurn: false,
             lockBoard: false,
             whiteTaken: whitePiecesTaken,
-            blackTaken: blackPiecesTaken
+            blackTaken: blackPiecesTaken,
+            checkMate: false
           };
           return control;
         }
@@ -195,7 +216,8 @@ export function GameController(
             switchTurn: false,
             lockBoard: false,
             whiteTaken: whitePiecesTaken,
-            blackTaken: blackPiecesTaken
+            blackTaken: blackPiecesTaken,
+            checkMate: false
           };
           return control;
         }
@@ -209,7 +231,8 @@ export function GameController(
             switchTurn: false,
             lockBoard: false,
             whiteTaken: whitePiecesTaken,
-            blackTaken: blackPiecesTaken
+            blackTaken: blackPiecesTaken,
+            checkMate: false
           };
           return control;
         }
@@ -223,7 +246,8 @@ export function GameController(
             switchTurn: false,
             lockBoard: false,
             whiteTaken: whitePiecesTaken,
-            blackTaken: blackPiecesTaken
+            blackTaken: blackPiecesTaken,
+            checkMate: false
           };
           return control;
         }
@@ -237,7 +261,8 @@ export function GameController(
             switchTurn: false,
             lockBoard: false,
             whiteTaken: whitePiecesTaken,
-            blackTaken: blackPiecesTaken
+            blackTaken: blackPiecesTaken,
+            checkMate: false
           };
           return control;
         }
@@ -246,7 +271,7 @@ export function GameController(
       let updatedArray: UpdatedArrays = updateBoard(sourceSquare, clickedSquare, chessboard);
       let newChessboard: any[][] = updatedArray.board;
       // Work out if anyone is in check and highlight the board accordingly
-      let allowMove = checkHandler(newChessboard, sourceSquare, clickedSquare, checkHighlighter, darkSquareColor, huntHighlighter);
+      let allowMove = checkHandler(newChessboard, sourceSquare, clickedSquare, checkHighlighter, darkSquareColor, huntHighlighter, checkMateHighlighter);
       newChessboard = allowMove.board;
       if (allowMove.allowMove) {
         // Reset all square colors to normal
@@ -273,13 +298,27 @@ export function GameController(
             };
           };
         };
-        // Return needed data
-        control = {
-          board: newChessboard,
-          switchTurn: true,
-          lockBoard: false,
-          whiteTaken: whitePiecesTaken,
-          blackTaken: blackPiecesTaken
+        // Check for checkmate
+        if (allowMove.checkMate) {
+          // Return needed data
+          control = {
+            board: newChessboard,
+            switchTurn: true,
+            lockBoard: false,
+            whiteTaken: whitePiecesTaken,
+            blackTaken: blackPiecesTaken,
+            checkMate: true
+          };
+        } else {
+          // Return needed data
+          control = {
+            board: newChessboard,
+            switchTurn: true,
+            lockBoard: false,
+            whiteTaken: whitePiecesTaken,
+            blackTaken: blackPiecesTaken,
+            checkMate: false
+          };
         };
       } else {
         // Return needed data
@@ -288,9 +327,10 @@ export function GameController(
           switchTurn: false,
           lockBoard: false,
           whiteTaken: whitePiecesTaken,
-          blackTaken: blackPiecesTaken
+          blackTaken: blackPiecesTaken,
+          checkMate: false
         };
-      }
+      };
       return control;
     };
   };
