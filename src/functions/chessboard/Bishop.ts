@@ -1,4 +1,5 @@
-export function bishopPiece(sourceSquare: any, targetSquare: any): boolean {
+import { isPathClear } from "./ispathclear";
+export function bishopPiece(sourceSquare: any, targetSquare: any, chessboard: any[][]): boolean {
   
   if (sourceSquare.piece.color === targetSquare.piece.color)
   {
@@ -6,106 +7,191 @@ export function bishopPiece(sourceSquare: any, targetSquare: any): boolean {
   }
   else if(targetSquare.col === sourceSquare.col + 1 && targetSquare.row === sourceSquare.row + 1 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
+    
   }
   else if(targetSquare.col === sourceSquare.col + 2 && targetSquare.row === sourceSquare.row + 2 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }
   else if(targetSquare.col === sourceSquare.col + 3 && targetSquare.row === sourceSquare.row + 3 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }
   else if(targetSquare.col === sourceSquare.col + 4 && targetSquare.row === sourceSquare.row + 4 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }
   else if(targetSquare.col === sourceSquare.col + 5 && targetSquare.row === sourceSquare.row + 5 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }
   else if(targetSquare.col === sourceSquare.col + 6 && targetSquare.row === sourceSquare.row + 6 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }
   else if(targetSquare.col === sourceSquare.col + 7 && targetSquare.row === sourceSquare.row + 7 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }
 
 
 
   else if(targetSquare.col === sourceSquare.col + 1 && targetSquare.row === sourceSquare.row - 1 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }else if(targetSquare.col === sourceSquare.col + 2 && targetSquare.row === sourceSquare.row - 2 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }else if(targetSquare.col === sourceSquare.col + 3 && targetSquare.row === sourceSquare.row - 3 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }else if(targetSquare.col === sourceSquare.col + 4 && targetSquare.row === sourceSquare.row - 4 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }else if(targetSquare.col === sourceSquare.col + 5 && targetSquare.row === sourceSquare.row - 5 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }else if(targetSquare.col === sourceSquare.col + 6 && targetSquare.row === sourceSquare.row - 6 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }else if(targetSquare.col === sourceSquare.col + 7 && targetSquare.row === sourceSquare.row - 7 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }
   
 
 
   else if(targetSquare.col === sourceSquare.col - 1 && targetSquare.row === sourceSquare.row + 1 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }else if(targetSquare.col === sourceSquare.col - 2 && targetSquare.row === sourceSquare.row + 2 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }else if(targetSquare.col === sourceSquare.col - 3 && targetSquare.row === sourceSquare.row + 3 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }else if(targetSquare.col === sourceSquare.col - 4 && targetSquare.row === sourceSquare.row + 4 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }else if(targetSquare.col === sourceSquare.col - 5 && targetSquare.row === sourceSquare.row + 5 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }else if(targetSquare.col === sourceSquare.col - 6 && targetSquare.row === sourceSquare.row + 6 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }else if(targetSquare.col === sourceSquare.col - 7 && targetSquare.row === sourceSquare.row + 7 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }
   
 
 
   else if(targetSquare.col === sourceSquare.col - 1 && targetSquare.row === sourceSquare.row - 1 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }else if(targetSquare.col === sourceSquare.col - 2 && targetSquare.row === sourceSquare.row - 2 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }else if(targetSquare.col === sourceSquare.col - 3 && targetSquare.row === sourceSquare.row - 3 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }else if(targetSquare.col === sourceSquare.col - 4 && targetSquare.row === sourceSquare.row - 4 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }else if(targetSquare.col === sourceSquare.col - 5 && targetSquare.row === sourceSquare.row - 5 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }else if(targetSquare.col === sourceSquare.col - 6 && targetSquare.row === sourceSquare.row - 6 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }else if(targetSquare.col === sourceSquare.col - 7 && targetSquare.row === sourceSquare.row - 7 )
   {
-    return true;
+    if (isPathClear(chessboard, sourceSquare,targetSquare) === true)
+    {
+      return true;
+    }
   }
   
 

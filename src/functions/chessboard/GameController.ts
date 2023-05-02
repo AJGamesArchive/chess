@@ -194,7 +194,7 @@ export function GameController(
       };
       if (sourceSquare.piece.type === "Rook") {
         // Guard statement to check if the selected move is valid, will return if move is not valid
-        if (!rookPiece(sourceSquare, clickedSquare)) {
+        if (!rookPiece(sourceSquare, clickedSquare, chessboard)) {
           // Return needed data
           control = {
             board: chessboard,
@@ -224,7 +224,7 @@ export function GameController(
       };
       if (sourceSquare.piece.type === "Bishop") {
         // Guard statement to check if the selected move is valid, will return if move is not valid
-        if (!bishopPiece(sourceSquare, clickedSquare)) {
+        if (!bishopPiece(sourceSquare, clickedSquare, chessboard)) {
           // Return needed data
           control = {
             board: chessboard,
@@ -239,7 +239,7 @@ export function GameController(
       };
       if (sourceSquare.piece.type === "Queen") {
         // Guard statement to check if the selected move is valid, will return if move is not valid
-        if (!queenPiece(sourceSquare, clickedSquare)) {
+        if (!queenPiece(sourceSquare, clickedSquare, chessboard)) {
           // Return needed data
           control = {
             board: chessboard,
