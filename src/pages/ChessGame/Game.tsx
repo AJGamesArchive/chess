@@ -30,12 +30,14 @@ import ActionButtons from '../../components/setup/ActionButtons';
 // Importing page types
 import { GameControl } from '../../types/chessboard/GameControl';
 import { Piece } from '../../types/chessboard/Piece';
+import { PawnLocation } from '../../types/chessboard/PawnLocation';
 
 // Importing page functions
 import { CreateBoard } from '../../functions/chessboard/CreateBoard';
 import { GameController } from '../../functions/chessboard/GameController';
 import { createPiecesTakenArray } from '../../functions/chessboard/TakenPiecesArrayGenerator';
-import { finished } from 'stream';
+import { pawnLocationChecker } from '../../functions/chessboard/PawnLocationChecker';
+import { upgradePawn } from '../../functions/chessboard/UpgradePawn';
 
 const ChessGame: React.FC = () => {
 
@@ -116,6 +118,15 @@ const ChessGame: React.FC = () => {
   const [whitePiecesTaken, setWhitePiecesTaken] = useState<Piece[][]>(createPiecesTakenArray());
   const [blackPiecesTaken, setBlackPiecesTaken] = useState<Piece[][]>(createPiecesTakenArray());
 
+  // Declaring react variables to control the visibility of the piece selection boxes
+  const [hideWhiteSelect, setHideWhiteSelect] = useState<boolean>(true);
+  const [hideBlackSelect, setHideBlackSelect] = useState<boolean>(true);
+
+  // Declaring react variables to store the selection option from the piece selection boxes
+  const [pawnSquare, setPawnSquare] = useState<any>();
+  const [whiteSelection, setWhiteSelection] = useState<string>("");
+  const [blackSelection, setBlackSelection] = useState<string>("");
+
   // Declaring variable to keep track of whether or not a source square has been selected
   // const [isSourceSelect, setIsSourceSelected] = useState<boolean>(false); //? Remove later if not needed in this file
 
@@ -180,6 +191,18 @@ const ChessGame: React.FC = () => {
       setCheckmate(controls.checkMate);
       // Switch turns only if no one is in checkmate
       if(!controls.checkMate) {
+        let pawnEvaluation: PawnLocation = pawnLocationChecker(chessboard);
+        if (pawnEvaluation.atEnd) {
+          setPawnSquare(pawnEvaluation.square);
+          setLockBoard(true);
+          if (pawnEvaluation.color === "white") {
+            setHideWhiteSelect(false);
+            return;
+          } else {
+            setHideBlackSelect(false);
+            return;
+          };
+        };
         if (controls.switchTurn) {
           // Switch to the other players turn if current player has moved
           if (turn === "w") {
@@ -188,6 +211,7 @@ const ChessGame: React.FC = () => {
             setTurn("w");
           };
         };
+        return;
       } else {
         // Work out who is in checkmate and display a an alert to the users
         let whoInCheckMate: string;
@@ -199,6 +223,7 @@ const ChessGame: React.FC = () => {
         setCheckmateMsg(`${whoInCheckMate} is in Checkmate!`);
         setCheckmateAlert(true);
         setHideEndGameBtn(false);
+        return;
       };
     };
     // If statement to check if a source square has been selected
@@ -370,6 +395,23 @@ const ChessGame: React.FC = () => {
       };
     };
     nav.push(`/ending/${params.username}/${game.mode}/${game.opponent}/${game.opponentColor}/${winnerName}/${winnerColor}/${loserName}/${loserColor}/${numWhiteTaken}/${numBlackTaken}/${isDraw}`);
+    return;
+  };
+
+  // Function that handles swapping out a pawn that's reached the end of the board for another selected piece
+  function swapOutPawn() {
+    setHideWhiteSelect(true);
+    setHideBlackSelect(true);
+    let newChessboard;
+    if (turn === "w") {
+      newChessboard = upgradePawn(chessboard, pawnSquare, whiteSelection);
+      setTurn("b");
+    } else {
+      newChessboard = upgradePawn(chessboard, pawnSquare, whiteSelection);
+      setTurn("w");
+    };
+    setChessboard(newChessboard);
+    setLockBoard(false);
     return;
   };
 

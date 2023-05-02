@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useParams } from 'react-router';
 import {
+  IonButton,
   IonCard,
   IonCardTitle,
   IonContent,
@@ -17,7 +18,7 @@ import {
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { logIn, addCircle, warning, checkmarkDone } from 'ionicons/icons';
+import { logIn, addCircle, warning, checkmarkDone, home } from 'ionicons/icons';
 import './Ending.css';
 
 // Importing Paramaters
@@ -49,6 +50,9 @@ const GameEnding: React.FC = () => {
           <IonTitle className="ending-header">
             Game Results
           </IonTitle>
+          <IonButton slot="end" fill="clear" color="warning" href={`/mainMenu/${params.username}`}>
+            <IonIcon icon={home}></IonIcon>
+          </IonButton>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
