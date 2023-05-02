@@ -336,6 +336,40 @@ const ChessGame: React.FC = () => {
 
   // Function that finishes the game and sends you to the results page
   function finishGame() {
+    // Gather up the game results
+    let isDraw: string = "n"; //TODO Make this dynamic once drawing is implemented
+    let winnerName: string;
+    let winnerColor: string;
+    let loserName: string;
+    let loserColor: string;
+    if (turn === "w") {
+      winnerName = whitePlayerName;
+      winnerColor = "White";
+      loserName = blackPlayerName;
+      loserColor = "Black";
+    } else {
+      winnerName = blackPlayerName;
+      winnerColor = "Black";
+      loserName = whitePlayerName;
+      loserColor = "White";
+    };
+    let numWhiteTaken: number = 0;
+    for (let row = 0; row < whitePiecesTaken.length; row++) {
+      for (let col = 0; col < whitePiecesTaken[row].length; col++) {
+        if (whitePiecesTaken[row][col].piece.type !== "Blank") {
+          numWhiteTaken += 1;
+        };
+      };
+    };
+    let numBlackTaken: number = 0;
+    for (let row = 0; row < blackPiecesTaken.length; row++) {
+      for (let col = 0; col < blackPiecesTaken[row].length; col++) {
+        if (blackPiecesTaken[row][col].piece.type !== "Blank") {
+          numBlackTaken += 1;
+        };
+      };
+    };
+    nav.push(`/ending/${params.username}/${game.mode}/${game.opponent}/${game.opponentColor}/${winnerName}/${winnerColor}/${loserName}/${loserColor}/${numWhiteTaken}/${numBlackTaken}/${isDraw}`);
     return;
   };
 
@@ -445,6 +479,11 @@ const ChessGame: React.FC = () => {
               nav.push(`/mainMenu/${params.username}`);
             }}>
               <IonIcon icon={home}></IonIcon>
+            </IonButton>
+            <IonButton slot="start" fill="clear" color="warning" onClick={() => {
+              nav.push(`/ending/${params.username}/${game.mode}/${game.opponent}/${game.opponentColor}/Alex/White/Computer/Black/12/9/n`);
+            }}>
+              <IonIcon icon={star}></IonIcon>
             </IonButton>
           </IonItem>
         </IonCard>

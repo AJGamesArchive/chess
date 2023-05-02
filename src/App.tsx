@@ -9,6 +9,7 @@ import MainMenu from './pages/MainMenu';
 import ChessGame from './pages/ChessGame/Game';
 import Records from './pages/Records';
 import GameSetup from './pages/ChessGame/Setup';
+import GameEnding from './pages/ChessGame/Ending';
 
 import ChessBoardMockup from './pages/Mockups/ChessBoard';
 
@@ -56,6 +57,9 @@ const App: React.FC = () => (
         </Route>
         <Route path="/game/:username/:mode/:opponent/:opponentColor" exact={true}>
           <ChessGame />
+        </Route>
+        <Route path="/ending/:username/:mode/:opponent/:opponentColor/:winnerName/:winnerColor/:loserName/:loserColor/:numWhiteTaken/:numBlackTaken/:isDraw" exact={true}>
+          <GameEnding />
         </Route>
         <Route path="/chessBoardMockup" exact={true}>
           <ChessBoardMockup />
