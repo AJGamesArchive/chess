@@ -1,5 +1,5 @@
 // Importing libraries
-import { getDoc, setDoc, doc, collection, query, where, getDocs } from "firebase/firestore";
+import { setDoc, doc, collection, query, getDocs } from "firebase/firestore";
 
 // Importing the database
 import { db } from "../../database/initalise";
@@ -19,7 +19,16 @@ export async function CreateAccount(username: string, password: string, confirmP
       message: "You're passwords do not match. Please re-confirm your password.",
     };
     return Promise.resolve(confirmation);
-  }
+  };
+  // Guard statement to ensure the entered username is not 'Computer'
+  if (username.toUpperCase() === "COMPUTER") {
+    confirmation = {
+      valid: false,
+      errored: true,
+      message: "The username you've entered is already in use. Please choose a different username.",
+    };
+    return Promise.resolve(confirmation);
+  };
   // Retrieving an array of all the usernames currently in use from the db
   const documents: string | string[] = await retrieveUsernames();
   // Guard statement to ensure the array of usernames was retrieved successfully
@@ -30,7 +39,7 @@ export async function CreateAccount(username: string, password: string, confirmP
       message: documents,
     };
     return Promise.resolve(confirmation);
-  }
+  };
   // Guard statement to ensure the entered username is not already in use
   for (let i = 0; i < documents.length; i++) {
     if (username.toUpperCase() === documents[i]) {
@@ -52,7 +61,7 @@ export async function CreateAccount(username: string, password: string, confirmP
       message: "An unsuspected error has occurred. The database could not be reached. Please check your internet connection & try again in a few minutes.",
     };
     return Promise.resolve(confirmation);
-  }
+  };
   // Outputting to the user that the account was created successfully
   confirmation = {
     valid: true,
@@ -60,7 +69,7 @@ export async function CreateAccount(username: string, password: string, confirmP
     message: `The account ${username} was created successfully. Please now login to your account.`,
   };
   return Promise.resolve(confirmation);
-}
+};
 
 // Async function to retrieve all the existing usernames from the database
 export async function retrieveUsernames(): Promise<string | string[]> {
@@ -73,7 +82,7 @@ export async function retrieveUsernames(): Promise<string | string[]> {
     console.log(e); //? Maybe remove this later?
     let error: string = "An unsuspected error has occurred. The database could not be reached. Please check your internet connection & try again in a few minutes.";
     return Promise.resolve(error);
-  }
+  };
   documents.forEach((doc) => {
     existingUsernames.push(doc.id);
   });
@@ -89,6 +98,7 @@ async function accountCreation(username: string, password: string): Promise<bool
       wins: 0,
       loses: 0,
       draws: 0,
+      total: 0,
     });
   } catch (e) {
     console.log(e); //? Maybe remove this later?
