@@ -16,3 +16,8 @@ export type CheckAllowMove = {
   allowMove: boolean;
   checkMate: boolean;
 };
+
+export type LookupKings = {
+  ownKing: any;
+  opponentKing: any;
+}

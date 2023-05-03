@@ -3,6 +3,15 @@ import { resetSquareColor } from "./ResetSquareColor";
 import { updateBoard } from "./UpdateBoard";
 import { UpdatedArrays } from "../../types/chessboard/UpdatedArrays";
 import { checkmate } from "./Checkmate";
+import { LookupKings } from "../../types/chessboard/CheckDetails";
+
+// Importing all piece movment checker functions
+import { pawnPiece } from "./Pawn";
+import { rookPiece } from "./Rook";
+import { knightPiece } from "./Knight";
+import { bishopPiece } from "./Bishop";
+import { queenPiece } from "./Queen";
+import { kingPiece } from "./King";
 
 // Declaring React variable to store the state of check at the end of each move
 var check: CheckDetails = ({
@@ -82,6 +91,139 @@ export function checkHandler(chessboard: any[][], sourceSquare: any, targetSquar
 // Function that takes in the current state of the game every time a move is made and works out if anyone is in check
 // The source and target square from the most recent move are also passed in to check that the play isn't moving them self into check
 export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard: any[][]): CheckDetails {
+
+  console.log(targetSquare.piece.color)
+
+  let kings: LookupKings = retrieveKings(targetSquare.piece.color, chessboard);
+  let ownKing: any = kings.ownKing;
+  let opponentKing :any = kings.opponentKing;
+
+  console.log(ownKing.piece);
+  console.log(opponentKing.piece)
+
+  var checkDetails: CheckDetails = {
+    selfInCheck: false,
+    opponentInCheck: false,
+    colorInCheck: "",
+    kingInCheckSquare: {row: -1, col: -1},
+    puttingInCheckSquare: []
+  };
+
+  for (let row = 0; row < chessboard.length; row++) { 
+    for (let col = 0; col < chessboard[row].length; col++){
+      if (chessboard[row][col].piece.type === "Rook" && chessboard[row][col].piece.color === opponentKing.piece.color){
+        if(rookPiece(chessboard[row][col], ownKing, chessboard)=== true)
+        {
+          checkDetails.selfInCheck = true
+          checkDetails.opponentInCheck = false;
+          checkDetails.colorInCheck = ownKing.piece.color;
+          checkDetails.kingInCheckSquare = {row: ownKing.row, col: ownKing.col}
+          checkDetails.puttingInCheckSquare.push({row: row, col: col});
+          return checkDetails;
+        }
+      }
+      if (chessboard[row][col].piece.type === "Knight" && chessboard[row][col].piece.color === opponentKing.piece.color){
+        if(knightPiece(chessboard[row][col], ownKing)=== true)
+        {
+          checkDetails.selfInCheck = true
+          checkDetails.opponentInCheck = false;
+          checkDetails.colorInCheck = ownKing.piece.color;
+          checkDetails.kingInCheckSquare = {row: ownKing.row, col: ownKing.col}
+          checkDetails.puttingInCheckSquare.push({row: row, col: col});
+          return checkDetails;
+        }
+      }
+      if (chessboard[row][col].piece.type === "Pawn" && chessboard[row][col].piece.color === opponentKing.piece.color){
+        if(pawnPiece(chessboard[row][col], ownKing)=== true)
+        {
+          checkDetails.selfInCheck = true
+          checkDetails.opponentInCheck = false;
+          checkDetails.colorInCheck = ownKing.piece.color;
+          checkDetails.kingInCheckSquare = {row: ownKing.row, col: ownKing.col}
+          checkDetails.puttingInCheckSquare.push({row: row, col: col});
+          return checkDetails;
+        }
+      }
+      if (chessboard[row][col].piece.type === "Bishop" && chessboard[row][col].piece.color === opponentKing.piece.color){
+        if(bishopPiece(chessboard[row][col], ownKing, chessboard)=== true)
+        {
+          checkDetails.selfInCheck = true
+          checkDetails.opponentInCheck = false;
+          checkDetails.colorInCheck = ownKing.piece.color;
+          checkDetails.kingInCheckSquare = {row: ownKing.row, col: ownKing.col}
+          checkDetails.puttingInCheckSquare.push({row: row, col: col});
+          return checkDetails;
+        }
+      }
+      if (chessboard[row][col].piece.type === "Queen" && chessboard[row][col].piece.color === opponentKing.piece.color){
+        if(queenPiece(chessboard[row][col], ownKing, chessboard)=== true)
+        {
+          checkDetails.selfInCheck = true
+          checkDetails.opponentInCheck = false;
+          checkDetails.colorInCheck = ownKing.piece.color;
+          checkDetails.kingInCheckSquare = {row: ownKing.row, col: ownKing.col}
+          checkDetails.puttingInCheckSquare.push({row: row, col: col});
+          return checkDetails;
+        }
+      }
+    }}
+
+
+
+    
+for (let row = 0; row < chessboard.length; row++) { 
+  for (let col = 0; col < chessboard[row].length; col++){
+    if (chessboard[row][col].piece.type === "Rook" && chessboard[row][col].piece.color === ownKing.piece.color){
+      if(rookPiece(chessboard[row][col], opponentKing, chessboard)=== true)
+      {
+        checkDetails.opponentInCheck = true;
+        checkDetails.colorInCheck = opponentKing.piece.color;
+        checkDetails.kingInCheckSquare = {row: opponentKing.row, col: opponentKing.col}
+        checkDetails.puttingInCheckSquare.push({row: row, col: col});
+      }
+    }
+    if (chessboard[row][col].piece.type === "Knight" && chessboard[row][col].piece.color === ownKing.piece.color){
+      if(knightPiece(chessboard[row][col], opponentKing)=== true)
+      {
+        checkDetails.opponentInCheck = true;
+        checkDetails.colorInCheck = opponentKing.piece.color;
+        checkDetails.kingInCheckSquare = {row: opponentKing.row, col: opponentKing.col}
+        checkDetails.puttingInCheckSquare.push({row: row, col: col});
+      }
+    }
+    if (chessboard[row][col].piece.type === "Pawn" && chessboard[row][col].piece.color === ownKing.piece.color){
+      if(pawnPiece(chessboard[row][col], opponentKing)=== true)
+      {
+        checkDetails.opponentInCheck = true;
+        checkDetails.colorInCheck = opponentKing.piece.color;
+        checkDetails.kingInCheckSquare = {row: opponentKing.row, col: opponentKing.col}
+        checkDetails.puttingInCheckSquare.push({row: row, col: col});
+      }
+    }
+    if (chessboard[row][col].piece.type === "Bishop" && chessboard[row][col].piece.color === ownKing.piece.color){
+      if(bishopPiece(chessboard[row][col], opponentKing, chessboard)=== true)
+      {
+        checkDetails.opponentInCheck = true;
+        checkDetails.colorInCheck = opponentKing.piece.color;
+        checkDetails.kingInCheckSquare = {row: opponentKing.row, col: opponentKing.col}
+        checkDetails.puttingInCheckSquare.push({row: row, col: col});
+      }
+    }
+    if (chessboard[row][col].piece.type === "Queen" && chessboard[row][col].piece.color === ownKing.piece.color){
+      if(queenPiece(chessboard[row][col], opponentKing, chessboard)=== true)
+      {
+        checkDetails.opponentInCheck = true;
+        checkDetails.colorInCheck = opponentKing.piece.color;
+        checkDetails.kingInCheckSquare = {row: opponentKing.row, col: opponentKing.col}
+        checkDetails.puttingInCheckSquare.push({row: row, col: col});
+      }
+    }
+  }}
+
+  
+
+
+  
   // This function takes in the full chessboard as a 2D array and has to work out if anyone is in check, and by what
   // Should return a custom typed CheckDetails variable with the following values:
   // selfInCheck - This should return true if the player is moving their own king into check, else return false
@@ -91,14 +233,37 @@ export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard
   // kingInCheckSquare - Should return the square index of whichever king is in check in the form of {row: 0, col: 0}, should return -1 if no king is in check
   // puttingInCheckSquare - Should return a custom typed array of all the square indexes of all the pieces putting the king in check, return empty if no king is in check
   // Current return statement shows the data structure that needs returning and the default state for if no king is in check
-  const checkDetails: CheckDetails = {
-    selfInCheck: false,
-    opponentInCheck: false,
-    colorInCheck: "",
-    kingInCheckSquare: {row: -1, col: -1},
-    puttingInCheckSquare: []
-  };
+  
   return checkDetails;
+};
+
+// Function that returns the square of your own king and your opponents king
+function retrieveKings(turn: string, chessboard: any[][]): LookupKings {
+  let ownKing: any;
+  let opponentKing :any;
+  for (let row = 0; row < chessboard.length; row++) {
+    for (let col = 0; col < chessboard[row].length; col++) {
+      if (chessboard[row][col].piece.type === "King" && chessboard[row][col].piece.color === "white") {
+        if (turn === "white") {
+          ownKing = chessboard[row][col];
+        } else {
+          opponentKing = chessboard[row][col];
+        };
+      };
+      if (chessboard[row][col].piece.type === "King" && chessboard[row][col].piece.color === "black") {
+        if (turn === "black") {
+          ownKing = chessboard[row][col];
+        } else {
+          opponentKing = chessboard[row][col];
+        };
+      };
+    };
+  };
+  let kings = {
+    ownKing: ownKing,
+    opponentKing: opponentKing
+  };
+  return kings;
 };
 
 // Function that either highlights the squares on the board that are in check or un-highlights the board squares that were previously in check, depending on given params
