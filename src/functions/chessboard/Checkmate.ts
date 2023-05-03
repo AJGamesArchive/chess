@@ -37,7 +37,6 @@ export function checkmate(chessboard: any[][], kingSquare: any, huntingPieces: C
     };
     let revertedBoards = updateBoard(square, kingSquare, chessboard);
     newChessboard = revertedBoards.board;
-    console.log(updatedBoards.takenPiece); //! Remove
     let updateSquare = newChessboard[square.row][square.col];
     updateSquare.piece = updatedBoards.takenPiece.piece;
   });

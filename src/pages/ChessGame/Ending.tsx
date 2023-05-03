@@ -18,7 +18,7 @@ import {
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { home, star, medal, skull, colorFill, ribbon } from 'ionicons/icons';
+import { home, star, medal, skull, colorFill, ribbon, save, gameController } from 'ionicons/icons';
 import './Ending.css';
 
 // Importing Paramaters
@@ -28,6 +28,12 @@ import { ChessGameParams, ChessGameEndingParams } from '../../interfaces/ChessGa
 // Importing Components
 import GameResults from '../../components/ending/Results';
 import ActionButtons from '../../components/setup/ActionButtons';
+
+// Importing Functions
+import { saveGame } from '../../functions/ending/SaveGame';
+
+// Importing Types
+import { DataSava } from '../../types/ending/DataSava';
 
 const GameEnding: React.FC = () => {
 
@@ -43,7 +49,37 @@ const GameEnding: React.FC = () => {
   // Declaring react variables to toggle the visibility of the action buttons on the page
   const [hideContinueBtn, setHideContinueBtn] = useState<boolean>(false);
   const [hideRematchBtn, setHideRematchBtn] = useState<boolean>(true);
-  const [hideMainMenuBtn, setHideMainMenuBtn] = useState<boolean>(false);
+  const [hideMainMenuBtn, setHideMainMenuBtn] = useState<boolean>(true);
+
+  // Async function to save the scores from the game to the database
+  async function actionButtonClick(buttonName: string) {
+    if (buttonName === "Continue") {
+      let saved: DataSava = await saveGame();
+      if (!saved.saved) {
+        //TODO Display error and further instructions to user - needs Toast
+        setHideRematchBtn(false);
+        setHideMainMenuBtn(false);
+        return;
+      };
+      //TODO Display confirmation to the user that the game was saved successfully - needs Toast
+      setHideContinueBtn(true);
+      setHideRematchBtn(false);
+      setHideMainMenuBtn(false);
+      return;
+    };
+    if (buttonName === "Rematch") {
+      window.location.href = (`/game/${params.username}/${game.mode}/${game.opponent}/${game.opponentColor}`);
+      return;
+    };
+    nav.push(`/mainMenu/${params.username}`);
+    return;
+  };
+
+  // Function that controls what page to send the user to based on the action button clicked
+  function test(buttonName: string) {
+    if (buttonName === "") {}
+    return;
+  };
 
   if (results.isDraw === "y") {
     // JSX code for generating the login page GUI
@@ -97,6 +133,45 @@ const GameEnding: React.FC = () => {
             whitePiecesTaken={results.numWhiteTaken}
             blackIcon={star}
             blackPiecesTaken={results.numBlackTaken}
+          />
+
+          <ActionButtons
+            canDisable={false}
+            disabled={false}
+            canHide={true}
+            hidden={hideContinueBtn}
+            buttonName={"Continue"}
+            buttonText={"Continue"}
+            buttonIcon={save}
+            buttonColor={`green`}
+            buttonTextColor={`success`}
+            onButtonClick={actionButtonClick}
+          />
+
+          <ActionButtons
+            canDisable={false}
+            disabled={false}
+            canHide={true}
+            hidden={hideRematchBtn}
+            buttonName={"Rematch"}
+            buttonText={"Rematch"}
+            buttonIcon={gameController}
+            buttonColor={`blue`}
+            buttonTextColor={`primary`}
+            onButtonClick={actionButtonClick}
+          />
+
+          <ActionButtons
+            canDisable={false}
+            disabled={false}
+            canHide={true}
+            hidden={hideMainMenuBtn}
+            buttonName={"Menu"}
+            buttonText={"Main Menu"}
+            buttonIcon={home}
+            buttonColor={`yellow`}
+            buttonTextColor={`warning`}
+            onButtonClick={actionButtonClick}
           />
 
         </IonContent>
@@ -156,13 +231,44 @@ const GameEnding: React.FC = () => {
             blackPiecesTaken={results.numBlackTaken}
           />
 
-          {/* <ActionButtons
+          <ActionButtons
             canDisable={false}
             disabled={false}
             canHide={true}
             hidden={hideContinueBtn}
-            buttonName={}
-          /> */}
+            buttonName={"Continue"}
+            buttonText={"Continue"}
+            buttonIcon={save}
+            buttonColor={`green`}
+            buttonTextColor={`success`}
+            onButtonClick={actionButtonClick}
+          />
+
+          <ActionButtons
+            canDisable={false}
+            disabled={false}
+            canHide={true}
+            hidden={hideRematchBtn}
+            buttonName={"Rematch"}
+            buttonText={"Rematch"}
+            buttonIcon={gameController}
+            buttonColor={`blue`}
+            buttonTextColor={`primary`}
+            onButtonClick={actionButtonClick}
+          />
+
+          <ActionButtons
+            canDisable={false}
+            disabled={false}
+            canHide={true}
+            hidden={hideMainMenuBtn}
+            buttonName={"Menu"}
+            buttonText={"Main Menu"}
+            buttonIcon={home}
+            buttonColor={`yellow`}
+            buttonTextColor={`warning`}
+            onButtonClick={actionButtonClick}
+          />
 
         </IonContent>
       </IonPage>

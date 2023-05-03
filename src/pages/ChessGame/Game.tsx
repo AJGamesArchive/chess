@@ -397,7 +397,7 @@ const ChessGame: React.FC = () => {
         };
       };
     };
-    nav.push(`/ending/${params.username}/${game.mode}/${game.opponent}/${game.opponentColor}/${winnerName}/${winnerColor}/${loserName}/${loserColor}/${numWhiteTaken}/${numBlackTaken}/${isDraw}`);
+    window.location.href = (`/ending/${params.username}/${game.mode}/${game.opponent}/${game.opponentColor}/${winnerName}/${winnerColor}/${loserName}/${loserColor}/${numWhiteTaken}/${numBlackTaken}/${isDraw}`);
     return;
   };
 
