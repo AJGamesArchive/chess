@@ -565,7 +565,7 @@ const ChessGame: React.FC = () => {
             }}>
               <IonIcon icon={home}></IonIcon>
             </IonButton>
-            <IonButton slot="start" fill="clear" color="warning" disabled={true} onClick={() => {
+            <IonButton slot="start" fill="clear" color="warning" disabled={false} onClick={() => {
               nav.push(`/ending/${params.username}/${game.mode}/${game.opponent}/${game.opponentColor}/Alex/White/Computer/Black/12/9/n`);
             }}>
               <IonIcon icon={star}></IonIcon>

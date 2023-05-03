@@ -49,7 +49,7 @@ export function checkHandler(chessboard: any[][], sourceSquare: any, targetSquar
   };
   if (checkDetails.opponentInCheck) {
     // Check if opponent is in checkmate
-    const inCheckmate: boolean = checkmate(newChessboard, checkDetails.kingInCheckSquare);
+    const inCheckmate: boolean = checkmate(newChessboard, checkDetails.kingInCheckSquare, checkDetails.puttingInCheckSquare);
     // Checks if any squares are in the check highlighter and un-highlights them
     if (check.opponentInCheck) {
       newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, huntHighlighter, checkMateHighlighter, inCheckmate, false);

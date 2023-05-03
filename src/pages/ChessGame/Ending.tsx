@@ -27,6 +27,7 @@ import { ChessGameParams, ChessGameEndingParams } from '../../interfaces/ChessGa
 
 // Importing Components
 import GameResults from '../../components/ending/Results';
+import ActionButtons from '../../components/setup/ActionButtons';
 
 const GameEnding: React.FC = () => {
 
@@ -38,6 +39,11 @@ const GameEnding: React.FC = () => {
   const params = useParams<GlobalParams>();
   const game = useParams<ChessGameParams>();
   const results = useParams<ChessGameEndingParams>();
+
+  // Declaring react variables to toggle the visibility of the action buttons on the page
+  const [hideContinueBtn, setHideContinueBtn] = useState<boolean>(false);
+  const [hideRematchBtn, setHideRematchBtn] = useState<boolean>(true);
+  const [hideMainMenuBtn, setHideMainMenuBtn] = useState<boolean>(false);
 
   if (results.isDraw === "y") {
     // JSX code for generating the login page GUI
@@ -149,6 +155,14 @@ const GameEnding: React.FC = () => {
             blackIcon={star}
             blackPiecesTaken={results.numBlackTaken}
           />
+
+          {/* <ActionButtons
+            canDisable={false}
+            disabled={false}
+            canHide={true}
+            hidden={hideContinueBtn}
+            buttonName={}
+          /> */}
 
         </IonContent>
       </IonPage>
