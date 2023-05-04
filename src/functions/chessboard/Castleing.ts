@@ -8,43 +8,85 @@ export function isCastleing(sourceSquare: any, targetSquare: any, chessboard: an
   if (sourceSquare.piece.color === "white") {
     if (sourceSquare.row === 0 && sourceSquare.col === 0 && sourceSquare.piece.type === "Rook") {
       if (targetSquare.row === 0 && targetSquare.col === 4 && targetSquare.piece.type === "King") {
-        return true;
+        if (chessboard[0][1].piece.type === "Blank" && chessboard[0][2].piece.type === "Blank" && chessboard[0][3].piece.type === "Blank"){
+          if (CastlePieces.whiteKing === false && CastlePieces.rookOneWhite === false)
+          {
+            return true;
+          }
+        }
+        
       }
     }
     if (sourceSquare.row === 0 && sourceSquare.col === 4 && sourceSquare.piece.type === "King") {
       if (targetSquare.row === 0 && targetSquare.col === 0 && targetSquare.piece.type === "Rook") {
-        return true;
+        if (chessboard[0][1].piece.type === "Blank" && chessboard[0][2].piece.type === "Blank" && chessboard[0][3].piece.type === "Blank"){
+          if (CastlePieces.whiteKing === false && CastlePieces.rookOneWhite === false)
+          {
+            return true;
+          }
+        }
       }
     }
     if (sourceSquare.row === 0 && sourceSquare.col === 7 && sourceSquare.piece.type === "Rook") {
       if (targetSquare.row === 0 && targetSquare.col === 4 && targetSquare.piece.type === "King") {
-        return true;
+        if (chessboard[0][5].piece.type === "Blank" && chessboard[0][6].piece.type === "Blank"){
+          if (CastlePieces.whiteKing === false && CastlePieces.rookTwoWhite === false)
+          {
+            return true;
+          }
+        }
       }
     }
     if (sourceSquare.row === 0 && sourceSquare.col === 4 && sourceSquare.piece.type === "King") {
       if (targetSquare.row === 0 && targetSquare.col === 7 && targetSquare.piece.type === "Rook") {
-        return true;
+        if (chessboard[0][5].piece.type === "Blank" && chessboard[0][6].piece.type === "Blank"){
+          if (CastlePieces.whiteKing === false && CastlePieces.rookTwoWhite === false)
+          {
+            return true;
+          }
+        }
+        
       }
     }
   } else {
     if (sourceSquare.row === 7 && sourceSquare.col === 0 && sourceSquare.piece.type === "Rook") {
       if (targetSquare.row === 7 && targetSquare.col === 4 && targetSquare.piece.type === "King") {
-        return true;
+        if (chessboard[7][1].piece.type === "Blank" && chessboard[7][2].piece.type === "Blank" && chessboard[7][3].piece.type === "Blank"){
+          if (CastlePieces.blackKing === false && CastlePieces.rookOneBlack === false)
+          {
+            return true;
+          }
+        }
       }
     }
     if (sourceSquare.row === 7 && sourceSquare.col === 4 && sourceSquare.piece.type === "King") {
       if (targetSquare.row === 7 && targetSquare.col === 0 && targetSquare.piece.type === "Rook") {
-        return true;
+        if (chessboard[7][1].piece.type === "Blank" && chessboard[7][2].piece.type === "Blank" && chessboard[7][3].piece.type === "Blank"){
+          if (CastlePieces.blackKing === false && CastlePieces.rookOneBlack === false)
+          {
+             return true;
+          }   
+        }
       }
     }
     if (sourceSquare.row === 7 && sourceSquare.col === 7 && sourceSquare.piece.type === "Rook") {
       if (targetSquare.row === 7 && targetSquare.col === 4 && targetSquare.piece.type === "King") {
-        return true;
+        if (chessboard[7][5].piece.type === "Blank" && chessboard[7][6].piece.type === "Blank"){
+          if (CastlePieces.blackKing === false && CastlePieces.rookTwoBlack === false)
+          {
+            return true;
+          }
+        }
       }
     }
     if (sourceSquare.row === 7 && sourceSquare.col === 4 && sourceSquare.piece.type === "King") {
       if (targetSquare.row === 7 && targetSquare.col === 7 && targetSquare.piece.type === "Rook") {
-        return true;
+        if (chessboard[7][5].piece.type === "Blank" && chessboard[7][6].piece.type === "Blank"){
+          if (CastlePieces.blackKing === false && CastlePieces.rookTwoBlack === false)
+          {
+            return true;
+          }  
+        }
       }
     }
   }

@@ -22,11 +22,11 @@ var check: CheckDetails = ({
 });
 
 // Function to control how check if validated and output the result
-export function checkHandler(chessboard: any[][], sourceSquare: any, targetSquare: any, checkHighlighter: string, darkSquareColor: string, huntHighlighter: string, checkMateHighlighter: string): CheckAllowMove {
+export function checkHandler(chessboard: any[][], sourceSquare: any, targetSquare: any, checkHighlighter: string, darkSquareColor: string, huntHighlighter: string, checkMateHighlighter: string, turn: string): CheckAllowMove {
   let newChessboard: any[][] = Array.from(chessboard);
   let allowMove: CheckAllowMove;
   // Check if any one is in check and color squares accordingly
-  const checkDetails: CheckDetails = checkEvaluation(sourceSquare, targetSquare, chessboard);
+  const checkDetails: CheckDetails = checkEvaluation(sourceSquare, targetSquare, chessboard, turn);
   if (checkDetails.selfInCheck) {
     let updatedArray: UpdatedArrays = updateBoard(targetSquare, sourceSquare, chessboard);
     newChessboard = updatedArray.board;
@@ -49,7 +49,7 @@ export function checkHandler(chessboard: any[][], sourceSquare: any, targetSquar
   };
   if (checkDetails.opponentInCheck) {
     // Check if opponent is in checkmate
-    const inCheckmate: boolean = checkmate(newChessboard, checkDetails.kingInCheckSquare, checkDetails.puttingInCheckSquare);
+    const inCheckmate: boolean = checkmate(newChessboard, checkDetails.kingInCheckSquare, checkDetails.puttingInCheckSquare, turn);
     // Checks if any squares are in the check highlighter and un-highlights them
     if (check.opponentInCheck) {
       newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, huntHighlighter, checkMateHighlighter, inCheckmate, false);
@@ -89,9 +89,10 @@ export function checkHandler(chessboard: any[][], sourceSquare: any, targetSquar
 
 // Function that takes in the current state of the game every time a move is made and works out if anyone is in check
 // The source and target square from the most recent move are also passed in to check that the play isn't moving them self into check
-export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard: any[][]): CheckDetails {
-
-  let kings: LookupKings = retrieveKings(targetSquare.piece.color, chessboard);
+export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard: any[][], turn: string): CheckDetails {
+  console.log("1A - Check Evaluation Start"); //! Remove later
+  console.log(sourceSquare, targetSquare); //! Remove later
+  let kings: LookupKings = retrieveKings(turn, chessboard);
   let ownKing: any = kings.ownKing;
   let opponentKing :any = kings.opponentKing;
 
@@ -103,11 +104,13 @@ export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard
     puttingInCheckSquare: []
   };
 
+  console.log("1B - Start of Self In Check") //! Remove later
   for (let row = 0; row < chessboard.length; row++) { 
     for (let col = 0; col < chessboard[row].length; col++) {
       if (chessboard[row][col].piece.type === "Rook" && chessboard[row][col].piece.color === opponentKing.piece.color){
         if(rookPiece(chessboard[row][col], ownKing, chessboard)=== true)
         {
+          console.log("2 - Rook Piece") //! Remove later
           checkDetails.selfInCheck = true
           checkDetails.opponentInCheck = false;
           checkDetails.colorInCheck = ownKing.piece.color;
@@ -119,6 +122,7 @@ export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard
       if (chessboard[row][col].piece.type === "Knight" && chessboard[row][col].piece.color === opponentKing.piece.color){
         if(knightPiece(chessboard[row][col], ownKing)=== true)
         {
+          console.log("3 - Knight Piece") //! Remove later
           checkDetails.selfInCheck = true
           checkDetails.opponentInCheck = false;
           checkDetails.colorInCheck = ownKing.piece.color;
@@ -130,6 +134,7 @@ export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard
       if (chessboard[row][col].piece.type === "Pawn" && chessboard[row][col].piece.color === opponentKing.piece.color){
         if(pawnPiece(chessboard[row][col], ownKing)=== true)
         {
+          console.log("4 - Pawn Piece") //! Remove later
           checkDetails.selfInCheck = true
           checkDetails.opponentInCheck = false;
           checkDetails.colorInCheck = ownKing.piece.color;
@@ -141,6 +146,7 @@ export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard
       if (chessboard[row][col].piece.type === "Bishop" && chessboard[row][col].piece.color === opponentKing.piece.color){
         if(bishopPiece(chessboard[row][col], ownKing, chessboard)=== true)
         {
+          console.log("5 - Bishop Piece") //! Remove later
           checkDetails.selfInCheck = true
           checkDetails.opponentInCheck = false;
           checkDetails.colorInCheck = ownKing.piece.color;
@@ -152,6 +158,7 @@ export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard
       if (chessboard[row][col].piece.type === "Queen" && chessboard[row][col].piece.color === opponentKing.piece.color){
         if(queenPiece(chessboard[row][col], ownKing, chessboard)=== true)
         {
+          console.log("6 - Queen Piece") //! Remove later
           checkDetails.selfInCheck = true
           checkDetails.opponentInCheck = false;
           checkDetails.colorInCheck = ownKing.piece.color;
@@ -163,11 +170,13 @@ export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard
     }
   }
 
+  console.log("1C - Start of Opponent In Check") //! Remove later
   for (let row = 0; row < chessboard.length; row++) { 
     for (let col = 0; col < chessboard[row].length; col++){
       if (chessboard[row][col].piece.type === "Rook" && chessboard[row][col].piece.color === ownKing.piece.color){
         if(rookPiece(chessboard[row][col], opponentKing, chessboard)=== true)
         {
+          console.log("7 - Rook Piece") //! Remove later
           checkDetails.opponentInCheck = true;
           checkDetails.colorInCheck = opponentKing.piece.color;
           checkDetails.kingInCheckSquare = {row: opponentKing.row, col: opponentKing.col}
@@ -177,6 +186,7 @@ export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard
       if (chessboard[row][col].piece.type === "Knight" && chessboard[row][col].piece.color === ownKing.piece.color){
         if(knightPiece(chessboard[row][col], opponentKing)=== true)
         {
+          console.log("8 - Knight Piece") //! Remove later
           checkDetails.opponentInCheck = true;
           checkDetails.colorInCheck = opponentKing.piece.color;
           checkDetails.kingInCheckSquare = {row: opponentKing.row, col: opponentKing.col}
@@ -186,6 +196,7 @@ export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard
       if (chessboard[row][col].piece.type === "Pawn" && chessboard[row][col].piece.color === ownKing.piece.color){
         if(pawnPiece(chessboard[row][col], opponentKing)=== true)
         {
+          console.log("9 - Pawn Piece") //! Remove later
           checkDetails.opponentInCheck = true;
           checkDetails.colorInCheck = opponentKing.piece.color;
           checkDetails.kingInCheckSquare = {row: opponentKing.row, col: opponentKing.col}
@@ -195,6 +206,7 @@ export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard
       if (chessboard[row][col].piece.type === "Bishop" && chessboard[row][col].piece.color === ownKing.piece.color){
         if(bishopPiece(chessboard[row][col], opponentKing, chessboard)=== true)
         {
+          console.log("10 - Bishop Piece") //! Remove later
           checkDetails.opponentInCheck = true;
           checkDetails.colorInCheck = opponentKing.piece.color;
           checkDetails.kingInCheckSquare = {row: opponentKing.row, col: opponentKing.col}
@@ -204,6 +216,7 @@ export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard
       if (chessboard[row][col].piece.type === "Queen" && chessboard[row][col].piece.color === ownKing.piece.color){
         if(queenPiece(chessboard[row][col], opponentKing, chessboard)=== true)
         {
+          console.log("11 - Queen Piece") //! Remove later
           checkDetails.opponentInCheck = true;
           checkDetails.colorInCheck = opponentKing.piece.color;
           checkDetails.kingInCheckSquare = {row: opponentKing.row, col: opponentKing.col}
@@ -231,14 +244,14 @@ function retrieveKings(turn: string, chessboard: any[][]): LookupKings {
   for (let row = 0; row < chessboard.length; row++) {
     for (let col = 0; col < chessboard[row].length; col++) {
       if (chessboard[row][col].piece.type === "King" && chessboard[row][col].piece.color === "white") {
-        if (turn === "white") {
+        if (turn === "w") {
           ownKing = chessboard[row][col];
         } else {
           opponentKing = chessboard[row][col];
         };
       };
       if (chessboard[row][col].piece.type === "King" && chessboard[row][col].piece.color === "black") {
-        if (turn === "black") {
+        if (turn === "b") {
           ownKing = chessboard[row][col];
         } else {
           opponentKing = chessboard[row][col];

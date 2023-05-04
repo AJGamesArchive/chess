@@ -136,7 +136,7 @@ export function GameController(
       // Carry out the castleing move on the chess board
       let newChessboard: any[][] = carryOutCastleing(chessboard, sourceSquare, clickedSquare, false);
       // Work out if anyone is in check and highlight the board accordingly
-      let allowMove = checkHandler(newChessboard, sourceSquare, clickedSquare, checkHighlighter, darkSquareColor, huntHighlighter, checkMateHighlighter);
+      let allowMove = checkHandler(newChessboard, sourceSquare, clickedSquare, checkHighlighter, darkSquareColor, huntHighlighter, checkMateHighlighter, turn);
       newChessboard = allowMove.board;
       if (allowMove.allowMove) {
         // Reset all square colors to normal
@@ -271,7 +271,7 @@ export function GameController(
       let updatedArray: UpdatedArrays = updateBoard(sourceSquare, clickedSquare, chessboard);
       let newChessboard: any[][] = updatedArray.board;
       // Work out if anyone is in check and highlight the board accordingly
-      let allowMove = checkHandler(newChessboard, sourceSquare, clickedSquare, checkHighlighter, darkSquareColor, huntHighlighter, checkMateHighlighter);
+      let allowMove = checkHandler(newChessboard, sourceSquare, clickedSquare, checkHighlighter, darkSquareColor, huntHighlighter, checkMateHighlighter, turn);
       newChessboard = allowMove.board;
       if (allowMove.allowMove) {
         // Reset all square colors to normal

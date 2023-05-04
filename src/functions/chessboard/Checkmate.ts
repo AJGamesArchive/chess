@@ -14,7 +14,7 @@ import { queenPiece } from "./Queen";
 import { kingPiece } from "./King";
 
 // Function that looks at the square the king in check is on and works out if it can move anywhere, returns true or false accordingly
-export function checkmate(chessboard: any[][], kingSquare: any, huntingPieces: CheckSquare[]): boolean {
+export function checkmate(chessboard: any[][], kingSquare: any, huntingPieces: CheckSquare[], turn: string): boolean {
   // Array to store all the squares the king in check can move to
   const kingMoves: any[] = new Array(8);
   // For loops to find all the possible squares the king in check can move to and store them in array
@@ -26,20 +26,19 @@ export function checkmate(chessboard: any[][], kingSquare: any, huntingPieces: C
       };
     };
   };
+  console.log(kingMoves); //! Remove later
   // Foreach loop to check if the king can move at all
   var cantMove: boolean = true;
   kingMoves.forEach((square) => {
     let updatedBoards: UpdatedArrays = updateBoard(chessboard[kingSquare.row][kingSquare.col], square, chessboard);
     let newChessboard: any[][] = updatedBoards.board;
-    if (checkEvaluation(newChessboard[kingSquare.row][kingSquare.col],newChessboard[square.row][square.col],newChessboard).selfInCheck === false)
+    console.log(square); //! Remove later
+    if (checkEvaluation(newChessboard[kingSquare.row][kingSquare.col],newChessboard[square.row][square.col],newChessboard, turn).selfInCheck === false)
     {
       cantMove = false;
     };
-    let revertedBoards = updateBoard(square, kingSquare, chessboard);
-    newChessboard = revertedBoards.board;
-    console.log(updatedBoards.takenPiece); //! Remove
-    let updateSquare = newChessboard[square.row][square.col];
-    updateSquare.piece = updatedBoards.takenPiece.piece;
+    updatedBoards = updateBoard(square, kingSquare, chessboard);
+    newChessboard = updatedBoards.board;
   });
   // Returning false is the king can move as it is not in checkmate
   if (!cantMove) {
@@ -62,33 +61,23 @@ export function checkmate(chessboard: any[][], kingSquare: any, huntingPieces: C
         for (let col = 0; col < chessboard[row].length; col++) {
           if (chessboard[row][col].piece.type === "Rook" && chessboard[row][col].piece.color === chessboard[kingSquare.row][kingSquare.col].piece.color){
             if(rookPiece(chessboard[row][col], square, chessboard)=== true)
-            {
-              canBlock = true;
-            }
+            {canBlock = true;}
           };
           if (chessboard[row][col].piece.type === "Bishop" && chessboard[row][col].piece.color === chessboard[kingSquare.row][kingSquare.col].piece.color){
             if(bishopPiece(chessboard[row][col], square, chessboard)=== true)
-            {
-              canBlock = true;
-            }
+            { canBlock = true;}
           };
           if (chessboard[row][col].piece.type === "Queen" && chessboard[row][col].piece.color === chessboard[kingSquare.row][kingSquare.col].piece.color){
             if(queenPiece(chessboard[row][col], square, chessboard)=== true)
-            { 
-              canBlock = true;
-            }
+            { canBlock = true;}
           };
           if (chessboard[row][col].piece.type === "Pawn" && chessboard[row][col].piece.color === chessboard[kingSquare.row][kingSquare.col].piece.color){
             if(pawnPiece(chessboard[row][col], square)=== true)
-            {
-              canBlock = true;
-            }
+            { canBlock = true;}
           };
           if (chessboard[row][col].piece.type === "Knight" && chessboard[row][col].piece.color === chessboard[kingSquare.row][kingSquare.col].piece.color){
             if(knightPiece(chessboard[row][col], square)=== true)
-            {
-              canBlock = true;
-            }
+            { canBlock = true;}
           };
         };
       };
@@ -102,34 +91,24 @@ export function checkmate(chessboard: any[][], kingSquare: any, huntingPieces: C
     for (let row = 0; row < chessboard.length; row++) { 
       for (let col = 0; col < chessboard[row].length; col++) {
         if (chessboard[row][col].piece.type === "Rook" && chessboard[row][col].piece.color === chessboard[kingSquare.row][kingSquare.col].piece.color){
-          if(rookPiece(chessboard[row][col], chessboard[huntingPieces[0].row][huntingPieces[0].col], chessboard)=== true)
-          {
-            canBlock = true;
-          }
+          if(rookPiece(chessboard[row][col], huntingPieces, chessboard)=== true)
+          {canBlock = true;}
         };
         if (chessboard[row][col].piece.type === "Bishop" && chessboard[row][col].piece.color === chessboard[kingSquare.row][kingSquare.col].piece.color){
-          if(bishopPiece(chessboard[row][col], chessboard[huntingPieces[0].row][huntingPieces[0].col], chessboard)=== true)
-          { 
-            canBlock = true;
-          }
+          if(bishopPiece(chessboard[row][col], huntingPieces, chessboard)=== true)
+          { canBlock = true;}
         };
         if (chessboard[row][col].piece.type === "Queen" && chessboard[row][col].piece.color === chessboard[kingSquare.row][kingSquare.col].piece.color){
-          if(queenPiece(chessboard[row][col], chessboard[huntingPieces[0].row][huntingPieces[0].col], chessboard)=== true)
-          { 
-            canBlock = true;
-          }
+          if(queenPiece(chessboard[row][col], huntingPieces, chessboard)=== true)
+          { canBlock = true;}
         };
         if (chessboard[row][col].piece.type === "Pawn" && chessboard[row][col].piece.color === chessboard[kingSquare.row][kingSquare.col].piece.color){
-          if(pawnPiece(chessboard[row][col], chessboard[huntingPieces[0].row][huntingPieces[0].col])=== true)
-          { 
-            canBlock = true;
-          }
+          if(pawnPiece(chessboard[row][col], huntingPieces)=== true)
+          { canBlock = true;}
         };
         if (chessboard[row][col].piece.type === "Knight" && chessboard[row][col].piece.color === chessboard[kingSquare.row][kingSquare.col].piece.color){
-          if(knightPiece(chessboard[row][col], chessboard[huntingPieces[0].row][huntingPieces[0].col])=== true)
-          { 
-            canBlock = true;
-          }
+          if(knightPiece(chessboard[row][col], huntingPieces)=== true)
+          { canBlock = true;}
         };
       };
     };
