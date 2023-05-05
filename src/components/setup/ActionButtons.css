@@ -6,6 +6,14 @@
   border-left: 8px solid var(--ion-color-warning);
 }
 
+.action-button-card-green {
+  border-left: 8px solid var(--ion-color-success);
+}
+
+.action-button-card-red {
+  border-left: 8px solid var(--ion-color-danger);
+}
+
 .action-button-card-header {
   font-weight: bold;
 }

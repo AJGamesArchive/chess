@@ -257,7 +257,7 @@ const ChessGame: React.FC = () => {
         };
       };
     };
-    nav.push(`/ending/${params.username}/${game.mode}/${game.opponent}/${game.opponentColor}/${winnerName}/${winnerColor}/${loserName}/${loserColor}/${numWhiteTaken}/${numBlackTaken}/${isDraw}`);
+    window.location.href = (`/ending/${params.username}/${game.mode}/${game.opponent}/${game.opponentColor}/${winnerName}/${winnerColor}/${loserName}/${loserColor}/${numWhiteTaken}/${numBlackTaken}/${isDraw}`);
     return;
   };
 
@@ -425,7 +425,7 @@ const ChessGame: React.FC = () => {
             }}>
               <IonIcon icon={home}></IonIcon>
             </IonButton>
-            <IonButton slot="start" fill="clear" color="warning" disabled={false} onClick={() => {
+            <IonButton slot="start" fill="clear" color="warning" disabled={true} onClick={() => {
               nav.push(`/ending/${params.username}/${game.mode}/${game.opponent}/${game.opponentColor}/Alex/White/Computer/Black/12/9/n`);
             }}>
               <IonIcon icon={star}></IonIcon>

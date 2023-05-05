@@ -2,23 +2,15 @@
 import { useState } from 'react';
 import { useParams } from 'react-router';
 import {
-  IonButton,
-  IonCard,
-  IonCardTitle,
   IonContent,
   IonHeader,
-  IonIcon,
-  IonImg,
-  IonItem,
-  IonLabel,
   IonPage,
-  IonText,
   IonTitle,
   IonToast,
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { home, star, medal, skull, colorFill, ribbon } from 'ionicons/icons';
+import { home, star, medal, skull, colorFill, ribbon, save, gameController, warning } from 'ionicons/icons';
 import './Ending.css';
 
 // Importing Paramaters
@@ -29,8 +21,13 @@ import { ChessGameParams, ChessGameEndingParams } from '../../interfaces/ChessGa
 import GameResults from '../../components/ending/Results';
 import ActionButtons from '../../components/setup/ActionButtons';
 
-const GameEnding: React.FC = () => {
+// Importing Functions
+import { saveGame } from '../../functions/ending/SaveGame';
 
+// Importing Types
+import { DataSava } from '../../types/ending/DataSava';
+
+const GameEnding: React.FC = () => {
   // Setup navigation system on this page so we can call other pages
   // Powered by nav system in App.tsx
   const nav = useIonRouter();
@@ -43,7 +40,44 @@ const GameEnding: React.FC = () => {
   // Declaring react variables to toggle the visibility of the action buttons on the page
   const [hideContinueBtn, setHideContinueBtn] = useState<boolean>(false);
   const [hideRematchBtn, setHideRematchBtn] = useState<boolean>(true);
-  const [hideMainMenuBtn, setHideMainMenuBtn] = useState<boolean>(false);
+  const [hideMainMenuBtn, setHideMainMenuBtn] = useState<boolean>(true);
+
+  // Declaring react variables to control pop-up alerts
+  const [showConfirmMsg, setShowConfirmMsg] = useState<boolean>(false);
+  const [confirmMsg, setConfirmMsg] = useState<string>("");
+  const [showErrorMsg, setShowErrorMsg] = useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = useState<string>("");
+
+  // Async function to save the scores from the game to the database
+  async function actionButtonClick(buttonName: string) {
+    if (buttonName === "Continue") {
+      let saved: DataSava;
+      if (results.isDraw === "y") {
+        saved = await saveGame(results.winnerName, results.winnerColor, results.loserName, results.loserColor, parseInt(results.numWhiteTaken), parseInt(results.numBlackTaken), "Draw", game.mode);
+      } else {
+        saved = await saveGame(results.winnerName, results.winnerColor, results.loserName, results.loserColor, parseInt(results.numWhiteTaken), parseInt(results.numBlackTaken), results.winnerName, game.mode);
+      };
+      if (!saved.saved) {
+        setErrorMsg(saved.message);
+        setShowErrorMsg(true);
+        setHideRematchBtn(false);
+        setHideMainMenuBtn(false);
+        return;
+      };
+      setConfirmMsg("The game data was saved successfully!");
+      setShowConfirmMsg(true);
+      setHideContinueBtn(true);
+      setHideRematchBtn(false);
+      setHideMainMenuBtn(false);
+      return;
+    };
+    if (buttonName === "Rematch") {
+      window.location.href = (`/game/${params.username}/${game.mode}/${game.opponent}/${game.opponentColor}`);
+      return;
+    };
+    nav.push(`/mainMenu/${params.username}`);
+    return;
+  };
 
   if (results.isDraw === "y") {
     // JSX code for generating the login page GUI
@@ -60,9 +94,6 @@ const GameEnding: React.FC = () => {
             <IonTitle className="ending-header">
               Game Results
             </IonTitle>
-            <IonButton slot="end" fill="clear" color="warning" href={`/mainMenu/${params.username}`}>
-              <IonIcon icon={home}></IonIcon>
-            </IonButton>
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen>
@@ -99,6 +130,79 @@ const GameEnding: React.FC = () => {
             blackPiecesTaken={results.numBlackTaken}
           />
 
+          <ActionButtons
+            canDisable={false}
+            disabled={false}
+            canHide={true}
+            hidden={hideContinueBtn}
+            buttonName={"Continue"}
+            buttonText={"Save & Continue"}
+            buttonIcon={save}
+            buttonColor={`green`}
+            buttonTextColor={`success`}
+            onButtonClick={actionButtonClick}
+          />
+
+          <ActionButtons
+            canDisable={false}
+            disabled={false}
+            canHide={true}
+            hidden={hideRematchBtn}
+            buttonName={"Rematch"}
+            buttonText={"Rematch"}
+            buttonIcon={gameController}
+            buttonColor={`blue`}
+            buttonTextColor={`primary`}
+            onButtonClick={actionButtonClick}
+          />
+
+          <ActionButtons
+            canDisable={false}
+            disabled={false}
+            canHide={true}
+            hidden={hideMainMenuBtn}
+            buttonName={"Menu"}
+            buttonText={"Main Menu"}
+            buttonIcon={home}
+            buttonColor={`yellow`}
+            buttonTextColor={`warning`}
+            onButtonClick={actionButtonClick}
+          />
+
+          <IonToast
+            isOpen={showConfirmMsg}
+            onDidPresent={() => {}}
+            onDidDismiss={() => setShowConfirmMsg(false)}
+            message={confirmMsg}
+            icon={star}
+            color="success"
+            position="middle"
+            buttons={[
+              {
+                text: "Ok",
+                role: "cancel",
+                handler: () => {}
+              }
+            ]}
+          />
+
+          <IonToast
+            isOpen={showErrorMsg}
+            onDidPresent={() => {}}
+            onDidDismiss={() => setShowErrorMsg(false)}
+            message={errorMsg}
+            icon={warning}
+            color="danger"
+            position="middle"
+            buttons={[
+              {
+                text: "Ok",
+                role: "cancel",
+                handler: () => {}
+              }
+            ]}
+          />
+
         </IonContent>
       </IonPage>
     );
@@ -117,9 +221,6 @@ const GameEnding: React.FC = () => {
             <IonTitle className="ending-header">
               Game Results
             </IonTitle>
-            <IonButton slot="end" fill="clear" color="warning" href={`/mainMenu/${params.username}`}>
-              <IonIcon icon={home}></IonIcon>
-            </IonButton>
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen>
@@ -156,13 +257,78 @@ const GameEnding: React.FC = () => {
             blackPiecesTaken={results.numBlackTaken}
           />
 
-          {/* <ActionButtons
+          <ActionButtons
             canDisable={false}
             disabled={false}
             canHide={true}
             hidden={hideContinueBtn}
-            buttonName={}
-          /> */}
+            buttonName={"Continue"}
+            buttonText={"Save & Continue"}
+            buttonIcon={save}
+            buttonColor={`green`}
+            buttonTextColor={`success`}
+            onButtonClick={actionButtonClick}
+          />
+
+          <ActionButtons
+            canDisable={false}
+            disabled={false}
+            canHide={true}
+            hidden={hideRematchBtn}
+            buttonName={"Rematch"}
+            buttonText={"Rematch"}
+            buttonIcon={gameController}
+            buttonColor={`blue`}
+            buttonTextColor={`primary`}
+            onButtonClick={actionButtonClick}
+          />
+
+          <ActionButtons
+            canDisable={false}
+            disabled={false}
+            canHide={true}
+            hidden={hideMainMenuBtn}
+            buttonName={"Menu"}
+            buttonText={"Main Menu"}
+            buttonIcon={home}
+            buttonColor={`yellow`}
+            buttonTextColor={`warning`}
+            onButtonClick={actionButtonClick}
+          />
+
+          <IonToast
+            isOpen={showConfirmMsg}
+            onDidPresent={() => {}}
+            onDidDismiss={() => setShowConfirmMsg(false)}
+            message={confirmMsg}
+            icon={star}
+            color="success"
+            position="middle"
+            buttons={[
+              {
+                text: "Ok",
+                role: "cancel",
+                handler: () => {}
+              }
+            ]}
+          />
+
+          <IonToast
+            isOpen={showErrorMsg}
+            onDidPresent={() => {}}
+            onDidDismiss={() => setShowErrorMsg(false)}
+            message={errorMsg}
+            icon={warning}
+            color="danger"
+            position="middle"
+            buttons={[
+              {
+                text: "Ok",
+                role: "cancel",
+                handler: () => {}
+              }
+            ]}
+          />
 
         </IonContent>
       </IonPage>
