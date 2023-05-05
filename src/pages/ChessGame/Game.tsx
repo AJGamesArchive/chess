@@ -146,6 +146,19 @@ const ChessGame: React.FC = () => {
   if (!rook1BMoved) {if (chessboard[7][0].piece.type !== "Rook") {setRook1BMoved(true)};}
   if (!rook2BMoved) {if (chessboard[7][7].piece.type !== "Rook") {setRook2BMoved(true)};}
 
+  // Control the AI's turn is your in PVE mode
+  if (game.mode === "PVE") {
+    if (game.opponentColor === turn) {
+      // Start of AI turn
+      setCheckmate(true);
+
+      //TODO Make AI turn content
+        
+      // End of AI turn
+      setCheckmate(false);
+    };
+  };
+
   // Function that handles what happens each time a board square is clicked
   function onSquareClick(square: any) {
     // Carry out the requested move only if no one is in check mate
