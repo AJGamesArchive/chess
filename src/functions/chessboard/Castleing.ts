@@ -104,7 +104,7 @@ export function carryOutCastleing(chessboard: any[][], source: any, target: any,
   let updateKingSource: any;
   let updateKingTarget: any;
   //* Top Left Castle
-  if ((source.row === 0 && source.col === 0) && (target.row === 0 && target.col === 4) || (target.row === 0 && target.col === 0) && (source.row === 0 && source.col === 4)) {
+  if (((source.row === 0 && source.col === 0) && (target.row === 0 && target.col === 4)) || ((target.row === 0 && target.col === 0) && (source.row === 0 && source.col === 4))) {
     updateRookSource = newChessboard[0][0];
     updateRookTarget = newChessboard[0][3];
     updateKingSource = newChessboard[0][4];
@@ -112,21 +112,21 @@ export function carryOutCastleing(chessboard: any[][], source: any, target: any,
     console.log(updateRookSource.piece, updateRookTarget.piece, updateKingSource.piece, updateKingTarget.piece); //! Remove later
   }
   //* Top Right Castle
-  if ((source.row === 0 && source.col === 7) && (target.row === 0 && target.col === 4) || (target.row === 0 && target.col === 7) && (source.row === 0 && source.col === 4)) {
+  if (((source.row === 0 && source.col === 7) && (target.row === 0 && target.col === 4)) || ((target.row === 0 && target.col === 7) && (source.row === 0 && source.col === 4))) {
     updateRookSource = newChessboard[0][7];
     updateRookTarget = newChessboard[0][5];
     updateKingSource = newChessboard[0][4];
     updateKingTarget = newChessboard[0][6];
   }
   //* Bottom Left Castle
-  if ((source.row === 7 && source.col === 0) && (target.row === 7 && target.col === 4) || (target.row === 7 && target.col === 0) && (source.row === 7 && source.col === 4)) {
+  if (((source.row === 7 && source.col === 0) && (target.row === 7 && target.col === 4)) || ((target.row === 7 && target.col === 0) && (source.row === 7 && source.col === 4))) {
     updateRookSource = newChessboard[7][0];
     updateRookTarget = newChessboard[7][3];
     updateKingSource = newChessboard[7][4];
     updateKingTarget = newChessboard[7][2];
   }
   //* Bottom Right Castle
-  if ((source.row === 7 && source.col === 7) && (target.row === 7 && target.col === 4) || (target.row === 7 && target.col === 7) && (source.row === 7 && source.col === 4)) {
+  if (((source.row === 7 && source.col === 7) && (target.row === 7 && target.col === 4)) || ((target.row === 7 && target.col === 7) && (source.row === 7 && source.col === 4))) {
     updateRookSource = newChessboard[7][7];
     updateRookTarget = newChessboard[7][5];
     updateKingSource = newChessboard[7][4];

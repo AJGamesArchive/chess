@@ -26,7 +26,7 @@ export function checkHandler(chessboard: any[][], sourceSquare: any, targetSquar
   let newChessboard: any[][] = Array.from(chessboard);
   let allowMove: CheckAllowMove;
   // Check if any one is in check and color squares accordingly
-  const checkDetails: CheckDetails = checkEvaluation(sourceSquare, targetSquare, chessboard, turn);
+  const checkDetails: CheckDetails = checkEvaluation(sourceSquare, targetSquare, chessboard, turn, false);
   if (checkDetails.selfInCheck) {
     let updatedArray: UpdatedArrays = updateBoard(targetSquare, sourceSquare, chessboard);
     newChessboard = updatedArray.board;
@@ -89,10 +89,24 @@ export function checkHandler(chessboard: any[][], sourceSquare: any, targetSquar
 
 // Function that takes in the current state of the game every time a move is made and works out if anyone is in check
 // The source and target square from the most recent move are also passed in to check that the play isn't moving them self into check
-export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard: any[][], turn: string): CheckDetails {
+export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard: any[][], turn: string, flipTurn: boolean): CheckDetails {
   console.log("1A - Check Evaluation Start"); //! Remove later
   console.log(sourceSquare, targetSquare); //! Remove later
-  let kings: LookupKings = retrieveKings(turn, chessboard);
+  let ownColor: string;
+  if (flipTurn) {
+    if (turn === "w") {
+      ownColor = "b"
+    } else {
+      ownColor = "y"
+    }
+  } else {
+    if (turn === "w") {
+      ownColor = "w"
+    } else {
+      ownColor = "b"
+    };
+  };
+  let kings: LookupKings = retrieveKings(ownColor, chessboard);
   let ownKing: any = kings.ownKing;
   let opponentKing :any = kings.opponentKing;
 

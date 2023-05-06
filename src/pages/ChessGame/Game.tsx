@@ -156,6 +156,12 @@ const ChessGame: React.FC = () => {
         
       // End of AI turn
       setCheckmate(false);
+      // Switch to the other players turn if current player has moved
+      if (turn === "w") {
+        setTurn("b");
+      } else {
+        setTurn("w");
+      };
     };
   };
 
