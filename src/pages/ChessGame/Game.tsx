@@ -315,7 +315,7 @@ const ChessGame: React.FC = () => {
         }
 
         <PlayerCard
-          cardImage='/assets/images/ChessPieces/white-Pawn.png'
+          cardImage='/assets/images/ChessPieces/white-Rook.png'
           playerName={whitePlayerName}
           turnIcon={whiteTurnIcon}
           turnIconClr={whiteTurnIconClr}
@@ -325,7 +325,7 @@ const ChessGame: React.FC = () => {
         <IonCard hidden={hideBlackSelect}>
           <IonItem lines="none">
             <IonAvatar slot="start">
-              <IonImg src="/assets/images/ChessPieces/black-Pawn.png"/>
+              <IonImg src="/assets/images/ChessPieces/black-Rook.png"/>
             </IonAvatar>
             <IonLabel>
               <IonText className='game-card-header'>
@@ -352,7 +352,7 @@ const ChessGame: React.FC = () => {
         <IonCard hidden={hideWhiteSelect}>
           <IonItem lines="none">
             <IonAvatar slot="start">
-              <IonImg src="/assets/images/ChessPieces/white-Pawn.png"/>
+              <IonImg src="/assets/images/ChessPieces/white-Rook.png"/>
             </IonAvatar>
             <IonLabel>
               <IonText className='game-card-header'>
@@ -371,7 +371,7 @@ const ChessGame: React.FC = () => {
         </IonCard>
 
         <PlayerCard
-          cardImage='/assets/images/ChessPieces/black-Pawn.png'
+          cardImage='/assets/images/ChessPieces/black-Rook.png'
           playerName={blackPlayerName}
           turnIcon={blackTurnIcon}
           turnIconClr={blackTurnIconClr}

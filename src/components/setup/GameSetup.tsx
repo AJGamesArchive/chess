@@ -61,7 +61,7 @@ const GameSettings: React.FC<GameSetupProps> = ({ hidden, mode, playerOne, playe
       </IonItem>
       <IonItem lines="inset">
         <IonAvatar slot="start">
-          <IonImg src="/assets/images/ChessPieces/white-Pawn.png"/>
+          <IonImg src="/assets/images/ChessPieces/white-Rook.png"/>
         </IonAvatar>
         <IonLabel>
           White
@@ -78,7 +78,7 @@ const GameSettings: React.FC<GameSetupProps> = ({ hidden, mode, playerOne, playe
       </IonItem>
       <IonItem lines="none">
         <IonAvatar slot="start">
-          <IonImg src="/assets/images/ChessPieces/black-Pawn.png"/>
+          <IonImg src="/assets/images/ChessPieces/black-Rook.png"/>
         </IonAvatar>
         <IonLabel>
           Black
