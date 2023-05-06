@@ -106,7 +106,6 @@ export function GameController(
       blackTaken: blackPiecesTaken,
       checkMate: false
     };
-    console.log("FIRST") //! Remove later
     return control;
   } else {
     // Attempting to get a target square
@@ -274,7 +273,6 @@ export function GameController(
       // Work out if anyone is in check and highlight the board accordingly
       let allowMove = checkHandler(newChessboard, sourceSquare, clickedSquare, checkHighlighter, darkSquareColor, huntHighlighter, checkMateHighlighter, turn);
       newChessboard = allowMove.board;
-      console.log(allowMove) //! Remove Later
       if (allowMove.allowMove) {
         // Reset all square colors to normal
         newChessboard = nextMove(newChessboard, darkSquareColor);

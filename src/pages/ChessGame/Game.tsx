@@ -68,10 +68,6 @@ const ChessGame: React.FC = () => {
   // React variable creates initial state of chess game and stores it in a 2D array
   const [chessboard, setChessboard] = useState(CreateBoard("#FFFFFF", darkSquareColor));
 
-  useEffect(() => {
-    setChessboard(chessboard);
-  }, [chessboard]);
-
   // Declaring variable to keep track of who's turn it is "w" = white, "b" = black
   const [turn, setTurn] = useState<string>("w");
 
@@ -147,16 +143,22 @@ const ChessGame: React.FC = () => {
   if (!rook1BMoved) {if (chessboard[7][0].piece.type !== "Rook") {setRook1BMoved(true)};}
   if (!rook2BMoved) {if (chessboard[7][7].piece.type !== "Rook") {setRook2BMoved(true)};}
 
+  // Trigger the AI's turn if you're in PVE mode and if it's their turn
+  useEffect(() => {
+    if (game.mode === "PVE") {
+      if (game.opponentColor === turn) {
+        AITurn(turn);
+        return;
+      };
+    };
+  }, [turn]);
+
   // Function that controls the AIs turn
   function AITurn(nextTurn: string) {
     // Start of AI turn
-    setCheckmate(true);
-    //TODO Make AI turn content
     const legalMovesList = AIlegalMoves(chessboard, nextTurn)
-    console.log(legalMovesList); //! Remove Later
     const selectMove = () => legalMovesList[Math.floor(Math.random() * legalMovesList.length)];
     const move = selectMove();
-    console.log(move.sourceSquare, move.targetSquare) //! Remove later
     let controls: GameControl;
     for (let i = 0; i < 2; i++) {
       let square: any;
@@ -165,8 +167,6 @@ const ChessGame: React.FC = () => {
       } else {
         square = move.targetSquare;
       };
-      console.log("ETHAN");
-      console.log(square);
       controls = GameController(
         chessboard, 
         square, 
@@ -181,18 +181,15 @@ const ChessGame: React.FC = () => {
         rook1BMoved,
         rook2BMoved,
       );
-      console.log(controls.switchTurn) //! Remove later
       if (i === 1) {
-        console.log(controls.board) //! Remove later
+        //TODO Alex, make this handle the check system rejecting a move by looping back and picking another move
         // Update the state of the board
         setChessboard(controls.board);
         setLockBoard(controls.lockBoard);
         setWhitePiecesTaken(controls.whiteTaken);
         setBlackPiecesTaken(controls.blackTaken);
-        console.log(controls.switchTurn) //! Remove later
+        setCheckmate(controls.checkMate);
         if (controls.switchTurn) {
-          // End of AI turn
-          setCheckmate(false);
           // Switch to the other players turn if current player has moved
           if (turn === "w") {
             setTurn("b");
@@ -244,8 +241,8 @@ const ChessGame: React.FC = () => {
           };
         };
         if (controls.switchTurn) {
-          let nextTurn: string;
           // Switch to the other players turn if current player has moved
+          let nextTurn: string;
           if (turn === "w") {
             setTurn("b");
             nextTurn = "b";
@@ -253,13 +250,11 @@ const ChessGame: React.FC = () => {
             setTurn("w");
             nextTurn = "w";
           };
-          // Control the AI's turn is your in PVE mode and if it's the AI's turn
           if (game.mode === "PVE") {
             if (game.opponentColor === nextTurn) {
-              AITurn(nextTurn);
-              return;
+              setCheckmate(true);
             };
-          } else;
+          };
         };
         return;
       } else {
