@@ -119,6 +119,13 @@ const GameSetup: React.FC = () => {
       setPlayerTwo("");
       return setSearchBtnClr("primary");
     };
+    // Guard statement to ensure that the opponents name is not the same as the AI's name
+    if (playerTwo.toUpperCase() === "COMPUTER") {
+      setErrorMessage("You're opponents name cannot be the same as the AI.. Please enter a different name."); 
+      setErrorInvalidUsername(true);
+      setPlayerTwo("");
+      return setSearchBtnClr("primary");
+    };
     // Guard statement to ensure that if the opponent has an account, the account is real and accessible
     if (hasAccount) {
       const locatedUser: CredentialValidation = await ValidOpponent(playerTwo);

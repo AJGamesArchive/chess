@@ -57,6 +57,7 @@ export async function saveGame(plyOneName: string, plyOneColor: string, plyTwoNa
         saved.message += `The game data could not be saved for ${plyNames[i].name}!`;
         continue;
       };
+      const timestamp: string = dateTime();
       // Gathering up the game data, creating a data variable for the game data, and saving it to the account
       const gameData: any = {
         id: `Game ${gameNum}`,
@@ -68,6 +69,7 @@ export async function saveGame(plyOneName: string, plyOneColor: string, plyTwoNa
         whitePiecesTaken: numWhiteTaken,
         blackPiecesTaken: numBlackTaken,
         winner: whoWon,
+        timestamp: timestamp,
       };
       try {
         await setDoc(doc(db, "users", plyNames[i].name.toUpperCase(), "games", `GAME ${gameNum}`), gameData)
@@ -84,4 +86,11 @@ export async function saveGame(plyOneName: string, plyOneColor: string, plyTwoNa
     saved.message += " Please try again in a few minutes or continue without saving.";
   };
   return Promise.resolve(saved);
+};
+
+// Create string with current date and time in formate of: DD/MM/YYYY - HH/MM
+function dateTime(): string {
+  const today = new Date()
+  const date: string = String(today.getDate()).padStart(2, "0") + "/" + String(today.getMonth() + 1).padStart(2, "0") + "/" + today.getFullYear() + " - " + String(today.getHours()).padStart(2, "0") + ":" + String(today.getMinutes()).padStart(2, "0")
+  return date;
 };
