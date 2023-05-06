@@ -5,28 +5,20 @@ export function knightPiece(sourceSquare: any, targetSquare: any): boolean {
   }
   else if ((targetSquare.row === sourceSquare.row + 1 && targetSquare.col === sourceSquare.col + 2 ) || (targetSquare.row === sourceSquare.row - 1 && targetSquare.col === sourceSquare.col - 2))
   {
-    console.log(sourceSquare.piece.color); //! Remove later
-    console.log(targetSquare.piece.color); //! Remove later
     return true;
     
   }
   else if ((targetSquare.col === sourceSquare.col + 1 && targetSquare.row === sourceSquare.row + 2) || (targetSquare.col === sourceSquare.col - 1 && targetSquare.row === sourceSquare.row - 2))
   {
-    console.log(sourceSquare.piece.color); //! Remove later
-    console.log(targetSquare.piece.color); //! Remove later
     return true;
   } 
   else if ((targetSquare.row === sourceSquare.row - 1 && targetSquare.col === sourceSquare.col + 2 ) || (targetSquare.row === sourceSquare.row - 2 && targetSquare.col === sourceSquare.col + 1))
   {
-    console.log(sourceSquare.piece.color); //! Remove later
-    console.log(targetSquare.piece.color); //! Remove later
     return true;
     
   }
   else if ((targetSquare.col === sourceSquare.col - 2 && targetSquare.row === sourceSquare.row + 1) || (targetSquare.col === sourceSquare.col - 1 && targetSquare.row === sourceSquare.row + 2))
   {
-    console.log(sourceSquare.piece.color); //! Remove later
-    console.log(targetSquare.piece.color); //! Remove later
     return true;
   }
 

@@ -43,6 +43,7 @@ import { GameController } from '../../functions/chessboard/GameController';
 import { createPiecesTakenArray } from '../../functions/chessboard/TakenPiecesArrayGenerator';
 import { pawnLocationChecker } from '../../functions/chessboard/PawnLocationChecker';
 import { upgradePawn } from '../../functions/chessboard/UpgradePawn';
+import { AIlegalMoves } from '../../functions/chessboard/AI';
 
 const ChessGame: React.FC = () => {
 
@@ -146,23 +147,62 @@ const ChessGame: React.FC = () => {
   if (!rook1BMoved) {if (chessboard[7][0].piece.type !== "Rook") {setRook1BMoved(true)};}
   if (!rook2BMoved) {if (chessboard[7][7].piece.type !== "Rook") {setRook2BMoved(true)};}
 
-  // Control the AI's turn is your in PVE mode
-  if (game.mode === "PVE") {
-    if (game.opponentColor === turn) {
-      // Start of AI turn
-      setCheckmate(true);
-
-      //TODO Make AI turn content
-        
-      // End of AI turn
-      setCheckmate(false);
-      // Switch to the other players turn if current player has moved
-      if (turn === "w") {
-        setTurn("b");
+  // Function that controls the AIs turn
+  function AITurn(nextTurn: string) {
+    // Start of AI turn
+    setCheckmate(true);
+    //TODO Make AI turn content
+    const legalMovesList = AIlegalMoves(chessboard, nextTurn)
+    console.log(legalMovesList); //! Remove Later
+    const selectMove = () => legalMovesList[Math.floor(Math.random() * legalMovesList.length)];
+    const move = selectMove();
+    console.log(move.sourceSquare, move.targetSquare) //! Remove later
+    let controls: GameControl;
+    for (let i = 0; i < 2; i++) {
+      let square: any;
+      if (i === 0) {
+        square = move.sourceSquare;
       } else {
-        setTurn("w");
+        square = move.targetSquare;
+      };
+      console.log("ETHAN");
+      console.log(square);
+      controls = GameController(
+        chessboard, 
+        square, 
+        nextTurn,
+        darkSquareColor,
+        whitePiecesTaken,
+        blackPiecesTaken,
+        kingWMoved,
+        kingbMoved,
+        rook1WMoved,
+        rook2WMoved,
+        rook1BMoved,
+        rook2BMoved,
+      );
+      console.log(controls.switchTurn) //! Remove later
+      if (i === 1) {
+        console.log(controls.board) //! Remove later
+        // Update the state of the board
+        setChessboard(controls.board);
+        setLockBoard(controls.lockBoard);
+        setWhitePiecesTaken(controls.whiteTaken);
+        setBlackPiecesTaken(controls.blackTaken);
+        console.log(controls.switchTurn) //! Remove later
+        if (controls.switchTurn) {
+          // End of AI turn
+          setCheckmate(false);
+          // Switch to the other players turn if current player has moved
+          if (turn === "w") {
+            setTurn("b");
+          } else {
+            setTurn("w");
+          };
+        };
       };
     };
+    return;
   };
 
   // Function that handles what happens each time a board square is clicked
@@ -204,12 +244,22 @@ const ChessGame: React.FC = () => {
           };
         };
         if (controls.switchTurn) {
+          let nextTurn: string;
           // Switch to the other players turn if current player has moved
           if (turn === "w") {
             setTurn("b");
+            nextTurn = "b";
           } else {
             setTurn("w");
+            nextTurn = "w";
           };
+          // Control the AI's turn is your in PVE mode and if it's the AI's turn
+          if (game.mode === "PVE") {
+            if (game.opponentColor === nextTurn) {
+              AITurn(nextTurn);
+              return;
+            };
+          } else;
         };
         return;
       } else {
