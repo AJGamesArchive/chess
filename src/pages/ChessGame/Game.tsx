@@ -155,46 +155,52 @@ const ChessGame: React.FC = () => {
 
   // Function that controls the AIs turn
   function AITurn(nextTurn: string) {
-    // Start of AI turn
-    const legalMovesList = AIlegalMoves(chessboard, nextTurn)
-    const selectMove = () => legalMovesList[Math.floor(Math.random() * legalMovesList.length)];
-    const move = selectMove();
-    let controls: GameControl;
-    for (let i = 0; i < 2; i++) {
-      let square: any;
-      if (i === 0) {
-        square = move.sourceSquare;
-      } else {
-        square = move.targetSquare;
-      };
-      controls = GameController(
-        chessboard, 
-        square, 
-        nextTurn,
-        darkSquareColor,
-        whitePiecesTaken,
-        blackPiecesTaken,
-        kingWMoved,
-        kingbMoved,
-        rook1WMoved,
-        rook2WMoved,
-        rook1BMoved,
-        rook2BMoved,
-      );
-      if (i === 1) {
-        //TODO Alex, make this handle the check system rejecting a move by looping back and picking another move
-        // Update the state of the board
-        setChessboard(controls.board);
-        setLockBoard(controls.lockBoard);
-        setWhitePiecesTaken(controls.whiteTaken);
-        setBlackPiecesTaken(controls.blackTaken);
-        setCheckmate(controls.checkMate);
-        if (controls.switchTurn) {
-          // Switch to the other players turn if current player has moved
-          if (turn === "w") {
-            setTurn("b");
-          } else {
-            setTurn("w");
+    // Keep repeating the AI's turn until it makes a valid move
+    AILoop: while (true) {
+      // Start of AI turn
+      console.log("Start of AI Turn") //! Remove Later
+      const move = AIlegalMoves(chessboard, nextTurn)
+      console.log(move.sourceSquare, move.targetSquare) //! Remove later
+      let controls: GameControl;
+      for (let i = 0; i < 2; i++) {
+        let square: any;
+        if (i === 0) {
+          square = move.sourceSquare;
+        } else {
+          square = move.targetSquare;
+        };
+        console.log(square) //! Remove later
+        controls = GameController(
+          chessboard, 
+          square, 
+          nextTurn,
+          darkSquareColor,
+          whitePiecesTaken,
+          blackPiecesTaken,
+          kingWMoved,
+          kingbMoved,
+          rook1WMoved,
+          rook2WMoved,
+          rook1BMoved,
+          rook2BMoved,
+        );
+        console.log(controls.switchTurn) //! Remove later
+        if (i === 1) {
+          //TODO Alex, make this handle the check system rejecting a move by looping back and picking another move
+          // Update the state of the board
+          setChessboard(controls.board);
+          setLockBoard(controls.lockBoard);
+          setWhitePiecesTaken(controls.whiteTaken);
+          setBlackPiecesTaken(controls.blackTaken);
+          setCheckmate(controls.checkMate);
+          if (controls.switchTurn) {
+            // Switch to the other players turn if current player has moved
+            if (turn === "w") {
+              setTurn("b");
+            } else {
+              setTurn("w");
+            };
+            break AILoop;
           };
         };
       };

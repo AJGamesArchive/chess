@@ -80,7 +80,7 @@ export function checkmate(chessboard: any[][], kingSquare: any, huntingPieces: C
             }
           };
           if (chessboard[row][col].piece.type === "Pawn" && chessboard[row][col].piece.color === chessboard[kingSquare.row][kingSquare.col].piece.color){
-            if(pawnPiece(chessboard[row][col], square)=== true)
+            if(pawnPiece(chessboard[row][col], square, chessboard)=== true)
             {
               canBlock = true;
             }
@@ -122,7 +122,7 @@ export function checkmate(chessboard: any[][], kingSquare: any, huntingPieces: C
           }
         };
         if (chessboard[row][col].piece.type === "Pawn" && chessboard[row][col].piece.color === chessboard[kingSquare.row][kingSquare.col].piece.color){
-          if(pawnPiece(chessboard[row][col], chessboard[huntingPieces[0].row][huntingPieces[0].col])=== true)
+          if(pawnPiece(chessboard[row][col], chessboard[huntingPieces[0].row][huntingPieces[0].col],chessboard)=== true)
           { 
             canBlock = true;
           }

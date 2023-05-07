@@ -179,7 +179,7 @@ export function GameController(
       // Finds what piece is being moved and calls corresponding function
       if (sourceSquare.piece.type === "Pawn") {
         // Guard statement to check if the selected move is valid, will return if move is not valid
-        if (!pawnPiece(sourceSquare, clickedSquare)) {
+        if (!pawnPiece(sourceSquare, clickedSquare, chessboard)) {
           // Return needed data
           control = {
             board: chessboard,

@@ -93,15 +93,15 @@ export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard
   let ownColor: string;
   if (flipTurn) {
     if (turn === "w") {
-      ownColor = "b"
+      ownColor = "b";
     } else {
-      ownColor = "y"
+      ownColor = "w";
     }
   } else {
     if (turn === "w") {
-      ownColor = "w"
+      ownColor = "w";
     } else {
-      ownColor = "b"
+      ownColor = "b";
     };
   };
   let kings: LookupKings = retrieveKings(ownColor, chessboard);
@@ -141,7 +141,7 @@ export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard
         }
       }
       if (chessboard[row][col].piece.type === "Pawn" && chessboard[row][col].piece.color === opponentKing.piece.color){
-        if(pawnPiece(chessboard[row][col], ownKing)=== true)
+        if(pawnPiece(chessboard[row][col], ownKing, chessboard)=== true)
         {
           checkDetails.selfInCheck = true
           checkDetails.opponentInCheck = false;
@@ -197,7 +197,7 @@ export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard
         }
       }
       if (chessboard[row][col].piece.type === "Pawn" && chessboard[row][col].piece.color === ownKing.piece.color){
-        if(pawnPiece(chessboard[row][col], opponentKing)=== true)
+        if(pawnPiece(chessboard[row][col], opponentKing, chessboard)=== true)
         {
           checkDetails.opponentInCheck = true;
           checkDetails.colorInCheck = opponentKing.piece.color;

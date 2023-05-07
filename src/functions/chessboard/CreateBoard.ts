@@ -38,14 +38,14 @@ export function CreateBoard(lightSquareClr: string, darkSquareClr: string): any[
   const Cols = 8;
 
   const startingPosition = [
-    "RNBKQBNR",
+    "RNBQKBNR",
     "PPPPPPPP",
     "        ",
     "        ",
     "        ",
     "        ",
     "pppppppp",
-    "rnbkqbnr"
+    "rnbqkbnr"
   ];
 
   const chessBoard = new Array(Rows);
