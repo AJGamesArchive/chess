@@ -158,9 +158,7 @@ const ChessGame: React.FC = () => {
     // Keep repeating the AI's turn until it makes a valid move
     AILoop: while (true) {
       // Start of AI turn
-      console.log("Start of AI Turn") //! Remove Later
       const move = AIlegalMoves(chessboard, nextTurn)
-      console.log(move.sourceSquare, move.targetSquare) //! Remove later
       let controls: GameControl;
       for (let i = 0; i < 2; i++) {
         let square: any;
@@ -169,7 +167,6 @@ const ChessGame: React.FC = () => {
         } else {
           square = move.targetSquare;
         };
-        console.log(square) //! Remove later
         controls = GameController(
           chessboard, 
           square, 
@@ -184,9 +181,8 @@ const ChessGame: React.FC = () => {
           rook1BMoved,
           rook2BMoved,
         );
-        console.log(controls.switchTurn) //! Remove later
         if (i === 1) {
-          //TODO Alex, make this handle the check system rejecting a move by looping back and picking another move
+          //TODO Add in system for AI pawn upgrading
           // Update the state of the board
           setChessboard(controls.board);
           setLockBoard(controls.lockBoard);

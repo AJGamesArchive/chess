@@ -4,10 +4,9 @@ import { knightPiece } from "./Knight";
 import { bishopPiece } from "./Bishop";
 import { queenPiece } from "./Queen";
 import { kingPiece } from "./King";
-import ChessBoard from "../../components/chessboard/Board";
 import { updateBoard } from "./UpdateBoard";
 import { UpdatedArrays } from "../../types/chessboard/UpdatedArrays";
-import { search } from "ionicons/icons";
+import { arrayRemove } from "firebase/firestore";
 
 const pawnValue = 100;
 const knightValue = 300;
@@ -16,6 +15,7 @@ const rookValue = 500;
 const queenValue = 900;
 
 var bestMove: LegalMoves;
+var savedPiece: any = undefined;
 
 type LegalMoves = {
   sourceSquare : any;
@@ -85,15 +85,10 @@ function evaluate(chessboard: any [][],turn: string): number{
   whiteEval = ((WpawnCount * pawnValue) + (WBishopCount * bishopValue) + (WKnightCount * knightValue) + (WRookCount * rookValue) + (WQueenCount * queenValue))
   blackEval = ((BpawnCount * pawnValue) + (BBishopCount * bishopValue) + (BKnightCount * knightValue) + (BRookCount * rookValue) + (BQueenCount * queenValue))
 
-  // console.log("WHITE EVAL - " + whiteEval) //! Remove later
-  // console.log("BLACK EVAL - " + blackEval) //! Remove later
-
-  var evaulation = whiteEval - blackEval;
+  var evaluation = whiteEval - blackEval;
   var perspective = (turn === "w") ? 1 :-1
 
-  // console.log(evaulation) //! Remove later
-
-  return evaulation * perspective;
+  return evaluation * perspective;
 };
 
 export function AIlegalMoves (chessboard: any[][], turn: string): LegalMoves {
@@ -103,8 +98,6 @@ export function AIlegalMoves (chessboard: any[][], turn: string): LegalMoves {
     sourceSquare : {},
     targetSquare : {},
   };
-
-  console.log(chessboard) //! Remove later
 
   for (let row = 0; row < chessboard.length; row++) {
     for (let col = 0; col < chessboard[row].length; col++) {
@@ -765,34 +758,85 @@ if (chessboard[row][col].piece.type === "King" && chessboard[row][col].piece.col
       }
     }
   }
-  debugger;
   const moveScore: number = Search(1, chessboard, turn, legalMovesList);
-  console.log(bestMove) //! Remove later
   return bestMove;
 };
 
 
 
 function Search (depth :any,chessboard :any[][],turn: string,moves: LegalMoves[]): number{
-  // console.log(depth); //! Remove later
   if (depth === 0){
     return evaluate(chessboard,turn);
   };
-  var bestEvalulation = -Infinity;
+  var bestEvaluation = -Infinity;
   for (let i = 0; i < moves.length; i++) {
-  let updatedArray: UpdatedArrays = updateBoard(moves[i].sourceSquare, moves[i].targetSquare, chessboard);
-  let newChessboard: any[][] = updatedArray.board;
-  var evaluation = -Search(depth - 1,newChessboard,turn,moves);
-  // console.log(evaluation) //! Remove later
-  bestEvalulation = Math.max(evaluation, bestEvalulation);
-  // console.log(bestEvalulation) //! Remove later
-  if (true)
-  {
-    // console.log("ETHAN!!!!!!!") //! Remove later
-    bestMove = moves[i];
+    // If statement to check if a piece will be taken when future move is evaluated and stores the piece getting taken
+    //? System currently only works for looking 1 move into the future, does this need extending?
+    if (moves[i].targetSquare.piece.type !== "Blank") {
+      if (savedPiece === undefined) {
+        if (moves[i].targetSquare.piece.type === "Pawn") {
+          if (moves[i].targetSquare.piece.color === "white") {
+            savedPiece = {type: "Pawn", color: "white"};
+          } else {
+            savedPiece = {type: "Pawn", color: "black"};
+          };
+        };
+        if (moves[i].targetSquare.piece.type === "Rook") {
+          if (moves[i].targetSquare.piece.color === "white") {
+            savedPiece = {type: "Rook", color: "white"};
+          } else {
+            savedPiece = {type: "Rook", color: "black"};
+          };
+        };
+        if (moves[i].targetSquare.piece.type === "Bishop") {
+          if (moves[i].targetSquare.piece.color === "white") {
+            savedPiece = {type: "Bishop", color: "white"};
+          } else {
+            savedPiece = {type: "Bishop", color: "black"};
+          };
+        };
+        if (moves[i].targetSquare.piece.type === "Knight") {
+          if (moves[i].targetSquare.piece.color === "white") {
+            savedPiece = {type: "Knight", color: "white"};
+          } else {
+            savedPiece = {type: "Knight", color: "black"};
+          };
+        };
+        if (moves[i].targetSquare.piece.type === "Queen") {
+          if (moves[i].targetSquare.piece.color === "white") {
+            savedPiece = {type: "Queen", color: "white"};
+          } else {
+            savedPiece = {type: "Queen", color: "black"};
+          };
+        };
+        if (moves[i].targetSquare.piece.type === "King") {
+          if (moves[i].targetSquare.piece.color === "white") {
+            savedPiece = {type: "King", color: "white"};
+          } else {
+            savedPiece = {type: "King", color: "black"};
+          };
+        };
+      };
+    };
+    let updatedArray: UpdatedArrays = updateBoard(moves[i].sourceSquare, moves[i].targetSquare, chessboard);
+    let newChessboard: any[][] = updatedArray.board;
+    var evaluation = -Search(depth - 1,newChessboard,turn,moves);
+    bestEvaluation = Math.max(evaluation, bestEvaluation);
+    // If statement to save the best move based on evaluation results
+    if (bestEvaluation <= 0 && evaluation <= 0) {
+      bestMove = moves[Math.floor(Math.random() * moves.length)];
+    } else if (bestEvaluation === evaluation && bestEvaluation >= 0) {
+      bestMove = moves[i];
+    };
+    updatedArray = updateBoard(moves[i].targetSquare, moves[i].sourceSquare, chessboard);
+    newChessboard = updatedArray.board;
+    // Place any taken pieces back on the board once future move has been reverted
+    //? System currently only works for looking 1 move into the future, does this need extending?
+    if (savedPiece !== undefined) {
+      let updateSquare: any = newChessboard[moves[i].targetSquare.row][moves[i].targetSquare.col];
+      updateSquare.piece = savedPiece;
+      savedPiece = undefined;
+    };
   };
-  updatedArray = updateBoard(moves[i].targetSquare, moves[i].sourceSquare, chessboard);
-  newChessboard = updatedArray.board;
-  };
-  return bestEvalulation;
+  return bestEvaluation;
 };
