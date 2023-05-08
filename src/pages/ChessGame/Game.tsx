@@ -163,9 +163,9 @@ const ChessGame: React.FC = () => {
       for (let i = 0; i < 2; i++) {
         let square: any;
         if (i === 0) {
-          square = move.sourceSquare;
+          square = move.move.sourceSquare;
         } else {
-          square = move.targetSquare;
+          square = move.move.targetSquare;
         };
         controls = GameController(
           chessboard, 

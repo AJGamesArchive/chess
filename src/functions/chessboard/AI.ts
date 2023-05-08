@@ -16,10 +16,366 @@ const queenValue = 900;
 var bestMove: LegalMoves;
 var savedPiece: any = undefined;
 
-type LegalMoves = {
+type Move = {
   sourceSquare : any;
   targetSquare : any;
 };
+
+type LegalMoves = {
+  ID: number;
+  move: Move;
+};
+
+var legalMovesList: LegalMoves[] = new Array();
+var responseMovesList: LegalMoves[] = new Array();
+
+var moveCounter: number = 0;
+var responseMoveCounter: number = 0;
+
+export function AIlegalMoves (chessboard: any[][], turn: string): LegalMoves {
+  console.log("Start of AI Turn"); //! Remove later
+  debugger;
+
+  legalMovesList = [];
+  responseMovesList = [];
+
+  moveCounter = 0;
+  responseMoveCounter = 0;
+
+  const AIColor = (turn === "w") ? "white" : "black";
+
+  var legalMoves: LegalMoves  = {
+    ID: 0,
+    move: {
+      sourceSquare: "",
+      targetSquare: "",
+    },
+  };
+
+  for (let row = 0; row < chessboard.length; row++) {
+    for (let col = 0; col < chessboard[row].length; col++) {
+      if (chessboard[row][col].piece.type === "Pawn" && chessboard[row][col].piece.color === AIColor ){
+        for (let row2 = 0; row2 < chessboard.length; row2++) {
+          for (let col2 = 0; col2 < chessboard[row2].length; col2++) {
+            if (pawnPiece(chessboard[row][col],chessboard[row2][col2],chessboard)=== true){ 
+              if (AIlegalMovesLookAhead(chessboard[row][col], chessboard[row2][col2], chessboard, turn)) {
+                // VALID AI Move
+                legalMoves = {
+                  ID: moveCounter,
+                  move: {
+                    sourceSquare: chessboard[row][col],
+                    targetSquare: chessboard[row2][col2],
+                  },
+                };
+                legalMovesList.push(legalMoves)
+                moveCounter += 1;
+              };
+              // INVALID AI MOVE 
+            };
+          };
+        };
+      };
+      if (chessboard[row][col].piece.type === "Rook" && chessboard[row][col].piece.color === AIColor ){
+        for (let row2 = 0; row2 < chessboard.length; row2++) {
+          for (let col2 = 0; col2 < chessboard[row2].length; col2++) {
+            if (rookPiece(chessboard[row][col],chessboard[row2][col2],chessboard)=== true){ 
+              if (AIlegalMovesLookAhead(chessboard[row][col], chessboard[row2][col2], chessboard, turn)) {
+                // VALID AI Move
+                legalMoves = {
+                  ID: moveCounter,
+                  move: {
+                    sourceSquare: chessboard[row][col],
+                    targetSquare: chessboard[row2][col2],
+                  },
+                };
+                legalMovesList.push(legalMoves)
+                moveCounter += 1;
+              };
+              // INVALID AI MOVE 
+            };
+          };
+        };
+      };
+      if (chessboard[row][col].piece.type === "Bishop" && chessboard[row][col].piece.color === AIColor ){
+        for (let row2 = 0; row2 < chessboard.length; row2++) {
+          for (let col2 = 0; col2 < chessboard[row2].length; col2++) {
+            if (bishopPiece(chessboard[row][col],chessboard[row2][col2],chessboard)=== true){ 
+              if (AIlegalMovesLookAhead(chessboard[row][col], chessboard[row2][col2], chessboard, turn)) {
+                // VALID AI Move
+                legalMoves = {
+                  ID: moveCounter,
+                  move: {
+                    sourceSquare: chessboard[row][col],
+                    targetSquare: chessboard[row2][col2],
+                  },
+                };
+                legalMovesList.push(legalMoves)
+                moveCounter += 1;
+              };
+              // INVALID AI MOVE 
+            };
+          };
+        };
+      };
+      if (chessboard[row][col].piece.type === "Knight" && chessboard[row][col].piece.color === AIColor ){
+        for (let row2 = 0; row2 < chessboard.length; row2++) {
+          for (let col2 = 0; col2 < chessboard[row2].length; col2++) {
+            if (knightPiece(chessboard[row][col],chessboard[row2][col2])=== true){ 
+              if (AIlegalMovesLookAhead(chessboard[row][col], chessboard[row2][col2], chessboard, turn)) {
+                // VALID AI Move
+                legalMoves = {
+                  ID: moveCounter,
+                  move: {
+                    sourceSquare: chessboard[row][col],
+                    targetSquare: chessboard[row2][col2],
+                  },
+                };
+                legalMovesList.push(legalMoves)
+                moveCounter += 1;
+              };
+              // INVALID AI MOVE 
+            };
+          };
+        };
+      };
+      if (chessboard[row][col].piece.type === "Queen" && chessboard[row][col].piece.color === AIColor ){
+        for (let row2 = 0; row2 < chessboard.length; row2++) {
+          for (let col2 = 0; col2 < chessboard[row2].length; col2++) {
+            if (queenPiece(chessboard[row][col],chessboard[row2][col2],chessboard)=== true){ 
+              if (AIlegalMovesLookAhead(chessboard[row][col], chessboard[row2][col2], chessboard, turn)) {
+                // VALID AI Move
+                legalMoves = {
+                  ID: moveCounter,
+                  move: {
+                    sourceSquare: chessboard[row][col],
+                    targetSquare: chessboard[row2][col2],
+                  },
+                };
+                legalMovesList.push(legalMoves)
+                moveCounter += 1;
+              };
+              // INVALID AI MOVE 
+            };
+          };
+        };
+      };
+      if (chessboard[row][col].piece.type === "King" && chessboard[row][col].piece.color === AIColor ){
+        for (let row2 = 0; row2 < chessboard.length; row2++) {
+          for (let col2 = 0; col2 < chessboard[row2].length; col2++) {
+            if (kingPiece(chessboard[row][col],chessboard[row2][col2])=== true){ 
+              if (AIlegalMovesLookAhead(chessboard[row][col], chessboard[row2][col2], chessboard, turn)) {
+                // VALID AI Move
+                legalMoves = {
+                  ID: moveCounter,
+                  move: {
+                    sourceSquare: chessboard[row][col],
+                    targetSquare: chessboard[row2][col2],
+                  },
+                };
+                legalMovesList.push(legalMoves)
+                moveCounter += 1;
+              };
+              // INVALID AI MOVE 
+            };
+          };
+        };
+      };
+    };
+  };
+  debugger;
+  const moveScore: number = Search(1, chessboard, turn, legalMovesList);
+  return bestMove;
+};
+
+function AIlegalMovesLookAhead(sourceSquare: any, targetSquare: any, chessboard: any[][], turn: string): boolean {
+
+  const opponentCololr = (turn === "w") ? "black" : "white";
+
+  // If statement to check if a piece will be taken when future move is evaluated and stores the piece getting taken
+  //? System currently only works for looking 1 move into the future, does this need extending?
+  if (targetSquare.piece.type !== "Blank") {
+    if (savedPiece === undefined) {
+      if (targetSquare.piece.type === "Pawn") {
+        if (targetSquare.piece.color === "white") {
+          savedPiece = {type: "Pawn", color: "white"};
+        } else {
+          savedPiece = {type: "Pawn", color: "black"};
+        };
+      };
+      if (targetSquare.piece.type === "Rook") {
+        if (targetSquare.piece.color === "white") {
+          savedPiece = {type: "Rook", color: "white"};
+        } else {
+          savedPiece = {type: "Rook", color: "black"};
+        };
+      };
+      if (targetSquare.piece.type === "Bishop") {
+        if (targetSquare.piece.color === "white") {
+          savedPiece = {type: "Bishop", color: "white"};
+        } else {
+          savedPiece = {type: "Bishop", color: "black"};
+        };
+      };
+      if (targetSquare.piece.type === "Knight") {
+        if (targetSquare.piece.color === "white") {
+          savedPiece = {type: "Knight", color: "white"};
+        } else {
+          savedPiece = {type: "Knight", color: "black"};
+        };
+      };
+      if (targetSquare.piece.type === "Queen") {
+        if (targetSquare.piece.color === "white") {
+          savedPiece = {type: "Queen", color: "white"};
+        } else {
+          savedPiece = {type: "Queen", color: "black"};
+        };
+      };
+      if (targetSquare.piece.type === "King") {
+        if (targetSquare.piece.color === "white") {
+          savedPiece = {type: "King", color: "white"};
+        } else {
+          savedPiece = {type: "King", color: "black"};
+        };
+      };
+    };
+  };
+  // Makes AI move on the board
+  let updatedArrays: UpdatedArrays = updateBoard(sourceSquare, targetSquare, chessboard);
+  let newChessboard: any[][] = updatedArrays.board;
+
+  // Track whether the AI move is valid or not
+  let validAIMove: boolean = true;
+
+  var responseMoves: LegalMoves  = {
+    ID: 0,
+    move: {
+      sourceSquare: "",
+      targetSquare: "",
+    },
+  };
+
+  // Looping Here
+  LoopStart: for (let row3 = 0; row3 < newChessboard.length; row3++) {
+    for (let col3 = 0; col3 < newChessboard[row3].length; col3++) {
+      if (newChessboard[row3][col3].piece.type === "Pawn" && newChessboard[row3][col3].piece.color ===  opponentCololr){
+        for (let row4 = 0; row4 < newChessboard.length; row4++) {
+          for (let col4 = 0; col4 < newChessboard[row4].length; col4++) {
+            if (pawnPiece(newChessboard[row3][col3],newChessboard[row4][col4],newChessboard)=== true){ 
+              if (newChessboard[row4][col4].piece.type === "King")
+              {
+                validAIMove = false;
+                break LoopStart;
+              };
+              responseMoves = {
+                ID: responseMoveCounter,
+                move: {
+                  sourceSquare: newChessboard[row3][col3],
+                  targetSquare: newChessboard[row4][col4],
+                },
+              };
+            };
+          };
+        };
+      };
+      if (newChessboard[row3][col3].piece.type === "Rook" && newChessboard[row3][col3].piece.color ===  opponentCololr){
+        for (let row4 = 0; row4 < newChessboard.length; row4++) {
+          for (let col4 = 0; col4 < newChessboard[row4].length; col4++) {
+            if (rookPiece(newChessboard[row3][col3],newChessboard[row4][col4],newChessboard)=== true){ 
+              if (newChessboard[row4][col4].piece.type === "King")
+              {
+                validAIMove = false;
+                break LoopStart;
+              };
+              responseMoves = {
+                ID: responseMoveCounter,
+                move: {
+                  sourceSquare: newChessboard[row3][col3],
+                  targetSquare: newChessboard[row4][col4],
+                },
+              };
+            };
+          };
+        };
+      };
+      if (newChessboard[row3][col3].piece.type === "Bishop" && newChessboard[row3][col3].piece.color ===  opponentCololr){
+        for (let row4 = 0; row4 < newChessboard.length; row4++) {
+          for (let col4 = 0; col4 < newChessboard[row4].length; col4++) {
+            if (bishopPiece(newChessboard[row3][col3],newChessboard[row4][col4],newChessboard)=== true){ 
+              if (newChessboard[row4][col4].piece.type === "King")
+              {
+                validAIMove = false;
+                break LoopStart;
+              };
+              responseMoves = {
+                ID: responseMoveCounter,
+                move: {
+                  sourceSquare: newChessboard[row3][col3],
+                  targetSquare: newChessboard[row4][col4],
+                },
+              };
+            };
+          };
+        };
+      };
+      if (newChessboard[row3][col3].piece.type === "Knight" && newChessboard[row3][col3].piece.color ===  opponentCololr){
+        for (let row4 = 0; row4 < newChessboard.length; row4++) {
+          for (let col4 = 0; col4 < newChessboard[row4].length; col4++) {
+            if (knightPiece(newChessboard[row3][col3],newChessboard[row4][col4])=== true){ 
+              if (newChessboard[row4][col4].piece.type === "King")
+              {
+                validAIMove = false;
+                break LoopStart;
+              };
+              responseMoves = {
+                ID: responseMoveCounter,
+                move: {
+                  sourceSquare: newChessboard[row3][col3],
+                  targetSquare: newChessboard[row4][col4],
+                },
+              };
+            };
+          };
+        };
+      };
+      if (newChessboard[row3][col3].piece.type === "Queen" && newChessboard[row3][col3].piece.color ===  opponentCololr){
+        for (let row4 = 0; row4 < newChessboard.length; row4++) {
+          for (let col4 = 0; col4 < newChessboard[row4].length; col4++) {
+            if (queenPiece(newChessboard[row3][col3],newChessboard[row4][col4],newChessboard)=== true){ 
+              if (newChessboard[row4][col4].piece.type === "King")
+              {
+                validAIMove = false;
+                break LoopStart;
+              };
+              responseMoves = {
+                ID: responseMoveCounter,
+                move: {
+                  sourceSquare: newChessboard[row3][col3],
+                  targetSquare: newChessboard[row4][col4],
+                },
+              };
+            };
+          };
+        };
+      };
+    };
+  };
+  // Reverting AI move on board
+  updatedArrays = updateBoard(targetSquare, sourceSquare, newChessboard);
+  newChessboard = updatedArrays.board;
+  // Place any taken pieces back on the board once future move has been reverted
+  //? System currently only works for looking 1 move into the future, does this need extending?
+  if (savedPiece !== undefined) {
+    let updateSquare: any = newChessboard[targetSquare.row][targetSquare.col];
+    updateSquare.piece = savedPiece;
+    savedPiece = undefined;
+  };
+  responseMoveCounter += (validAIMove) ? 1 : 0;
+  return (validAIMove) ? true : false;
+};
+
+
+
+
 
 function evaluate(chessboard: any [][],turn: string): number{
 
@@ -90,636 +446,8 @@ function evaluate(chessboard: any [][],turn: string): number{
   return evaluation * perspective;
 };
 
-export function AIlegalMoves (chessboard: any[][], turn: string): LegalMoves {
-  const legalMovesList: LegalMoves[] = new Array();
-
-  var legalMoves: LegalMoves  = {
-    sourceSquare : {},
-    targetSquare : {},
-  };
-
-  for (let row = 0; row < chessboard.length; row++) {
-    for (let col = 0; col < chessboard[row].length; col++) {
-
-      if (chessboard[row][col].piece.type === "Pawn" && chessboard[row][col].piece.color === "black" ){
-        for (let row2 = 0; row2 < chessboard.length; row2++) {
-          for (let col2 = 0; col2 < chessboard[row2].length; col2++) {
-            if (pawnPiece(chessboard[row][col],chessboard[row2][col2],chessboard)=== true){
-              for (let row3 = 0; row3 < chessboard.length; row3++) {
-                for (let col3 = 0; col3 < chessboard[row3].length; col3++) {
-                  if (chessboard[row3][col3].piece.type === "Pawn" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (pawnPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "Rook" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (rookPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "Bishop" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (bishopPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "Knight" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (knightPiece(chessboard[row3][col3],chessboard[row4][col4])=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };    
-                  if (chessboard[row3][col3].piece.type === "Queen" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (queenPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "King" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (kingPiece(chessboard[row3][col3],chessboard[row4][col4])=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };                                     
-                };
-              };
-            };
-          };
-        };     
-      };
-      if (chessboard[row][col].piece.type === "Rook" && chessboard[row][col].piece.color === "black" ){
-        for (let row2 = 0; row2 < chessboard.length; row2++) {
-          for (let col2 = 0; col2 < chessboard[row2].length; col2++) {
-            if (rookPiece(chessboard[row][col],chessboard[row2][col2],chessboard)=== true){
-              for (let row3 = 0; row3 < chessboard.length; row3++) {
-                for (let col3 = 0; col3 < chessboard[row3].length; col3++) {
-                  if (chessboard[row3][col3].piece.type === "Pawn" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (pawnPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "Rook" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (rookPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "Bishop" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (bishopPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "Knight" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (knightPiece(chessboard[row3][col3],chessboard[row4][col4])=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };    
-                  if (chessboard[row3][col3].piece.type === "Queen" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (queenPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "King" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (kingPiece(chessboard[row3][col3],chessboard[row4][col4])=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };                                     
-                };
-              };
-            };
-          };
-        };                     
-      };
-      if (chessboard[row][col].piece.type === "Knight" && chessboard[row][col].piece.color === "black" ){
-        for (let row2 = 0; row2 < chessboard.length; row2++) {
-          for (let col2 = 0; col2 < chessboard[row2].length; col2++) {
-            if (knightPiece(chessboard[row][col],chessboard[row2][col2])=== true){
-              for (let row3 = 0; row3 < chessboard.length; row3++) {
-                for (let col3 = 0; col3 < chessboard[row3].length; col3++) {
-                  if (chessboard[row3][col3].piece.type === "Pawn" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (pawnPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "Rook" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (rookPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "Bishop" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (bishopPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "Knight" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (knightPiece(chessboard[row3][col3],chessboard[row4][col4])=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };    
-                  if (chessboard[row3][col3].piece.type === "Queen" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (queenPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "King" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (kingPiece(chessboard[row3][col3],chessboard[row4][col4])=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };                                     
-                };
-              };
-            };
-          };
-        };                     
-      };
-      if (chessboard[row][col].piece.type === "Bishop" && chessboard[row][col].piece.color === "black" ){
-        for (let row2 = 0; row2 < chessboard.length; row2++) {
-          for (let col2 = 0; col2 < chessboard[row2].length; col2++) {
-            if (bishopPiece(chessboard[row][col],chessboard[row2][col2],chessboard)=== true){
-              for (let row3 = 0; row3 < chessboard.length; row3++) {
-                for (let col3 = 0; col3 < chessboard[row3].length; col3++) {
-                  if (chessboard[row3][col3].piece.type === "Pawn" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (pawnPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "Rook" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (rookPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "Bishop" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (bishopPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "Knight" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (knightPiece(chessboard[row3][col3],chessboard[row4][col4])=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "Queen" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (queenPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "King" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (kingPiece(chessboard[row3][col3],chessboard[row4][col4])=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };                                     
-                };
-              };
-            };
-          };
-        };                     
-      };
-      if (chessboard[row][col].piece.type === "Queen" && chessboard[row][col].piece.color === "black" ){
-        for (let row2 = 0; row2 < chessboard.length; row2++) {
-          for (let col2 = 0; col2 < chessboard[row2].length; col2++) {
-            if (queenPiece(chessboard[row][col],chessboard[row2][col2],chessboard)=== true){
-              for (let row3 = 0; row3 < chessboard.length; row3++) {
-                for (let col3 = 0; col3 < chessboard[row3].length; col3++) {
-                  if (chessboard[row3][col3].piece.type === "Pawn" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (pawnPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "Rook" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (rookPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "Bishop" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (bishopPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "Knight" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (knightPiece(chessboard[row3][col3],chessboard[row4][col4])=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };    
-                  if (chessboard[row3][col3].piece.type === "Queen" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (queenPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "King" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (kingPiece(chessboard[row3][col3],chessboard[row4][col4])=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };                                     
-                };
-              };
-            };
-          };
-        };                     
-      };
-      if (chessboard[row][col].piece.type === "King" && chessboard[row][col].piece.color === "black" ){
-        for (let row2 = 0; row2 < chessboard.length; row2++) {
-          for (let col2 = 0; col2 < chessboard[row2].length; col2++) {
-            if (kingPiece(chessboard[row][col],chessboard[row2][col2])=== true){
-              for (let row3 = 0; row3 < chessboard.length; row3++) {
-                for (let col3 = 0; col3 < chessboard[row3].length; col3++) {
-                  if (chessboard[row3][col3].piece.type === "Pawn" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (pawnPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "Rook" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (rookPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else {
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "Bishop" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (bishopPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "Knight" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (knightPiece(chessboard[row3][col3],chessboard[row4][col4])=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };    
-                  if (chessboard[row3][col3].piece.type === "Queen" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (queenPiece(chessboard[row3][col3],chessboard[row4][col4],chessboard)=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };
-                  if (chessboard[row3][col3].piece.type === "King" && chessboard[row3][col3].piece.color === "white" ){
-                    for (let row4 = 0; row4 < chessboard.length; row4++) {
-                      for (let col4 = 0; col4 < chessboard[row4].length; col4++) {
-                        if (kingPiece(chessboard[row3][col3],chessboard[row4][col4])=== true && (chessboard[row4][col4].piece.type === "king" && chessboard[row4][col4].piece.color === "black" )){
-                          continue;
-                        } else { 
-                          legalMoves = {
-                            sourceSquare: chessboard[row][col],
-                            targetSquare: chessboard[row2][col2],
-                          };
-                          legalMovesList.push(legalMoves);
-                        };
-                      };
-                    };
-                  };                                     
-                };
-              };
-            };
-          };
-        };                     
-      };
-    };
-  };
-  const moveScore: number = Search(1, chessboard, turn, legalMovesList);
-  return bestMove;
-};
-
 function Search (depth :any,chessboard :any[][],turn: string,moves: LegalMoves[]): number{
+
   if (depth === 0){
     return evaluate(chessboard,turn);
   };
@@ -727,45 +455,45 @@ function Search (depth :any,chessboard :any[][],turn: string,moves: LegalMoves[]
   for (let i = 0; i < moves.length; i++) {
     // If statement to check if a piece will be taken when future move is evaluated and stores the piece getting taken
     //? System currently only works for looking 1 move into the future, does this need extending?
-    if (moves[i].targetSquare.piece.type !== "Blank") {
+    if (moves[i].move.targetSquare.piece.type !== "Blank") {
       if (savedPiece === undefined) {
-        if (moves[i].targetSquare.piece.type === "Pawn") {
-          if (moves[i].targetSquare.piece.color === "white") {
+        if (moves[i].move.targetSquare.piece.type === "Pawn") {
+          if (moves[i].move.targetSquare.piece.color === "white") {
             savedPiece = {type: "Pawn", color: "white"};
           } else {
             savedPiece = {type: "Pawn", color: "black"};
           };
         };
-        if (moves[i].targetSquare.piece.type === "Rook") {
-          if (moves[i].targetSquare.piece.color === "white") {
+        if (moves[i].move.targetSquare.piece.type === "Rook") {
+          if (moves[i].move.targetSquare.piece.color === "white") {
             savedPiece = {type: "Rook", color: "white"};
           } else {
             savedPiece = {type: "Rook", color: "black"};
           };
         };
-        if (moves[i].targetSquare.piece.type === "Bishop") {
-          if (moves[i].targetSquare.piece.color === "white") {
+        if (moves[i].move.targetSquare.piece.type === "Bishop") {
+          if (moves[i].move.targetSquare.piece.color === "white") {
             savedPiece = {type: "Bishop", color: "white"};
           } else {
             savedPiece = {type: "Bishop", color: "black"};
           };
         };
-        if (moves[i].targetSquare.piece.type === "Knight") {
-          if (moves[i].targetSquare.piece.color === "white") {
+        if (moves[i].move.targetSquare.piece.type === "Knight") {
+          if (moves[i].move.targetSquare.piece.color === "white") {
             savedPiece = {type: "Knight", color: "white"};
           } else {
             savedPiece = {type: "Knight", color: "black"};
           };
         };
-        if (moves[i].targetSquare.piece.type === "Queen") {
-          if (moves[i].targetSquare.piece.color === "white") {
+        if (moves[i].move.targetSquare.piece.type === "Queen") {
+          if (moves[i].move.targetSquare.piece.color === "white") {
             savedPiece = {type: "Queen", color: "white"};
           } else {
             savedPiece = {type: "Queen", color: "black"};
           };
         };
-        if (moves[i].targetSquare.piece.type === "King") {
-          if (moves[i].targetSquare.piece.color === "white") {
+        if (moves[i].move.targetSquare.piece.type === "King") {
+          if (moves[i].move.targetSquare.piece.color === "white") {
             savedPiece = {type: "King", color: "white"};
           } else {
             savedPiece = {type: "King", color: "black"};
@@ -773,7 +501,7 @@ function Search (depth :any,chessboard :any[][],turn: string,moves: LegalMoves[]
         };
       };
     };
-    let updatedArray: UpdatedArrays = updateBoard(moves[i].sourceSquare, moves[i].targetSquare, chessboard);
+    let updatedArray: UpdatedArrays = updateBoard(moves[i].move.sourceSquare, moves[i].move.targetSquare, chessboard);
     let newChessboard: any[][] = updatedArray.board;
     var evaluation = -Search(depth - 1,newChessboard,turn,moves);
     bestEvaluation = Math.max(evaluation, bestEvaluation);
@@ -783,12 +511,12 @@ function Search (depth :any,chessboard :any[][],turn: string,moves: LegalMoves[]
     } else if (bestEvaluation === evaluation && bestEvaluation >= 0) {
       bestMove = moves[i];
     };
-    updatedArray = updateBoard(moves[i].targetSquare, moves[i].sourceSquare, chessboard);
+    updatedArray = updateBoard(moves[i].move.targetSquare, moves[i].move.sourceSquare, chessboard);
     newChessboard = updatedArray.board;
     // Place any taken pieces back on the board once future move has been reverted
     //? System currently only works for looking 1 move into the future, does this need extending?
     if (savedPiece !== undefined) {
-      let updateSquare: any = newChessboard[moves[i].targetSquare.row][moves[i].targetSquare.col];
+      let updateSquare: any = newChessboard[moves[i].move.targetSquare.row][moves[i].move.targetSquare.col];
       updateSquare.piece = savedPiece;
       savedPiece = undefined;
     };
