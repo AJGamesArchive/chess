@@ -158,7 +158,7 @@ const Home: React.FC = () => {
             Welcome!
           </IonTitle>
           <IonTitle slot="end" className='home-header'>
-            Build: <IonText color="success">1.0.0</IonText>
+            Build: <IonText color="success">2.0.0</IonText>
           </IonTitle>
         </IonToolbar>
       </IonHeader>
