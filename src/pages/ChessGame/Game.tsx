@@ -71,6 +71,9 @@ const ChessGame: React.FC = () => {
   // Declaring variable to keep track of who's turn it is "w" = white, "b" = black
   const [turn, setTurn] = useState<string>("w");
 
+  // Declaring react variable to control the state of the pawn upgrading selection box
+  const [upgradeValue, setUpgradeValue] = useState<any>(undefined);
+
   // Declaring variable to control whether the board is locked or usable
   const [lockBoard, setLockBoard] = useState<boolean>(false);
 
@@ -316,9 +319,10 @@ const ChessGame: React.FC = () => {
 
   // Function that handles swapping out a pawn that's reached the end of the board for another selected piece
   function swapOutPawn(selection: string) {
+    let piece: string = (selection === "Rook") ? "Rook" : (selection === "Knight") ? "Knight" : (selection === "Bishop") ? "Bishop" : "Queen";
     setHideWhiteSelect(true);
     setHideBlackSelect(true);
-    let newChessboard = upgradePawn(chessboard, pawnSquare, selection);
+    let newChessboard = upgradePawn(chessboard, pawnSquare, piece);
     if (turn === "w") {
       setTurn("b");
     } else {
@@ -326,6 +330,7 @@ const ChessGame: React.FC = () => {
     };
     setChessboard(newChessboard);
     setLockBoard(false);
+    setUpgradeValue(undefined);
     return;
   };
 
@@ -379,7 +384,7 @@ const ChessGame: React.FC = () => {
                 Swap For:
               </IonText>
             </IonLabel>
-            <IonSelect interface="alert" slot="end" placeholder={"Select"} onIonChange={(e: any) => {;
+            <IonSelect value={upgradeValue} interface="alert" slot="end" placeholder={"Select"} onIonChange={(e: any) => {;
               swapOutPawn(e.detail.value);
             }}>
               <IonSelectOption value='Rook'>Rook</IonSelectOption>
@@ -406,7 +411,7 @@ const ChessGame: React.FC = () => {
                 Swap For:
               </IonText>
             </IonLabel>
-            <IonSelect interface="alert" slot="end" placeholder={"Select"} onIonChange={(e: any) => {
+            <IonSelect value={upgradeValue} interface="alert" slot="end" placeholder={"Select"} onIonChange={(e: any) => {
               swapOutPawn(e.detail.value);
             }}>
               <IonSelectOption value='Rook'>Rook</IonSelectOption>

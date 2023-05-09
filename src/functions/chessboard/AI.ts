@@ -6,12 +6,14 @@ import { queenPiece } from "./Queen";
 import { kingPiece } from "./King";
 import { updateBoard } from "./UpdateBoard";
 import { UpdatedArrays } from "../../types/chessboard/UpdatedArrays";
+import { infinite } from "ionicons/icons";
 
 const pawnValue = 100;
 const knightValue = 300;
 const bishopValue = 300;
 const rookValue = 500;
 const queenValue = 900;
+const kingValue = 1000;
 
 var bestMove: LegalMoves;
 var savedPiece: any = undefined;
@@ -184,6 +186,7 @@ export function AIlegalMoves (chessboard: any[][], turn: string): LegalMoves {
   };
   debugger;
   const moveScore: number = Search(1, chessboard, turn, legalMovesList);
+  debugger;
   return bestMove;
 };
 
@@ -379,71 +382,35 @@ function AIlegalMovesLookAhead(sourceSquare: any, targetSquare: any, chessboard:
 
 function evaluate(chessboard: any [][],turn: string): number{
 
-  var whiteEval = 0;
-  var blackEval = 0;
-  var BpawnCount = 0;
-  var WpawnCount = 0;
-  var BRookCount = 0;
-  var WRookCount = 0;
-  var BBishopCount = 0;
-  var WBishopCount=0;
-  var BQueenCount = 0;
-  var WQueenCount = 0;
-  var BKnightCount = 0;
-  var WKnightCount = 0;
-  
+  const materialValues :any = {
+    'Pawn': pawnValue,
+    'Bishop': bishopValue,
+    'Knight': knightValue,
+    'Rook': rookValue,
+    'Queen': queenValue,
+    'King' : kingValue,
+  };
+  let whiteEval = 0;
+  let blackEval = 0;
+
   for (let row = 0; row < chessboard.length; row++) {
     for (let col = 0; col < chessboard[row].length; col++) {
-      if (chessboard[row][col].piece.type === "Pawn" && chessboard[row][col].piece.color === "black" )
-      {
-        BpawnCount += 1;
-      };
-      if (chessboard[row][col].piece.type === "Pawn" && chessboard[row][col].piece.color === "white" )
-      {
-        WpawnCount += 1;
-      };
-      if (chessboard[row][col].piece.type === "Rook" && chessboard[row][col].piece.color === "black" )
-      {
-        BRookCount += 1;
-      };
-      if (chessboard[row][col].piece.type === "Rook" && chessboard[row][col].piece.color === "white" )
-      {
-        WRookCount += 1;
-      };
-      if (chessboard[row][col].piece.type === "Bishop" && chessboard[row][col].piece.color === "black" )
-      {
-        BBishopCount += 1;
-      };
-      if (chessboard[row][col].piece.type === "Bishop" && chessboard[row][col].piece.color === "white" )
-      {
-        WBishopCount += 1;
-      };
-      if (chessboard[row][col].piece.type === "Queen" && chessboard[row][col].piece.color === "black" )
-      {
-        BQueenCount += 1;
-      };
-      if (chessboard[row][col].piece.type === "Queen" && chessboard[row][col].piece.color === "white" )
-      {
-        WQueenCount += 1;
-      };
-      if (chessboard[row][col].piece.type === "Knight" && chessboard[row][col].piece.color === "black" )
-      {
-        BKnightCount += 1;
-      };
-      if (chessboard[row][col].piece.type === "Knight" && chessboard[row][col].piece.color === "white" )
-      {
-        WKnightCount += 1;
-      };
-    };
-  };
+      const square = chessboard[row][col];
+      if (square.piece !== null) {
+        const materialValue = materialValues[square.piece.type];
+        const pieceValue = square.piece.color === 'white' ? materialValue : -materialValue;
+        if (square.piece.color === 'white') {
+          whiteEval += pieceValue;
+        } else if (square.piece.color === "black") {
+          blackEval += pieceValue;
+        }
+      }
+    }
+  }
 
-  whiteEval = ((WpawnCount * pawnValue) + (WBishopCount * bishopValue) + (WKnightCount * knightValue) + (WRookCount * rookValue) + (WQueenCount * queenValue));
-  blackEval = ((BpawnCount * pawnValue) + (BBishopCount * bishopValue) + (BKnightCount * knightValue) + (BRookCount * rookValue) + (BQueenCount * queenValue));
-
-  var evaluation = whiteEval - blackEval;
-  var perspective = (turn === "w") ? 1 :-1;
-
-  return evaluation * perspective;
+  const perspective = (turn === 'w') ? 1 : -1;
+  return (whiteEval - blackEval) * perspective;
+  
 };
 
 function Search (depth :any,chessboard :any[][],turn: string,moves: LegalMoves[]): number{
@@ -501,14 +468,27 @@ function Search (depth :any,chessboard :any[][],turn: string,moves: LegalMoves[]
         };
       };
     };
+
+    var evaluation = 0;
+
+    if (moves[i].move.targetSquare.piece !== null && moves[i].move.targetSquare.piece.color !== turn) {
+      // Assign a higher evaluation score to moves that result in a capture
+      evaluation += 1000; // add a higher score for capture moves
+    }
+    
+    // update the bestMove based on the evaluation score
+    if (evaluation > bestEvaluation) {
+      bestEvaluation = evaluation;
+      bestMove = moves[i];
+    }
     let updatedArray: UpdatedArrays = updateBoard(moves[i].move.sourceSquare, moves[i].move.targetSquare, chessboard);
     let newChessboard: any[][] = updatedArray.board;
-    var evaluation = -Search(depth - 1,newChessboard,turn,moves);
+    evaluation = -Search(depth - 1,newChessboard,turn,moves);
     bestEvaluation = Math.max(evaluation, bestEvaluation);
     // If statement to save the best move based on evaluation results
-    if (bestEvaluation <= 0 && evaluation <= 0) {
+    if (bestEvaluation === 9800 && evaluation === 9800) {
       bestMove = moves[Math.floor(Math.random() * moves.length)];
-    } else if (bestEvaluation === evaluation && bestEvaluation >= 0) {
+    } else if (bestEvaluation === evaluation && bestEvaluation >= 9800) {
       bestMove = moves[i];
     };
     updatedArray = updateBoard(moves[i].move.targetSquare, moves[i].move.sourceSquare, chessboard);
