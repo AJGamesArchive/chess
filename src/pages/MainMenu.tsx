@@ -10,7 +10,7 @@ import {
   IonToolbar,
   useIonRouter,
 } from '@ionic/react';
-import { logOut, construct, trophy, man, gameController } from 'ionicons/icons';
+import { logOut, trophy, man, gameController } from 'ionicons/icons';
 import { useParams } from 'react-router';
 import './MainMenu.css';
 
@@ -33,12 +33,10 @@ const MainMenu: React.FC = () => {
   function navController(connectionID: number) {
     if (connectionID === 1) {
       window.location.href = `/setup/${params.username}/PVP`;
-      // nav.push(`/setup/${params.username}/PVP`); //! Remove later if not needed
       return;
     }
     if (connectionID === 2) {
       window.location.href = `/setup/${params.username}/PVE`;
-      // nav.push(`/setup/${params.username}/PVE`); //! Remove later if not needed
       return;
     }
     if (connectionID === 3) {
@@ -63,11 +61,6 @@ const MainMenu: React.FC = () => {
           <IonTitle className="main-menu-header">
             Hello <IonText color="success">{params.username}</IonText>!
           </IonTitle>
-          <IonButton slot="end" fill="clear" color="danger" onClick={() => {
-            nav.push(`/chessBoardMockup`);
-          }}>
-            <IonIcon icon={construct}></IonIcon>
-          </IonButton>
           <IonButton slot="end" fill="clear" color="warning" href="/Home">
             <IonIcon icon={logOut}></IonIcon>
           </IonButton>

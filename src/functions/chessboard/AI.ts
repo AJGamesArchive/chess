@@ -35,8 +35,6 @@ var moveCounter: number = 0;
 var responseMoveCounter: number = 0;
 
 export function AIlegalMoves (chessboard: any[][], turn: string): LegalMoves {
-  console.log("Start of AI Turn"); //! Remove later
-  debugger;
 
   legalMovesList = [];
   responseMovesList = [];
@@ -184,12 +182,10 @@ export function AIlegalMoves (chessboard: any[][], turn: string): LegalMoves {
       };
     };
   };
-  debugger;
   const moveScore: number = Search(1, chessboard, turn, legalMovesList);
   if (moveScore <= 10800) {
     bestMove = legalMovesList[Math.floor(Math.random() * legalMovesList.length)];
   };
-  debugger;
   return bestMove;
 };
 
