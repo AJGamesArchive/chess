@@ -384,14 +384,13 @@ function AIlegalMovesLookAhead(sourceSquare: any, targetSquare: any, chessboard:
 
 
 function evaluate(chessboard: any [][],turn: string): number{
-
-  const materialValues :any = {
+  const materialValues: any = {
     'Pawn': pawnValue,
     'Bishop': bishopValue,
     'Knight': knightValue,
     'Rook': rookValue,
     'Queen': queenValue,
-    'King' : kingValue,
+    'King': kingValue,
   };
   let whiteEval = 0;
   let blackEval = 0;
@@ -399,7 +398,7 @@ function evaluate(chessboard: any [][],turn: string): number{
   for (let row = 0; row < chessboard.length; row++) {
     for (let col = 0; col < chessboard[row].length; col++) {
       const square = chessboard[row][col];
-      if (square.piece !== null) {
+      if (square.piece.type !== "Blank") {
         const materialValue = materialValues[square.piece.type];
         const pieceValue = square.piece.color === 'white' ? materialValue : -materialValue;
         if (square.piece.color === 'white') {
@@ -407,14 +406,52 @@ function evaluate(chessboard: any [][],turn: string): number{
         } else if (square.piece.color === "black") {
           blackEval += pieceValue;
         }
+        let ownColor: string = (turn === "w") ? "white" : "black";
+        // Give higher weight to squares that contain an opponent's piece
+        if (square.piece.color !== ownColor) {
+          if (square.piece.color === 'white') {
+            blackEval += materialValue * 0.1; // Increase the weight factor as needed
+          } else {
+            whiteEval += materialValue * 0.1;
+          }
+        }
       }
     }
   }
 
   const perspective = (turn === 'w') ? 1 : -1;
   return (whiteEval - blackEval) * perspective;
-  
 };
+  // const materialValues :any = {
+  //   'Pawn': pawnValue,
+  //   'Bishop': bishopValue,
+  //   'Knight': knightValue,
+  //   'Rook': rookValue,
+  //   'Queen': queenValue,
+  //   'King' : kingValue,
+  // };
+  // let whiteEval = 0;
+  // let blackEval = 0;
+
+  // for (let row = 0; row < chessboard.length; row++) {
+  //   for (let col = 0; col < chessboard[row].length; col++) {
+  //     const square = chessboard[row][col];
+  //     if (square.piece.type !== "Blank") {
+  //       const materialValue = materialValues[square.piece.type];
+  //       const pieceValue = square.piece.color === 'white' ? materialValue : -materialValue;
+  //       if (square.piece.color === 'white') {
+  //         whiteEval += pieceValue;
+  //       } else if (square.piece.color === "black") {
+  //         blackEval += pieceValue;
+  //       }
+  //     }
+  //   }
+  // }
+
+  // const perspective = (turn === 'w') ? 1 : -1;
+  // return (whiteEval - blackEval) * perspective;
+  
+
 
 function Search (depth :any,chessboard :any[][],turn: string,moves: LegalMoves[]): number{
 
@@ -476,9 +513,9 @@ function Search (depth :any,chessboard :any[][],turn: string,moves: LegalMoves[]
 
     let ownColor: string = (turn === "w") ? "white" : "black";
 
-    if (moves[i].move.targetSquare.piece !== "Blank" && moves[i].move.targetSquare.piece.color !== ownColor) {
+    if (moves[i].move.targetSquare.piece.type !== "Blank" && moves[i].move.targetSquare.piece.color !== ownColor) {
       // Assign a higher evaluation score to moves that result in a capture
-      evaluation += 1000000; // add a higher score for capture moves
+      evaluation += 1000; // add a higher score for capture moves
     }
 
     let updatedArray: UpdatedArrays = updateBoard(moves[i].move.sourceSquare, moves[i].move.targetSquare, chessboard);
