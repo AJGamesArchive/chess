@@ -8,7 +8,7 @@ export function createPiecesTakenArray(): Piece[][] {
   for (let row = 0; row < 2; row++) {
     takenPieces[row] = new Array(8);
     for (let col = 0; col < 8; col++) {
-      const color = resetSquareColor('#373737', '#1e1e1e', {row: row, col: col})
+      const color = resetSquareColor('#FFFFFF', '#ff7072', {row: row, col: col})
       // const isLightSquare = (row + col) % 2 === 0;
       // const color = isLightSquare ? '#373737' : '#1e1e1e';
       takenPieces[row][col] = {

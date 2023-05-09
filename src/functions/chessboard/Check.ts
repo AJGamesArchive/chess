@@ -11,6 +11,7 @@ import { rookPiece } from "./Rook";
 import { knightPiece } from "./Knight";
 import { bishopPiece } from "./Bishop";
 import { queenPiece } from "./Queen";
+import { kingPiece } from "./King";
 
 // Declaring React variable to store the state of check at the end of each move
 var check: CheckDetails = ({
@@ -173,6 +174,17 @@ export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard
           return checkDetails;
         }
       }
+      if (chessboard[row][col].piece.type === "King" && chessboard[row][col].piece.color === opponentKing.piece.color){
+        if(kingPiece(chessboard[row][col], ownKing)=== true)
+        {
+          checkDetails.selfInCheck = true
+          checkDetails.opponentInCheck = false;
+          checkDetails.colorInCheck = ownKing.piece.color;
+          checkDetails.kingInCheckSquare = {row: ownKing.row, col: ownKing.col}
+          checkDetails.puttingInCheckSquare.push({row: row, col: col});
+          return checkDetails;
+        }
+      }
     }
   }
 
@@ -216,6 +228,15 @@ export function checkEvaluation(sourceSquare: any, targetSquare: any, chessboard
       }
       if (chessboard[row][col].piece.type === "Queen" && chessboard[row][col].piece.color === ownKing.piece.color){
         if(queenPiece(chessboard[row][col], opponentKing, chessboard)=== true)
+        {
+          checkDetails.opponentInCheck = true;
+          checkDetails.colorInCheck = opponentKing.piece.color;
+          checkDetails.kingInCheckSquare = {row: opponentKing.row, col: opponentKing.col}
+          checkDetails.puttingInCheckSquare.push({row: row, col: col});
+        }
+      }
+      if (chessboard[row][col].piece.type === "King" && chessboard[row][col].piece.color === ownKing.piece.color){
+        if(kingPiece(chessboard[row][col], opponentKing)=== true)
         {
           checkDetails.opponentInCheck = true;
           checkDetails.colorInCheck = opponentKing.piece.color;
