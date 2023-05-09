@@ -186,6 +186,9 @@ export function AIlegalMoves (chessboard: any[][], turn: string): LegalMoves {
   };
   debugger;
   const moveScore: number = Search(1, chessboard, turn, legalMovesList);
+  if (moveScore <= 10800) {
+    bestMove = legalMovesList[Math.floor(Math.random() * legalMovesList.length)];
+  };
   debugger;
   return bestMove;
 };
@@ -471,26 +474,28 @@ function Search (depth :any,chessboard :any[][],turn: string,moves: LegalMoves[]
 
     var evaluation = 0;
 
-    if (moves[i].move.targetSquare.piece !== null && moves[i].move.targetSquare.piece.color !== turn) {
+    let ownColor: string = (turn === "w") ? "white" : "black";
+
+    if (moves[i].move.targetSquare.piece !== "Blank" && moves[i].move.targetSquare.piece.color !== ownColor) {
       // Assign a higher evaluation score to moves that result in a capture
-      evaluation += 1000; // add a higher score for capture moves
+      evaluation += 1000000; // add a higher score for capture moves
     }
-    
+
+    let updatedArray: UpdatedArrays = updateBoard(moves[i].move.sourceSquare, moves[i].move.targetSquare, chessboard);
+    let newChessboard: any[][] = updatedArray.board;
+    evaluation += -Search(depth - 1,newChessboard,turn,moves);
     // update the bestMove based on the evaluation score
     if (evaluation > bestEvaluation) {
       bestEvaluation = evaluation;
       bestMove = moves[i];
-    }
-    let updatedArray: UpdatedArrays = updateBoard(moves[i].move.sourceSquare, moves[i].move.targetSquare, chessboard);
-    let newChessboard: any[][] = updatedArray.board;
-    evaluation = -Search(depth - 1,newChessboard,turn,moves);
-    bestEvaluation = Math.max(evaluation, bestEvaluation);
-    // If statement to save the best move based on evaluation results
-    if (bestEvaluation === 9800 && evaluation === 9800) {
-      bestMove = moves[Math.floor(Math.random() * moves.length)];
-    } else if (bestEvaluation === evaluation && bestEvaluation >= 9800) {
-      bestMove = moves[i];
     };
+    // bestEvaluation = Math.max(evaluation, bestEvaluation);
+    // If statement to save the best move based on evaluation results
+    // if (bestEvaluation <= 9800 && evaluation <= 9800) {
+    //   bestMove = moves[Math.floor(Math.random() * moves.length)];
+    // } else if (bestEvaluation === evaluation && bestEvaluation <= 9800) {
+    //   bestMove = moves[i];
+    // };
     updatedArray = updateBoard(moves[i].move.targetSquare, moves[i].move.sourceSquare, chessboard);
     newChessboard = updatedArray.board;
     // Place any taken pieces back on the board once future move has been reverted
