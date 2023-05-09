@@ -1,36 +1,146 @@
 // Importing required library's
-import { IonCard, IonCardContent, IonCardTitle, IonIcon, IonInput, IonItem, IonLabel, IonText } from '@ionic/react';
+import { IonCard, IonCardContent, IonCardTitle, IonIcon, IonInput, IonItem, IonLabel, IonList, IonText } from '@ionic/react';
 import { arrowForwardCircle } from 'ionicons/icons';
 import React from 'react';
 import './GameRecord.css';
+import { GlobalParams } from '../../interfaces/GlobalParams';
+
+import { retrieveRecords } from '../../functions/records/RetrieveData';
+import { useParams } from 'react-router';
+import { Row } from '@ionic/core/dist/types/components/row/row';
+import { element } from 'prop-types';
 
 //TODO Add comments to this component at some point
 
 interface GameRecordProps {
-  hiddenRecords: boolean;
-  setHiddenRecords: (value: boolean) => void;
-  title: string;
+  gameId : string 
+  winner : string
+  timeStamp: string
+  plyOneName : string
+  plyTwoName : string
+  plyOneColor : string
+  plyTwoColor : string
+  blackPiecesTaken : number
+  whitePiecesTaken : number
 }
 
-const GameRecord: React.FC<GameRecordProps> = ({ hiddenRecords, setHiddenRecords, title }) => {
-  return (
-    <IonCard hidden={hiddenRecords}>
-      <IonText>
-        Text
-        {title}
-      </IonText>
-      <IonLabel>
-        Label
-      </IonLabel>
-      <IonCardTitle>
-        Title
-      </IonCardTitle>
-      <IonCardContent>
-        Content
-      </IonCardContent>
-    </IonCard>
+const Win: string = 'Win';
+const Lose: string = 'Lose';
+var winLoseColour: string = (Win === 'Win') ? 'success' : 'danger'
+
+
+const GameRecord: React.FC<GameRecordProps> = ({ gameId, winner, timeStamp, plyOneName, plyTwoName, plyOneColor, plyTwoColor, blackPiecesTaken, whitePiecesTaken }) => {
+  // const storeArray = (typeof gameHistory === 'string') ? 'string' : 'any'
+  // const records: any[] = (Array.isArray(gameHistory)) ? gameHistory : []
+  // console.log(records)
+  // if (storeArray === 'string'){
+  //   return (
+  //     <IonList hidden={hiddenRecords}>
+  //       {records.map(element => (
+  //         <IonCard key = {element.id}>
+  //         <IonItem lines = 'full'>
+  //         <IonCardTitle>
+  //           {element.id} 
+  //         </IonCardTitle>
+  //         <IonCardTitle slot = 'end' color = {winLoseColour}>
+  //           Winner: {element.winner}
+  //         </IonCardTitle>
+  //         </IonItem>
+          
+  //         <IonItem lines = 'none'>
+  //           <IonCardContent slot = 'end'>
+  //             {element.timestamp}
+  //           </IonCardContent>
+  //         </IonItem>
+
+  //         <IonItem lines = 'none'>
+  //           <IonLabel slot = 'end'>
+  //           Player One: {element.plyOneName}
+  //           </IonLabel>
+  //           <IonLabel >
+  //           Player Two: {element.plyTwoName}
+  //           </IonLabel>
+  //         </IonItem >
+
+  //         <IonItem lines = 'none'>
+  //         <IonLabel>
+  //           Player One: {element.plyOneColor}
+  //         </IonLabel>
+  //         <IonLabel slot = 'end'>
+  //          Player Two: {element.plyTwoColor}
+  //         </IonLabel>
+  //         </IonItem>
+
+  //         <IonItem lines='none' >
+  //           <IonLabel>
+  //            White Pieces Taken: {element.blackPiecesTaken}
+  //           </IonLabel>
+  //           <IonLabel slot = 'end'>
+  //           Black Pieces Taken: {element.whitePiecesTaken}
+  //           </IonLabel>
+  //         </IonItem>
+          
+
     
+  //       </IonCard>
+  //       ))}
+  //     </IonList>
+  //   );
+
+  // } else{
+  //   return (
+  //     <IonCard hidden={hiddenRecords}>
+  //       {gameHistory}
+  //     </IonCard>
+  //   )
+  // }
+
+  return (
+    <IonCard>
+    <IonItem lines = 'full'>
+    <IonCardTitle>
+      {gameId} 
+    </IonCardTitle>
+    <IonCardTitle slot = 'end' color = {winLoseColour}>
+      Winner: {winner}
+    </IonCardTitle>
+    </IonItem>
+    
+    <IonItem lines = 'none'>
+      <IonCardContent slot = 'end'>
+        {timeStamp}
+      </IonCardContent>
+    </IonItem>
+
+    <IonItem lines = 'none'>
+      <IonLabel >
+      Player One: {plyOneName}
+      </IonLabel>
+      <IonLabel slot = 'end'>
+      Player Two: {plyTwoName}
+      </IonLabel>
+    </IonItem >
+
+    <IonItem lines = 'none'>
+    <IonLabel>
+      Player One: {plyOneColor}
+    </IonLabel>
+    <IonLabel slot = 'end'>
+      Player Two: {plyTwoColor}
+    </IonLabel>
+    </IonItem>
+
+    <IonItem lines='none' >
+      <IonLabel>
+        White Pieces Taken: {blackPiecesTaken}
+      </IonLabel>
+      <IonLabel slot = 'end'>
+      Black Pieces Taken: {whitePiecesTaken}
+      </IonLabel>
+    </IonItem>
+  </IonCard>
   );
+  
 };
 
 export default GameRecord;

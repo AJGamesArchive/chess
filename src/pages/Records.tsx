@@ -3,11 +3,15 @@ import {
   IonButton,
   IonCard,
   IonCardTitle,
+  IonCol,
   IonContent,
+  IonGrid,
   IonHeader,
   IonIcon,
   IonItem,
+  IonList,
   IonPage,
+  IonRow,
   IonText,
   IonTitle,
   IonToast,
@@ -28,6 +32,7 @@ import GameRecord from '../components/records/GameRecord';
 
 // Importing the required function for this page
 import { Login } from '../functions/login/Login';
+import { retrieveRecords } from '../functions/records/RetrieveData';
 
 // Importing the required types for this page
 import { CredentialValidation } from '../types/login/AccountVerification';
@@ -78,6 +83,9 @@ const Records: React.FC = () => {
   const [passwordError, setPasswordError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
+  var [gameHistory, setGameHistory] = useState<any[]>([]);
+  // const gameHistory: any[] | string = await retrieveRecords(params.username)
+
   // Function to verify that the entered password is valid
   async function passwordVerifier(password: string) {
     // Change the color of the action button while system is loading
@@ -85,8 +93,12 @@ const Records: React.FC = () => {
     // Handle password verification
     let confirmation: CredentialValidation = await Login(params.username, password);
     if (confirmation.valid) {
-      setHiddenPassVerifier(true); setHiddenRecords(false); setPassword("");
-      return setVerifyBtnClr("primary");
+      let data = await retrieveRecords(params.username);
+      if (Array.isArray(data)) {
+        setGameHistory(data); setHiddenPassVerifier(true); setHiddenRecords(false); setPassword("");
+        return setVerifyBtnClr("primary");
+      };
+      return console.log(Error);
     }
     setErrorMessage("The password you have entered is incorrect. Please re-enter your password."); setPasswordError(true); setPassword("");
     return setVerifyBtnClr("primary");
@@ -162,11 +174,25 @@ const Records: React.FC = () => {
           */
         }
 
-        <GameRecord
-          hiddenRecords={hiddenRecords}
-          setHiddenRecords={setHiddenRecords}
-          title={title}
-        />
+        <IonGrid fixed={true} hidden={hiddenRecords}>
+          <IonRow>
+            {gameHistory.map(element => (
+              <IonCol key={element.id}>
+                <GameRecord
+                  gameId = {element.id} 
+                  winner = {element.winner}
+                  timeStamp = {element.timestamp}
+                  plyOneName = {element.plyOneName} 
+                  plyTwoName = {element.plyTwoName}
+                  plyOneColor = {element.plyOneColor}
+                  plyTwoColor = {element.plyTwoColor}
+                  blackPiecesTaken = {element.blackPiecesTaken} 
+                  whitePiecesTaken = {element.whitePiecesTaken}
+                />
+              </IonCol>
+            ))}
+          </IonRow>
+        </IonGrid>
 
         {
           /*
