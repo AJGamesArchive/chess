@@ -181,11 +181,14 @@ export function AIlegalMoves (chessboard: any[][], turn: string): LegalMoves {
         };
       };
     };
-  };
+  };  
+  debugger;
   const moveScore: number = Search(1, chessboard, turn, legalMovesList);
-  if (moveScore <= 10800) {
+  debugger;
+  if (moveScore <= 2150) {
     bestMove = legalMovesList[Math.floor(Math.random() * legalMovesList.length)];
   };
+
   return bestMove;
 };
 
@@ -371,8 +374,11 @@ function AIlegalMovesLookAhead(sourceSquare: any, targetSquare: any, chessboard:
     updateSquare.piece = savedPiece;
     savedPiece = undefined;
   };
+  
   responseMoveCounter += (validAIMove) ? 1 : 0;
+  
   return (validAIMove) ? true : false;
+  
 };
 
 
@@ -388,6 +394,7 @@ function evaluate(chessboard: any [][],turn: string): number{
     'Queen': queenValue,
     'King': kingValue,
   };
+
   let whiteEval = 0;
   let blackEval = 0;
 
@@ -406,9 +413,11 @@ function evaluate(chessboard: any [][],turn: string): number{
         // Give higher weight to squares that contain an opponent's piece
         if (square.piece.color !== ownColor) {
           if (square.piece.color === 'white') {
-            blackEval += materialValue * 0.1; // Increase the weight factor as needed
-          } else {
-            whiteEval += materialValue * 0.1;
+            // Increase the weight factor based on the piece value
+            blackEval += materialValue * (1 + pieceValue / kingValue);
+          } 
+          else if (square.piece.color === "black"){
+            whiteEval += materialValue * (1 + pieceValue / kingValue);
           }
         }
       }
@@ -417,7 +426,8 @@ function evaluate(chessboard: any [][],turn: string): number{
 
   const perspective = (turn === 'w') ? 1 : -1;
   return (whiteEval - blackEval) * perspective;
-};
+}
+
   // const materialValues :any = {
   //   'Pawn': pawnValue,
   //   'Bishop': bishopValue,
@@ -456,54 +466,72 @@ function Search (depth :any,chessboard :any[][],turn: string,moves: LegalMoves[]
   };
   var bestEvaluation = -Infinity;
   for (let i = 0; i < moves.length; i++) {
-    // If statement to check if a piece will be taken when future move is evaluated and stores the piece getting taken
-    //? System currently only works for looking 1 move into the future, does this need extending?
+    let savedPiece = undefined; // set savedPiece to undefined at the start of each iteration
     if (moves[i].move.targetSquare.piece.type !== "Blank") {
-      if (savedPiece === undefined) {
-        if (moves[i].move.targetSquare.piece.type === "Pawn") {
-          if (moves[i].move.targetSquare.piece.color === "white") {
-            savedPiece = {type: "Pawn", color: "white"};
-          } else {
-            savedPiece = {type: "Pawn", color: "black"};
-          };
-        };
-        if (moves[i].move.targetSquare.piece.type === "Rook") {
-          if (moves[i].move.targetSquare.piece.color === "white") {
-            savedPiece = {type: "Rook", color: "white"};
-          } else {
-            savedPiece = {type: "Rook", color: "black"};
-          };
-        };
-        if (moves[i].move.targetSquare.piece.type === "Bishop") {
-          if (moves[i].move.targetSquare.piece.color === "white") {
-            savedPiece = {type: "Bishop", color: "white"};
-          } else {
-            savedPiece = {type: "Bishop", color: "black"};
-          };
-        };
-        if (moves[i].move.targetSquare.piece.type === "Knight") {
-          if (moves[i].move.targetSquare.piece.color === "white") {
-            savedPiece = {type: "Knight", color: "white"};
-          } else {
-            savedPiece = {type: "Knight", color: "black"};
-          };
-        };
-        if (moves[i].move.targetSquare.piece.type === "Queen") {
-          if (moves[i].move.targetSquare.piece.color === "white") {
-            savedPiece = {type: "Queen", color: "white"};
-          } else {
-            savedPiece = {type: "Queen", color: "black"};
-          };
-        };
-        if (moves[i].move.targetSquare.piece.type === "King") {
-          if (moves[i].move.targetSquare.piece.color === "white") {
-            savedPiece = {type: "King", color: "white"};
-          } else {
-            savedPiece = {type: "King", color: "black"};
-          };
-        };
-      };
-    };
+      // always update savedPiece whenever a move involves taking a piece
+      if (moves[i].move.targetSquare.piece.type === "Pawn") {
+        savedPiece = {type: "Pawn", color: moves[i].move.targetSquare.piece.color};
+      } else if (moves[i].move.targetSquare.piece.type === "Rook") {
+        savedPiece = {type: "Rook", color: moves[i].move.targetSquare.piece.color};
+      } else if (moves[i].move.targetSquare.piece.type === "Bishop") {
+        savedPiece = {type: "Bishop", color: moves[i].move.targetSquare.piece.color};
+      } else if (moves[i].move.targetSquare.piece.type === "Knight") {
+        savedPiece = {type: "Knight", color: moves[i].move.targetSquare.piece.color};
+      } else if (moves[i].move.targetSquare.piece.type === "Queen") {
+        savedPiece = {type: "Queen", color: moves[i].move.targetSquare.piece.color};
+      } else if (moves[i].move.targetSquare.piece.type === "King") {
+        savedPiece = {type: "King", color: moves[i].move.targetSquare.piece.color};
+      }
+    }
+  // for (let i = 0; i < moves.length; i++) {
+  //   // If statement to check if a piece will be taken when future move is evaluated and stores the piece getting taken
+  //   //? System currently only works for looking 1 move into the future, does this need extending?
+  //   if (moves[i].move.targetSquare.piece.type !== "Blank") {
+  //     if (savedPiece === undefined) {
+  //       if (moves[i].move.targetSquare.piece.type === "Pawn") {
+  //         if (moves[i].move.targetSquare.piece.color === "white") {
+  //           savedPiece = {type: "Pawn", color: "white"};
+  //         } else {
+  //           savedPiece = {type: "Pawn", color: "black"};
+  //         };
+  //       };
+  //       if (moves[i].move.targetSquare.piece.type === "Rook") {
+  //         if (moves[i].move.targetSquare.piece.color === "white") {
+  //           savedPiece = {type: "Rook", color: "white"};
+  //         } else {
+  //           savedPiece = {type: "Rook", color: "black"};
+  //         };
+  //       };
+  //       if (moves[i].move.targetSquare.piece.type === "Bishop") {
+  //         if (moves[i].move.targetSquare.piece.color === "white") {
+  //           savedPiece = {type: "Bishop", color: "white"};
+  //         } else {
+  //           savedPiece = {type: "Bishop", color: "black"};
+  //         };
+  //       };
+  //       if (moves[i].move.targetSquare.piece.type === "Knight") {
+  //         if (moves[i].move.targetSquare.piece.color === "white") {
+  //           savedPiece = {type: "Knight", color: "white"};
+  //         } else {
+  //           savedPiece = {type: "Knight", color: "black"};
+  //         };
+  //       };
+  //       if (moves[i].move.targetSquare.piece.type === "Queen") {
+  //         if (moves[i].move.targetSquare.piece.color === "white") {
+  //           savedPiece = {type: "Queen", color: "white"};
+  //         } else {
+  //           savedPiece = {type: "Queen", color: "black"};
+  //         };
+  //       };
+  //       if (moves[i].move.targetSquare.piece.type === "King") {
+  //         if (moves[i].move.targetSquare.piece.color === "white") {
+  //           savedPiece = {type: "King", color: "white"};
+  //         } else {
+  //           savedPiece = {type: "King", color: "black"};
+  //         };
+  //       };
+  //     };
+  //   };
 
     var evaluation = 0;
 
@@ -516,6 +544,7 @@ function Search (depth :any,chessboard :any[][],turn: string,moves: LegalMoves[]
 
     let updatedArray: UpdatedArrays = updateBoard(moves[i].move.sourceSquare, moves[i].move.targetSquare, chessboard);
     let newChessboard: any[][] = updatedArray.board;
+    
     evaluation += -Search(depth - 1,newChessboard,turn,moves);
     // update the bestMove based on the evaluation score
     if (evaluation > bestEvaluation) {
@@ -538,6 +567,8 @@ function Search (depth :any,chessboard :any[][],turn: string,moves: LegalMoves[]
       updateSquare.piece = savedPiece;
       savedPiece = undefined;
     };
+   
   };
+  
   return bestEvaluation;
 };
