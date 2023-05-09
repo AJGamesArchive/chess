@@ -236,7 +236,7 @@ const ChessGame: React.FC = () => {
         let pawnEvaluation: PawnLocation = pawnLocationChecker(chessboard);
         if (pawnEvaluation.atEnd) {
           let AIColor: string = (game.opponentColor === "w") ? "white" : "black"; 
-          if (game.mode !== "PVE" && pawnEvaluation.color !==  AIColor) {
+          if (game.mode === "PVP" || (game.mode === "PVE" && pawnEvaluation.color !==  AIColor)) {
             setPawnSquare(pawnEvaluation.square);
             setLockBoard(true);
             if (pawnEvaluation.color === "white") {
