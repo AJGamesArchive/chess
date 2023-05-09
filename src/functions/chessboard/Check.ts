@@ -22,7 +22,7 @@ var check: CheckDetails = ({
 });
 
 // Function to control how check if validated and output the result
-export function checkHandler(chessboard: any[][], sourceSquare: any, targetSquare: any, checkHighlighter: string, darkSquareColor: string, huntHighlighter: string, checkMateHighlighter: string, turn: string): CheckAllowMove {
+export function checkHandler(chessboard: any[][], sourceSquare: any, targetSquare: any, checkHighlighter: string, darkSquareColor: string, huntHighlighter: string, checkMateHighlighter: string, turn: string, checkMateWinHighlight: string): CheckAllowMove {
   let newChessboard: any[][] = Array.from(chessboard);
   let allowMove: CheckAllowMove;
   // Check if any one is in check and color squares accordingly
@@ -52,10 +52,10 @@ export function checkHandler(chessboard: any[][], sourceSquare: any, targetSquar
     const inCheckmate: boolean = checkmate(newChessboard, checkDetails.kingInCheckSquare, checkDetails.puttingInCheckSquare, turn);
     // Checks if any squares are in the check highlighter and un-highlights them
     if (check.opponentInCheck) {
-      newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, huntHighlighter, checkMateHighlighter, inCheckmate, false);
+      newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, huntHighlighter, checkMateHighlighter, inCheckmate, false, checkMateWinHighlight);
     };
     // Highlight squares to show who is in check and where from
-    newChessboard = checkHighlight(checkDetails, newChessboard, checkHighlighter, darkSquareColor, huntHighlighter, checkMateHighlighter, inCheckmate, true);
+    newChessboard = checkHighlight(checkDetails, newChessboard, checkHighlighter, darkSquareColor, huntHighlighter, checkMateHighlighter, inCheckmate, true, checkMateWinHighlight);
     // Save the check state from this piece move
     check = checkDetails;
     if (inCheckmate) {
@@ -74,7 +74,7 @@ export function checkHandler(chessboard: any[][], sourceSquare: any, targetSquar
   } else {
     // Checks if any squares are in the check highlighter and um-highlights them
     if (check.opponentInCheck) {
-      newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, huntHighlighter, checkMateHighlighter, false, false);
+      newChessboard = checkHighlight(check, newChessboard, checkHighlighter, darkSquareColor, huntHighlighter, checkMateHighlighter, false, false, checkMateWinHighlight);
     };
     // Save the check state from this piece move
     check = checkDetails;
@@ -267,11 +267,21 @@ function retrieveKings(turn: string, chessboard: any[][]): LookupKings {
 };
 
 // Function that either highlights the squares on the board that are in check or un-highlights the board squares that were previously in check, depending on given params
-export function checkHighlight(checkState: CheckDetails, chessboard: any[][], highlightColor: string, darkSquareColor: string, huntHighlightColor: string, checkMateHighlightColor: string, inCheckMate: boolean, highlight: boolean): any[][] {
+export function checkHighlight(checkState: CheckDetails, chessboard: any[][], highlightColor: string, darkSquareColor: string, huntHighlightColor: string, checkMateHighlightColor: string, inCheckMate: boolean, highlight: boolean, checkMateWinHighlight: string): any[][] {
   if (highlight) {
     let kingsSquare: any = chessboard[checkState.kingInCheckSquare.row][checkState.kingInCheckSquare.col];
+    let opponentKingClr: string = (kingsSquare.piece.color === "white") ? "black" : "white";
+    let opponentKingSqr: any;
+    for (let row = 0; row < chessboard.length; row++) {
+      for (let col = 0; col < chessboard[row].length; col++) {
+        if (chessboard[row][col].piece.type === "King" && chessboard[row][col].piece.color === opponentKingClr) {
+          opponentKingSqr = chessboard[row][col];
+        };
+      };
+    };
     if (inCheckMate) {
       kingsSquare.color = checkMateHighlightColor;
+      opponentKingSqr.color = checkMateWinHighlight;
     } else {
       kingsSquare.color = highlightColor;
     };

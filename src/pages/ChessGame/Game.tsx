@@ -123,6 +123,12 @@ const ChessGame: React.FC = () => {
   const [whitePiecesTaken, setWhitePiecesTaken] = useState<Piece[][]>(createPiecesTakenArray());
   const [blackPiecesTaken, setBlackPiecesTaken] = useState<Piece[][]>(createPiecesTakenArray());
 
+  // Declaring react variable to display an alert telling the user why they can't make a move if there putting them self in check
+  const [checkAlert, setCheckAlert] = useState<boolean>(false);
+
+  // Declaring react variable to tell user if the piece there moving cannot make that move
+  const [invalidMoveAlert, setInvalidMoveAlert] = useState<boolean>(false);
+
   // Declaring react variables to control the visibility of the piece selection boxes
   const [hideWhiteSelect, setHideWhiteSelect] = useState<boolean>(true);
   const [hideBlackSelect, setHideBlackSelect] = useState<boolean>(true);
@@ -231,6 +237,12 @@ const ChessGame: React.FC = () => {
       setWhitePiecesTaken(controls.whiteTaken);
       setBlackPiecesTaken(controls.blackTaken);
       setCheckmate(controls.checkMate);
+      if (controls.invalidMove) {
+        setInvalidMoveAlert(true);
+      };
+      if (controls.check) {
+        setCheckAlert(true)
+      };
       // Switch turns only if no one is in checkmate
       if(!controls.checkMate) {
         let pawnEvaluation: PawnLocation = pawnLocationChecker(chessboard);
@@ -453,6 +465,40 @@ const ChessGame: React.FC = () => {
           message={checkMateMsg}
           icon={alertCircle}
           color="medium"
+          position="middle"
+          buttons={[
+            {
+              text: "Ok",
+              role: "cancel",
+              handler: () => {}
+            }
+          ]}
+        />
+
+        <IonToast
+          isOpen={checkAlert}
+          onDidPresent={() => {}}
+          onDidDismiss={() => setCheckAlert(false)}
+          message={"You cannot make this move as it will put you in check. Please make a different move."}
+          icon={alertCircle}
+          color="danger"
+          position="middle"
+          buttons={[
+            {
+              text: "Ok",
+              role: "cancel",
+              handler: () => {}
+            }
+          ]}
+        />
+
+        <IonToast
+          isOpen={invalidMoveAlert}
+          onDidPresent={() => {}}
+          onDidDismiss={() => setInvalidMoveAlert(false)}
+          message={"The piece you are trying to move cannot move to the selected square. Please choose another square."}
+          icon={alertCircle}
+          color="warning"
           position="middle"
           buttons={[
             {
