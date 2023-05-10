@@ -62,7 +62,7 @@ const TestingEvidence: React.FC = () => {
               This ZIP file contains the testing evidence for the main app GUI and navigation system testing. All file names within the ZIP file are cross referenced to the testing table.
             </IonText>
           </IonCardContent>
-          <IonItem lines="none" button detail={false}>
+          <IonItem lines="none" button detail={false} href="https://1drv.ms/u/s!ArvVojzCCHTcoRbdrKPh84ffp7md?e=1pKZjj">
             <IonLabel slot="end" color="primary">
               Download Evidence ZIP
             </IonLabel>
@@ -81,7 +81,7 @@ const TestingEvidence: React.FC = () => {
               This ZIP file contains the testing evidence for the Chess Engine testing. All file names within the ZIP file are cross referenced to the testing table.
             </IonText>
           </IonCardContent>
-          <IonItem lines="none" button detail={false}>
+          <IonItem lines="none" button detail={false} href="https://1drv.ms/u/s!ArvVojzCCHTcoRhXX1LQuceqckqQ?e=0rgH5H">
             <IonLabel slot="end" color="primary">
               Download Evidence ZIP
             </IonLabel>
@@ -100,7 +100,7 @@ const TestingEvidence: React.FC = () => {
               This ZIP file contains the testing evidence for the Chess AI testing. All file names within the ZIP file are cross referenced to the testing table.
             </IonText>
           </IonCardContent>
-          <IonItem lines="none" button detail={false}>
+          <IonItem lines="none" button detail={false} href="https://1drv.ms/u/s!ArvVojzCCHTcoRkficXODa590ijS?e=mAf40l">
             <IonLabel slot="end" color="primary">
               Download Evidence ZIP
             </IonLabel>
@@ -119,7 +119,7 @@ const TestingEvidence: React.FC = () => {
               This ZIP file contains the testing evidence for the Database Integration testing. All file names within the ZIP file are cross referenced to the testing table.
             </IonText>
           </IonCardContent>
-          <IonItem lines="none" button detail={false}>
+          <IonItem lines="none" button detail={false} href="https://1drv.ms/u/s!ArvVojzCCHTcoRcpKNrxwSRaWmNq?e=DLTAeR">
             <IonLabel slot="end" color="primary">
               Download Evidence ZIP
             </IonLabel>
