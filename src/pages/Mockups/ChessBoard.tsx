@@ -421,11 +421,6 @@ const ChessBoardMockup: React.FC = () => {
           <IonTitle>
             Chess Board Mockup
           </IonTitle>
-          <IonButton slot="end" fill="clear" color="danger" onClick={() => {
-            nav.push(`/mainMenu/DEV`);
-          }}>
-            <IonIcon icon={construct}></IonIcon>
-          </IonButton>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
