@@ -27,8 +27,6 @@ import { saveGame } from '../../functions/ending/SaveGame';
 // Importing Types
 import { DataSava } from '../../types/ending/DataSava';
 
-// TODO Alex, double check that the number of white pieces taken and black pieces taken is being saved correctly as they might be backwards?
-
 const GameEnding: React.FC = () => {
   // Setup navigation system on this page so we can call other pages
   // Powered by nav system in App.tsx

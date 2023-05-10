@@ -168,6 +168,17 @@ const ChessGame: React.FC = () => {
     AILoop: while (true) {
       // Start of AI turn
       const move = AIlegalMoves(chessboard, nextTurn)
+      if (move === undefined) {
+        setCheckmateMsg(`The AI cannot make any more moves!`);
+        setCheckmateAlert(true);
+        setHideEndGameBtn(false);
+        if (turn === "w") {
+          setTurn("b");
+        } else {
+          setTurn("w");
+        };
+        return;
+      };
       let controls: GameControl;
       for (let i = 0; i < 2; i++) {
         let square: any;

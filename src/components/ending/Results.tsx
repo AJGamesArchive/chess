@@ -75,13 +75,13 @@ const GameResults: React.FC<GameResultsProps> = ({
       <IonItem lines='none'>
       <IonIcon slot="start" src={whiteIcon}/>
         <IonText>
-          White Pieces Taken: <IonText className='game-ending-card-highlight' color="success">{whitePiecesTaken}</IonText>
+          White Pieces Taken: <IonText className='game-ending-card-highlight' color="success">{blackPiecesTaken}</IonText>
         </IonText>
       </IonItem>
       <IonItem lines="none">
         <IonIcon slot="start" src={blackIcon}/>
         <IonText>
-          Black Pieces Taken: <IonText className='game-ending-card-highlight' color="success">{blackPiecesTaken}</IonText>
+          Black Pieces Taken: <IonText className='game-ending-card-highlight' color="success">{whitePiecesTaken}</IonText>
         </IonText>
       </IonItem>
     </IonCard>
