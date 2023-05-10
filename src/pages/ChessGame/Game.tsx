@@ -84,6 +84,7 @@ const ChessGame: React.FC = () => {
   
   // Declaring react variable to control the visibility of the 'End Game' action button
   const [hideEndGameBtn, setHideEndGameBtn] = useState<boolean>(true);
+  const [hideDrawBtn, setHideDrawBtn] = useState<boolean>(false);
 
   // Declaring and assigning variables that will be used to power the player card UI components
   var whitePlayerName: string;
@@ -172,6 +173,7 @@ const ChessGame: React.FC = () => {
         setCheckmateMsg(`The AI cannot make any more moves!`);
         setCheckmateAlert(true);
         setHideEndGameBtn(false);
+        setHideDrawBtn(true);
         if (turn === "w") {
           setTurn("b");
         } else {
@@ -299,15 +301,16 @@ const ChessGame: React.FC = () => {
         setCheckmateMsg(`${whoInCheckMate} is in Checkmate!`);
         setCheckmateAlert(true);
         setHideEndGameBtn(false);
+        setHideDrawBtn(true);
         return;
       };
     };
   };
 
   // Function that finishes the game and sends you to the results page
-  function finishGame() {
+  function finishGame(buttonName: string) {
     // Gather up the game results
-    let isDraw: string = "n"; //TODO Make this dynamic once drawing is implemented
+    let isDraw: string = (buttonName === "Draw") ? "y" : "n"
     let winnerName: string;
     let winnerColor: string;
     let loserName: string;
@@ -464,6 +467,19 @@ const ChessGame: React.FC = () => {
           buttonName={`Finish`}
           buttonText={`Finish Game`}
           buttonIcon={star}
+          buttonColor={`green`}
+          buttonTextColor={`success`}
+          onButtonClick={finishGame}
+        />
+
+        <ActionButtons
+          canDisable={false}
+          disabled={false}
+          canHide={true}
+          hidden={hideDrawBtn}
+          buttonName={`Draw`}
+          buttonText={`Call A Draw`}
+          buttonIcon={alertCircle}
           buttonColor={`yellow`}
           buttonTextColor={`warning`}
           onButtonClick={finishGame}
