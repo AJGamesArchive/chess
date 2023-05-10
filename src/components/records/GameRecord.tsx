@@ -1,14 +1,7 @@
 // Importing required library's
-import { IonCard, IonCardContent, IonCardTitle, IonIcon, IonInput, IonItem, IonLabel, IonList, IonText } from '@ionic/react';
-import { arrowForwardCircle } from 'ionicons/icons';
+import { IonCard, IonCardContent, IonCardTitle, IonItem, IonLabel, } from '@ionic/react';
 import React from 'react';
 import './GameRecord.css';
-import { GlobalParams } from '../../interfaces/GlobalParams';
-
-import { retrieveRecords } from '../../functions/records/RetrieveData';
-import { useParams } from 'react-router';
-import { Row } from '@ionic/core/dist/types/components/row/row';
-import { element } from 'prop-types';
 
 //TODO Add comments to this component at some point
 
@@ -25,7 +18,6 @@ interface GameRecordProps {
 }
 
 const Win: string = 'Win';
-const Lose: string = 'Lose';
 var winLoseColour: string = (Win === 'Win') ? 'success' : 'danger'
 
 

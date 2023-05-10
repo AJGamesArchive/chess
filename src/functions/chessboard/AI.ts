@@ -6,7 +6,6 @@ import { queenPiece } from "./Queen";
 import { kingPiece } from "./King";
 import { updateBoard } from "./UpdateBoard";
 import { UpdatedArrays } from "../../types/chessboard/UpdatedArrays";
-import { infinite } from "ionicons/icons";
 
 const pawnValue = 100;
 const knightValue = 300;
@@ -28,8 +27,8 @@ type LegalMoves = {
   move: Move;
 };
 
-var legalMovesList: LegalMoves[] = new Array();
-var responseMovesList: LegalMoves[] = new Array();
+var legalMovesList: LegalMoves[] = [];
+var responseMovesList: LegalMoves[] = [];
 
 var moveCounter: number = 0;
 var responseMoveCounter: number = 0;
@@ -182,9 +181,7 @@ export function AIlegalMoves (chessboard: any[][], turn: string): LegalMoves {
       };
     };
   };  
-  debugger;
   const moveScore: number = Search(1, chessboard, turn, legalMovesList);
-  debugger;
   if (moveScore <= 2150) {
     bestMove = legalMovesList[Math.floor(Math.random() * legalMovesList.length)];
   };

@@ -37,13 +37,11 @@ export function checkmate(chessboard: any[][], kingSquare: any, huntingPieces: C
     };
     let revertedBoards = updateBoard(square, kingSquare, chessboard);
     newChessboard = revertedBoards.board;
-    console.log(updatedBoards.takenPiece); //! Remove
     let updateSquare = newChessboard[square.row][square.col];
     updateSquare.piece = updatedBoards.takenPiece.piece;
   });
   // Returning false is the king can move as it is not in checkmate
   if (!cantMove) {
-    console.log("Can Move!!!") //! Remove later
     return false;
   };
   // Check if there's more than 1 pieces putting the king in check
@@ -96,7 +94,6 @@ export function checkmate(chessboard: any[][], kingSquare: any, huntingPieces: C
     });
     // Returning false if a piece can block the hunt pieces move
     if (canBlock) {
-      console.log("Can Block!!!") //! Remove later
       return false;
     };
     // Looping through each of your own pieces to see if they can take the hunting piece
@@ -137,7 +134,6 @@ export function checkmate(chessboard: any[][], kingSquare: any, huntingPieces: C
     };
     // Return false if one of your piece can take the hunting piece
     if (canDestroy) {
-      console.log("Can Destroy!!!") //! Remove later
       return false;
     };
   };

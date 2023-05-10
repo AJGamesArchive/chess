@@ -9,7 +9,6 @@ import {
   IonHeader,
   IonIcon,
   IonItem,
-  IonList,
   IonPage,
   IonRow,
   IonText,
@@ -71,9 +70,6 @@ const Records: React.FC = () => {
   } else {
     disableVerifyButton = false;
   };
-
-  //! TRINITY
-  var title: string = "Title";
 
   // React variables to control the visibility of the certain UI components
   const [hiddenPassVerifier, setHiddenPassVerifier] = useState<boolean>(false);
