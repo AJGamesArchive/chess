@@ -91,7 +91,7 @@ const MainMenu: React.FC = () => {
           title="Play Against Player"
           buttonName="Play"
           icon={man}
-          description="Write game mode description here."
+          description="Play chess against another play locally. Your opponent does not need to have an account."
         />
 
         <OptionCard
@@ -102,7 +102,7 @@ const MainMenu: React.FC = () => {
           title="Play Against AI"
           buttonName='Play'
           icon={gameController}
-          description="Write game mode description here."
+          description="Play chess against are chess AI and do your best to beat it!"
         />
 
         <OptionCard
@@ -113,7 +113,7 @@ const MainMenu: React.FC = () => {
           title="Account Records"
           buttonName='View'
           icon={trophy}
-          description="Write game mode description here."
+          description="View records of all your previous games of chess against both the AI and other players."
         />
 
       </IonContent>
