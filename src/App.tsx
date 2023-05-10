@@ -10,6 +10,7 @@ import ChessGame from './pages/ChessGame/Game';
 import Records from './pages/Records';
 import GameSetup from './pages/ChessGame/Setup';
 import GameEnding from './pages/ChessGame/Ending';
+import TestingEvidence from './pages/TestingEvidence';
 
 import ChessBoardMockup from './pages/Mockups/ChessBoard';
 
@@ -63,6 +64,9 @@ const App: React.FC = () => (
         </Route>
         <Route path="/chessBoardMockup" exact={true}>
           <ChessBoardMockup />
+        </Route>
+        <Route path="/test" exact={true}>
+          <TestingEvidence />
         </Route>
       </IonRouterOutlet>
     </IonReactRouter>
