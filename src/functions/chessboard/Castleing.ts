@@ -97,7 +97,6 @@ export function isCastleing(sourceSquare: any, targetSquare: any, chessboard: an
 // Function that makes the castleing move on the chessboard is the move is allowed
 // Can also undo the last move if move leaves king in check
 export function carryOutCastleing(chessboard: any[][], source: any, target: any, undo: boolean): any[][] {
-  console.log(source.piece, target.piece, undo); //! Remove later
   let newChessboard = Array.from(chessboard);
   let updateRookSource: any;
   let updateRookTarget: any;

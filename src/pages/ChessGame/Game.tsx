@@ -509,37 +509,6 @@ const ChessGame: React.FC = () => {
           ]}
         />
 
-        {
-          /*
-            ! Temporary buttons to aid with development
-          */
-        }
-
-        <IonCard hidden={false}>
-          <IonItem lines="none">
-            <IonButton slot="start" fill="clear" color="secondary" onClick={() => {
-              console.log(chessboard);
-            }}>
-              <IonIcon icon={hammer}></IonIcon>
-            </IonButton>
-            <IonButton slot="start" fill="clear" color="secondary" onClick={() => {
-              window.location.reload();
-            }}>
-              <IonIcon icon={refresh}></IonIcon>
-            </IonButton>
-            <IonButton slot="start" fill="clear" color="secondary" onClick={() => {
-              nav.push(`/mainMenu/${params.username}`);
-            }}>
-              <IonIcon icon={home}></IonIcon>
-            </IonButton>
-            <IonButton slot="start" fill="clear" color="warning" disabled={true} onClick={() => {
-              nav.push(`/ending/${params.username}/${game.mode}/${game.opponent}/${game.opponentColor}/Alex/White/Computer/Black/12/9/n`);
-            }}>
-              <IonIcon icon={star}></IonIcon>
-            </IonButton>
-          </IonItem>
-        </IonCard>
-
       </IonContent>
     </IonPage>
   );
